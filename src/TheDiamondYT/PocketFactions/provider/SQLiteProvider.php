@@ -27,4 +27,12 @@ class SQLiteProvider implements Provider {
     public function __construct(Main $plugin) {
         $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
     }
+    
+    public function createFaction($name, $leader) {
+    
+    }
+    
+    public function factionExists($name) {
+    
+    }
 }

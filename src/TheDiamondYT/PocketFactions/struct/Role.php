@@ -16,38 +16,11 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\struct;
 
-use pocketmine\command\CommandSender;
-
-use TheDiamondYT\PocketFactions\Main;
-
-abstract class FCommand {
-
-    public $plugin;
-    public $cfg;
-    public $fme;
-    
-    private $name, $desc;
-    
-    public function __construct(Main $plugin, $name, $desc, $aliases = []) {
-        $this->plugin = $plugin;
-        $this->name = $name;
-        $this->desc = $desc;
-        $this->cfg = $plugin->getConfig();
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-    
-    public function getDescription() { 
-        return $this->desc;
-    }
-    
-    public function time() {
-        return round(microtime(true) * 1000);
-    }
-    
-    public abstract function execute(CommandSender $sender, array $args);
+class Role {
+    const MEMBER = 0;
+    const MODERATOR = 1;
+    const ADMINISTRATOR = 2;
+    const LEADER = 3;
 }

@@ -16,38 +16,24 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
-
-use pocketmine\command\CommandSender;
+namespace TheDiamondYT\PocketFactions\provider;
 
 use TheDiamondYT\PocketFactions\Main;
 
-abstract class FCommand {
+class YamlProvider implements Provider {
 
-    public $plugin;
-    public $cfg;
-    public $fme;
-    
-    private $name, $desc;
-    
-    public function __construct(Main $plugin, $name, $desc, $aliases = []) {
-        $this->plugin = $plugin;
-        $this->name = $name;
-        $this->desc = $desc;
-        $this->cfg = $plugin->getConfig();
-    }
+    private $data;
 
-    public function getName() {
-        return $this->name;
+    public function __construct(Main $plugin) {
+        $plugin->saveResource("factions.yml");
+        $this->data = yaml_parse_file($plugin->getDataFolder() . "factions.yml");
     }
     
-    public function getDescription() { 
-        return $this->desc;
+    public function createFaction($name, $leader) {
+     
     }
     
-    public function time() {
-        return round(microtime(true) * 1000);
+    public function factionExists($name) {
+        return isset($this->data[$name]);
     }
-    
-    public abstract function execute(CommandSender $sender, array $args);
 }

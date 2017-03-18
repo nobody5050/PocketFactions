@@ -18,38 +18,35 @@
  
 namespace TheDiamondYT\PocketFactions\commands;
 
-use pocketmine\command\PluginCommand;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\struct\Role;
 
-class FCommandManager extends PluginCommand {
-
-    private $plugin;
-    private $sender;
+class CommandCreate extends FCommand {
 
     public function __construct(Main $plugin) {
-        parent::__construct("f", $plugin); //TODO: Aliases and shite
-        $this->registerCommand(new CommandCreate($plugin));
-        $this->registerCommand(new CommandVersion($plugin));
-        $this->registerCommand(new CommandReload($plugin));
+        parent::__construct($plugin, "create", "Create a new faction.");
     }
-    
-    public function execute(CommandSender $sender, $label, array $args) {
-        $this->sender = $sender;
-        if(count($args) > 0) {
-            $subcommand = strtolower(array_shift($args));
-            if(isset($this->subcommands[$subcommand])) {
-                $command = $this->subcommands[$subcommand];
-            } else {
-                //TODO: Translation
-                return true;
-            }
-            $command->execute($sender, $args);
+
+    public function execute(CommandSender $sender, array $args) {
+        if(count($args) >= 2 or count($args) === 0) {
+            $sender->sendMessage("this->getUsage()");
+            return;
         }
+        if($this->plugin->getProvider()->factionExists($args[0])) {
+            $sender->sendMessage("That tag is already in use."); //TODO: Translation
+            return;
+        }
+        if(strlen($args[0]) > $this->cfg["faction"]["max-name-length"]) {
+            $sender->sendMessage("That tag is too long."); //TODO: Translation
+            return;
+        }
+        $faction = $this->plugin->createFaction();
+        $faction->setTag($args[0]);
+        $faction->create();
+        
+        //$this->fme->setRole(Role::LEADER);
+        //$this->fme->setFaction($faction);
     }
-    
-    public function registerCommand(FCommand $command) {
-        $this->subcommands[$command->getName()] = $command;
-    }
-}     
+}

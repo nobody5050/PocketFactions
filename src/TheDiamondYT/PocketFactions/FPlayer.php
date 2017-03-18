@@ -16,38 +16,44 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions;
 
-use pocketmine\command\CommandSender;
+use pocketmine\Player;
 
-use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\struct\Role;
 
-abstract class FCommand {
+class FPlayer extends Player {
 
-    public $plugin;
-    public $cfg;
-    public $fme;
+    private $title;
     
-    private $name, $desc;
-    
-    public function __construct(Main $plugin, $name, $desc, $aliases = []) {
-        $this->plugin = $plugin;
-        $this->name = $name;
-        $this->desc = $desc;
-        $this->cfg = $plugin->getConfig();
-    }
-
-    public function getName() {
-        return $this->name;
+    private $factionRole;
+    private $factionName;
+   
+    public function setTitle($title) {
+        $this->title = $title;
     }
     
-    public function getDescription() { 
-        return $this->desc;
+    public function getTitle() {
+        return $this->title;
     }
     
-    public function time() {
-        return round(microtime(true) * 1000);
+    public function setRole(Role $role) {
+        $this->role = $role;
     }
     
-    public abstract function execute(CommandSender $sender, array $args);
+    public function getRole() {
+        return $this->role;
+    }
+    
+    public function setFaction(Faction $faction) { 
+        $faction->addPlayer($this); 
+        $this->factionName = $faction->getTag();
+    }
+    
+    public function getFaction() {
+        if($this->factionName === null)
+            return null;
+            
+        return $this->factionName;
+    }
 }

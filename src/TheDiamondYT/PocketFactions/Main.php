@@ -23,17 +23,32 @@ use pocketmine\event\Listener;
 use pocketmine\Player;
 
 use TheDiamondYT\PocketFactions\provider\Provider;
+use TheDiamondYT\PocketFactions\provider\YamlProvider;
+use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\commands\FCommandManager;
 
 class Main extends PluginBase {
 
-    private $provider = null;
+    private $provider;
     private $cfg;
+    
+    public static $object = null;
+   
+    public function onLoad() {
+        if(!(self::$object instanceof Main)) {
+            self::$object = $this;
+        }
+    }
+    
+    public static function get() {
+        return self::$object;
+    }
 
 	public function onEnable() {
 	    $this->saveResource("config.yml");
 	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
+	    $this->setProvider();
 	}
 	
 	private function setProvider() {
@@ -41,11 +56,26 @@ class Main extends PluginBase {
 	        case "sqlite":
 	            $provider = new SQLiteProvider($this);
 	            break;
+	        case "yaml":
+	            $provider = new YamlProvider($this);
+	            break;
 	        default:
-	            $provider = new SQLiteProvider($this);
+	            $provider = new YamlProvider($this);
 	            break;
 	    }
 	    if($provider instanceof Provider) 
 	        $this->provider = $provider;
+	}
+	
+	public function getProvider() {
+	    return $this->provider;
+	}
+	
+	public function getConfig() {
+	    return $this->cfg;
+	}
+	
+	public function createFaction() {
+	    return new Faction;
 	}
 }

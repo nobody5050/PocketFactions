@@ -18,9 +18,12 @@
  
 namespace TheDiamondYT\PocketFactions;
 
+use TheDiamondYT\PocketFactions\struct\Role;
+
 class Faction {
 
     private $tag;
+    private $leader;
     
     public function getTag() {     
         return $this->tag;
@@ -28,5 +31,22 @@ class Faction {
     
     public function setTag($tag) {
         $this->tag = $tag;
+    }
+    
+    public function addPlayer(FPlayer $player) {
+        if($player->getRole() === Role::LEADER) 
+            $this->leader = $player;
+    }
+    
+    public function setLeader(FPlayer $player) {
+        $this->leader = $player;
+    }
+    
+    public function getLeader() {
+        return $this->leader;
+    }
+    
+    public function create() {
+        Main::get()->getProvider()->createFaction($this->tag, $this->leader);
     }
 }

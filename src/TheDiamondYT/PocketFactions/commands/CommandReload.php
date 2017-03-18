@@ -22,32 +22,17 @@ use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\Main;
 
-abstract class FCommand {
+class CommandReload extends FCommand {
 
-    public $plugin;
-    public $cfg;
-    public $fme;
-    
-    private $name, $desc;
-    
-    public function __construct(Main $plugin, $name, $desc, $aliases = []) {
-        $this->plugin = $plugin;
-        $this->name = $name;
-        $this->desc = $desc;
-        $this->cfg = $plugin->getConfig();
+    public function __construct(Main $plugin) {
+        parent::__construct($plugin, "reload", "Reload the config from disk.");
     }
 
-    public function getName() {
-        return $this->name;
+    public function execute(CommandSender $sender, array $args) {
+        $startTime = $this->time();
+        $this->plugin->reloadConfig();
+        $endTime = $this->time() - $startTime;
+        $sender->sendMessage(sprintf("Reloaded config.yml from disk, took %sms", $endTime));
+        return true;
     }
-    
-    public function getDescription() { 
-        return $this->desc;
-    }
-    
-    public function time() {
-        return round(microtime(true) * 1000);
-    }
-    
-    public abstract function execute(CommandSender $sender, array $args);
 }

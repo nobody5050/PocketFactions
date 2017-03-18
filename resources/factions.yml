@@ -11,14 +11,15 @@
 # (at your option) any later version.     
 #
 # PocketFactions v1.0.0 by Luke (TheDiamondYT)
-# All rights reserved.                     
-               
-                                                                                                                               
-# Data provider that will be used for storing faction data.
-# - yaml, sqlite
-provider: yaml
+# All rights reserved.                 
+#
+# - This file will only be used if provider is set to 'yaml'
 
-# Faction preferences
-faction:
-  max-name-length: 10
-
+wilderness:
+  tag: 'Wilderness'
+  desc: 'The default faction'
+  
+warzone:
+  tag: 'WarZone'
+  desc: 'Not the safest place to be'
+                                                                                                                              
