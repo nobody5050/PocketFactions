@@ -75,7 +75,7 @@ class Main extends PluginBase {
 	    return $this->cfg;
 	}
 	
-	public function createFaction() {
+	public function initFaction() {
 	    return new Faction;
 	}
 }

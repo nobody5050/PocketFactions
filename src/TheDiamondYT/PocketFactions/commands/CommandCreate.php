@@ -42,7 +42,7 @@ class CommandCreate extends FCommand {
             $sender->sendMessage("That tag is too long."); //TODO: Translation
             return;
         }
-        $faction = $this->plugin->createFaction();
+        $faction = $this->plugin->initFaction();
         $faction->setTag($args[0]);
         $faction->create();
         
