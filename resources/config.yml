@@ -17,3 +17,4 @@
 # Data provider that will be used.
 # - sqlite
 provider: sqlite
+

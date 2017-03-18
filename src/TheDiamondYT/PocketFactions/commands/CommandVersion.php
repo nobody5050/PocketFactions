@@ -22,25 +22,14 @@ use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\Main;
 
-abstract class FCommand {
+class CommandVersion extends FCommand {
 
-    public $plugin;
-    
-    private $name, $desc;
-    
-    public function __construct(Main $plugin, $name, $desc, $aliases = []) {
-        $this->plugin = $plugin;
-        $this->name = $name;
-        $this->desc = $desc;
+    public function __construct(Main $plugin) {
+        parent::__construct($plugin, "version", "Display the version of PocketFactions you are running.", ["ver", "v"]);
     }
 
-    public function getName() {
-        return $this->name;
+    public function execute(CommandSender $sender, array $args) {
+        $sender->sendMessage("You are running " . $this->plugin->getDescription()->getFullName());
+        return true;
     }
-    
-    public function getDescription() { 
-        return $this->desc;
-    }
-    
-    public abstract function execute(CommandSender $sender, array $args);
 }

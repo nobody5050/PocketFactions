@@ -29,7 +29,7 @@ class FCommandManager extends PluginCommand {
 
     public function __construct(Main $plugin) {
         parent::__construct("f", $plugin); //TODO: Aliases and shite
-        $this->registerCommand(new TestCommand($plugin));
+        $this->registerCommand(new CommandVersion($plugin));
     }
     
     public function execute(CommandSender $sender, $label, array $args) {

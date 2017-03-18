@@ -16,20 +16,17 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions;
 
-use pocketmine\command\CommandSender;
+class Faction {
 
-use TheDiamondYT\PocketFactions\Main;
-
-class TestCommand extends FCommand {
-
-    public function __construct(Main $plugin) {
-        parent::__construct($plugin, "test", "Test command", "/test <player>");
+    private $tag;
+    
+    public function getTag() {     
+        return $this->tag;
     }
-
-    public function execute(CommandSender $sender, array $args) {
-        $sender->sendMessage("Yay! It works du");
-        return true;
+    
+    public function setTag($tag) {
+        $this->tag = $tag;
     }
 }

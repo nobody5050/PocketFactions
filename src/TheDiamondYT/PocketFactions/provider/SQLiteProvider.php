@@ -22,7 +22,9 @@ use TheDiamondYT\PocketFactions\Main;
 
 class SQLiteProvider implements Provider {
 
-    public function __construct(Main $main) {
-    
+    private $db;
+
+    public function __construct(Main $plugin) {
+        $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
     }
 }
