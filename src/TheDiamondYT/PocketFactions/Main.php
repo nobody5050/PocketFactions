@@ -50,7 +50,6 @@ class Main extends PluginBase {
 	    $this->saveResource("config.yml");
 	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
 	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
-	    $this->getLogger()->info($this->cfg["language"] . " : " . $this->getFile() . "resources/lang/");
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
 	    $this->setProvider();
 	}
