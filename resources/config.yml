@@ -13,6 +13,9 @@
 # PocketFactions v1.0.0 by Luke (TheDiamondYT)
 # All rights reserved.                     
                
+# The language for the plugin
+# - eng
+language: eng
                                                                                                                                
 # Data provider that will be used for storing faction data.
 # - yaml, sqlite
@@ -20,5 +23,6 @@ provider: yaml
 
 # Faction preferences
 faction:
-  max-name-length: 10
+  tag:
+    maxLength: 10
 

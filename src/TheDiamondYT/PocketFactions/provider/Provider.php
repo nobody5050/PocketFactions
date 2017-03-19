@@ -18,6 +18,12 @@
  
 namespace TheDiamondYT\PocketFactions\provider;
 
-interface Provider {
+use TheDiamondYT\PocketFactions\Faction;
 
+interface Provider {
+    public function createFaction(Faction $faction);
+    
+    public function setFactionTag($tag);
+    
+    public function factionExists($tag);
 }

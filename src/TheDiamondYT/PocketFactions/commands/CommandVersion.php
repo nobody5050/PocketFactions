@@ -25,11 +25,11 @@ use TheDiamondYT\PocketFactions\Main;
 class CommandVersion extends FCommand {
 
     public function __construct(Main $plugin) {
-        parent::__construct($plugin, "version", "Display the version of PocketFactions you are running.", ["ver", "v"]);
+        parent::__construct($plugin, "version", $this->translate("version.desc"), ["ver", "v"]);
     }
 
     public function execute(CommandSender $sender, array $args) {
-        $sender->sendMessage("You are running " . $this->plugin->getDescription()->getFullName());
+        $sender->sendMessage($this->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
         return true;
     }
 }

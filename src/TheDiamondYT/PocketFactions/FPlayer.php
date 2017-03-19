@@ -18,11 +18,9 @@
  
 namespace TheDiamondYT\PocketFactions;
 
-use pocketmine\Player;
-
 use TheDiamondYT\PocketFactions\struct\Role;
 
-class FPlayer extends Player {
+class FPlayer {
 
     private $title;
     
@@ -37,7 +35,7 @@ class FPlayer extends Player {
         return $this->title;
     }
     
-    public function setRole(Role $role) {
+    public function setRole($role) {
         $this->role = $role;
     }
     

@@ -20,6 +20,7 @@ namespace TheDiamondYT\PocketFactions;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
+use pocketmine\lang\BaseLang;
 use pocketmine\Player;
 
 use TheDiamondYT\PocketFactions\provider\Provider;
@@ -30,6 +31,7 @@ use TheDiamondYT\PocketFactions\commands\FCommandManager;
 class Main extends PluginBase {
 
     private $provider;
+    private $language;
     private $cfg;
     
     public static $object = null;
@@ -47,6 +49,8 @@ class Main extends PluginBase {
 	public function onEnable() {
 	    $this->saveResource("config.yml");
 	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
+	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
+	    $this->getLogger()->info($this->cfg["language"] . " : " . $this->getFile() . "resources/lang/");
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
 	    $this->setProvider();
 	}
@@ -75,7 +79,7 @@ class Main extends PluginBase {
 	    return $this->cfg;
 	}
 	
-	public function initFaction() {
-	    return new Faction;
+	public function getLanguage() {
+	    return $this->language;
 	}
 }

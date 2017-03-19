@@ -21,32 +21,33 @@ namespace TheDiamondYT\PocketFactions\commands;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\struct\Role;
 
 class CommandCreate extends FCommand {
 
     public function __construct(Main $plugin) {
-        parent::__construct($plugin, "create", "Create a new faction.");
+        parent::__construct($plugin, "create", $this->translate("create.desc"), $this->translate("create.args"));
     }
 
     public function execute(CommandSender $sender, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
-            $sender->sendMessage("this->getUsage()");
+            $sender->sendMessage($this->getUsage());
             return;
         }
         if($this->plugin->getProvider()->factionExists($args[0])) {
-            $sender->sendMessage("That tag is already in use."); //TODO: Translation
+            $sender->sendMessage($this->translate("tag.taken")); 
             return;
         }
-        if(strlen($args[0]) > $this->cfg["faction"]["max-name-length"]) {
-            $sender->sendMessage("That tag is too long."); //TODO: Translation
+        if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
+            $sender->sendMessage($this->translate("tag.toolong")); 
             return;
         }
-        $faction = $this->plugin->initFaction();
+        $faction = new Faction;
         $faction->setTag($args[0]);
         $faction->create();
-        
-        //$this->fme->setRole(Role::LEADER);
-        //$this->fme->setFaction($faction);
+             
+        $this->fme->setRole(Role::LEADER);
+        $this->fme->setFaction($faction);
     }
 }

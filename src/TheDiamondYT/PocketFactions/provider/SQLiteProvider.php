@@ -19,6 +19,7 @@
 namespace TheDiamondYT\PocketFactions\provider;
 
 use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\Faction;
 
 class SQLiteProvider implements Provider {
 
@@ -28,11 +29,15 @@ class SQLiteProvider implements Provider {
         $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
     }
     
-    public function createFaction($name, $leader) {
+    public function createFaction(Faction $faction) {
     
     }
     
-    public function factionExists($name) {
+    public function setFactionTag($tag) {
+    
+    }
+   
+    public function factionExists($tag) {
     
     }
 }

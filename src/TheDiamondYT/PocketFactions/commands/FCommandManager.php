@@ -44,7 +44,7 @@ class FCommandManager extends PluginCommand {
             if(isset($this->subcommands[$subcommand])) {
                 $command = $this->subcommands[$subcommand];
             } else {
-                //TODO: Translation
+                $sender->sendMessage("lol");
                 return true;
             }
             $command->execute($sender, $args);

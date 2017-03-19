@@ -25,14 +25,14 @@ use TheDiamondYT\PocketFactions\Main;
 class CommandReload extends FCommand {
 
     public function __construct(Main $plugin) {
-        parent::__construct($plugin, "reload", "Reload the config from disk.");
+        parent::__construct($plugin, "reload", $this->translate("reload.desc"));
     }
 
     public function execute(CommandSender $sender, array $args) {
         $startTime = $this->time();
         $this->plugin->reloadConfig();
         $endTime = $this->time() - $startTime;
-        $sender->sendMessage(sprintf("Reloaded config.yml from disk, took %sms", $endTime));
+        $sender->sendMessage($this->translate("reload.success", [$endTime]));
         return true;
     }
 }

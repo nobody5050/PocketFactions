@@ -19,6 +19,7 @@
 namespace TheDiamondYT\PocketFactions\provider;
 
 use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\Faction;
 
 class YamlProvider implements Provider {
 
@@ -29,11 +30,15 @@ class YamlProvider implements Provider {
         $this->data = yaml_parse_file($plugin->getDataFolder() . "factions.yml");
     }
     
-    public function createFaction($name, $leader) {
+    public function createFaction(Faction $faction) {
      
     }
     
-    public function factionExists($name) {
-        return isset($this->data[$name]);
+    public function setFactionTag($tag) {
+        
+    }
+    
+    public function factionExists($tag) {
+        return isset($this->data[$tag]);
     }
 }

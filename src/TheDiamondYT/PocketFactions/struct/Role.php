@@ -23,4 +23,17 @@ class Role {
     const MODERATOR = 1;
     const ADMINISTRATOR = 2;
     const LEADER = 3;
+    
+    public static function byName($role) {
+        switch($role) {
+            case Role::MEMBER:
+                return "member";
+            case Role::MODERATOR:
+                return "moderator";
+            case Role::ADMINISTRATOR:
+                return "admin";
+            case Role::LEADER:
+                return "leader";
+        }
+    }
 }
