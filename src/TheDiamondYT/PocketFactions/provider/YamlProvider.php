@@ -31,7 +31,10 @@ class YamlProvider implements Provider {
     }
     
     public function createFaction(Faction $faction) {
-     
+        // You should have your own checks using YamlProvider::factionExists($tag)
+        // before calling this function.
+        if($this->factionExists($faction->getTag()))
+            throw new \Exception("Error while creating faction: already exists.");
     }
     
     public function setFactionTag($tag) {

@@ -35,8 +35,8 @@ class CommandCreate extends FCommand {
             $sender->sendMessage($this->getUsage());
             return;
         }
-        if($this->plugin->getProvider()->factionExists($args[0])) {
-            $sender->sendMessage($this->translate("tag.taken")); 
+        if($this->plugin->getProvider()->factionExists(strtolower($args[0]))) {
+            $sender->sendMessage($this->translate("tag.exists")); 
             return;
         }
         if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {

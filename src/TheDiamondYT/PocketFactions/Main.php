@@ -31,7 +31,7 @@ use TheDiamondYT\PocketFactions\commands\FCommandManager;
 class Main extends PluginBase {
 
     private $provider;
-    private $language;
+    private $language = null;
     private $cfg;
     
     public static $object = null;

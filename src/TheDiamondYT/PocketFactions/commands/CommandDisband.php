@@ -16,31 +16,33 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\provider;
+namespace TheDiamondYT\PocketFactions\commands;
+
+use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\Main;
 use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\struct\Role;
 
-class SQLiteProvider implements Provider {
-
-    private $db;
+class CommandDisband extends FCommand {
 
     public function __construct(Main $plugin) {
-        $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
+        parent::__construct($plugin, "disband", $this->translate("disband.desc"), $this->translate("disband.args"));
     }
-    
-    public function createFaction(Faction $faction) {
-        // You should have your own checks using SQLiteProvider::factionExists($tag)
-        // before calling this function.
-        if($this->factionExists($faction->getTag()))
-            throw new \Exception("Error while creating faction: faction exists.");
-    }
-    
-    public function setFactionTag($tag) {
-    
-    }
-   
-    public function factionExists($tag) {
-        
+
+    public function execute(CommandSender $sender, array $args) {
+        if(count($args) >= 2 or count($args) === 0) {
+            $sender->sendMessage($this->getUsage());
+            return;
+        }
+        if($this->fme->getFaction() === null) {
+            $sender->sendMessage($this->translate("player.notinfaction"));
+            return;
+        }
+        if($this->fme->getRole() !== Role::LEADER) {
+            $sender->sendMessage($this->translate("player.mustbeleader"));
+            return;
+        }
+        //$this->plugin->getProvider()->disbandFaction($this->fme->getFaction()):
     }
 }

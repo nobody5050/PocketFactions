@@ -57,7 +57,8 @@ abstract class FCommand {
     }
     
     public function translate($string, array $params = [])  {
-        return $this->plugin->getLanguage()->translateString($string, $params, null);
+        // $this->plugin returns null?
+        return Main::get()->getLanguage()->translateString($string, $params, null);
     }
     
     public abstract function execute(CommandSender $sender, array $args);

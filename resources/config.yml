@@ -13,10 +13,10 @@
 # PocketFactions v1.0.0 by Luke (TheDiamondYT)
 # All rights reserved.                     
                
-# The language for the plugin
+# Language used by the plugin
 # - eng
 language: eng
-                                                                                                                               
+      
 # Data provider that will be used for storing faction data.
 # - yaml, sqlite
 provider: yaml
