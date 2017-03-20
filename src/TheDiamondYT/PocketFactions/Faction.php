@@ -29,10 +29,12 @@ class Faction {
         return $this->tag;
     }
     
-    public function setTag($tag, $update = false) {
+    public function setTag($tag) {
         $this->tag = $tag;
-        if($update)
-            Main::get()->getProvider()->setFactionTag($tag);
+    }
+    
+    public function updateTag($tag) {
+        Main::get()->getProvider()->setFactionTag($tag);
     }
     
     public function addPlayer(FPlayer $player) {
