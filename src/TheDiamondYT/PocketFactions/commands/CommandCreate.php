@@ -35,7 +35,7 @@ class CommandCreate extends FCommand {
             $sender->sendMessage($this->getUsage());
             return;
         }
-        if($this->plugin->getProvider()->factionExists(strtolower($args[0]))) {
+        if($this->plugin->factionExists($args[0])) {
             $sender->sendMessage($this->translate("tag.exists")); 
             return;
         }
@@ -44,7 +44,7 @@ class CommandCreate extends FCommand {
             return;
         }
         $faction = new Faction;
-        $faction->setTag($args[0]);
+        $faction->setTag($args[0]); 
         $faction->create();
              
         $this->fme->setRole(Role::LEADER);

@@ -23,16 +23,37 @@ use TheDiamondYT\PocketFactions\Faction;
 
 class YamlProvider implements Provider {
 
+    private $plugin;
     private $data;
+    
+    private $factions = [];
 
     public function __construct(Main $plugin) {
         $plugin->saveResource("factions.yml");
         $this->data = yaml_parse_file($plugin->getDataFolder() . "factions.yml");
+        $this->plugin = $plugin;
+    }
+    
+    public function loadFactions() {
+        foreach($this->data as $facs) {
+            $faction = new Faction;
+            $faction->setTag($facs["tag"]);
+            $faction->setDescription($facs["desc"]);
+            $this->factions[strtolower($facs["tag"])] = $faction; // TODO: numeric id instead of tag?
+        }
+    }
+    
+    public function getFaction($id) {
+        if(!$this->factionExists($id)) 
+            return false;
+            
+        return $this->factions[(strtolower($id))];
     }
     
     public function createFaction(Faction $faction) {
         // You should have your own checks using YamlProvider::factionExists($tag)
         // before calling this function.
+        // TODO: Maybe remove exception and just return false?
         if($this->factionExists($faction->getTag()))
             throw new \Exception("Error while creating faction: already exists.");
     }
@@ -42,6 +63,6 @@ class YamlProvider implements Provider {
     }
     
     public function factionExists($tag) {
-        return isset($this->data[$tag]);
+        return isset($this->data[strtolower($tag)]);
     }
 }

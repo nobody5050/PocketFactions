@@ -24,8 +24,8 @@ class FPlayer {
 
     private $title;
     
+    private $faction;
     private $factionRole;
-    private $factionName;
    
     public function setTitle($title) {
         $this->title = $title;
@@ -36,6 +36,9 @@ class FPlayer {
     }
     
     public function setRole($role) {
+        if(Role::byName($role) === "unknown")
+            throw new \Exception("Error when setting fplayer role: invalid role '$role'");
+            
         $this->role = $role;
     }
     
@@ -44,14 +47,14 @@ class FPlayer {
     }
     
     public function setFaction(Faction $faction) { 
+        if($this->getFaction() !== null)
+            $this->getFaction()->removePlayer($this);
+            
         $faction->addPlayer($this); 
-        $this->factionName = $faction->getTag();
+        $this->faction = $faction;
     }
     
-    public function getFaction() {
-        if($this->factionName === null)
-            return null;
-            
-        return $this->factionName;
+    public function getFaction() {     
+        return $this->faction;
     }
 }

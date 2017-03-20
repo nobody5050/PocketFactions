@@ -34,6 +34,8 @@ class Role {
                 return "admin";
             case Role::LEADER:
                 return "leader";
+            default:
+                return "unknown";
         }
     }
 }

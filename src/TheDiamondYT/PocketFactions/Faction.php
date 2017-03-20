@@ -23,7 +23,12 @@ use TheDiamondYT\PocketFactions\struct\Role;
 class Faction {
 
     private $tag;
+    private $description;
     private $leader;
+    
+    public function getId() {
+        return strtolower($this->tag); // TODO: numeric id?
+    }
     
     public function getTag() {     
         return $this->tag;
@@ -35,6 +40,14 @@ class Faction {
     
     public function updateTag($tag) {
         Main::get()->getProvider()->setFactionTag($tag);
+    }
+    
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+    
+    public function getDescription() {
+        return $this->description;
     }
     
     public function addPlayer(FPlayer $player) {

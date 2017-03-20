@@ -34,6 +34,8 @@ class Main extends PluginBase {
     private $language = null;
     private $cfg;
     
+    private $factions = [];
+    
     public static $object = null;
    
     public function onLoad() {
@@ -52,6 +54,7 @@ class Main extends PluginBase {
 	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
 	    $this->setProvider();
+	    $this->provider->loadFactions();
 	}
 	
 	private function setProvider() {
@@ -80,5 +83,17 @@ class Main extends PluginBase {
 	
 	public function getLanguage() {
 	    return $this->language;
+	}
+	
+	public function getFaction($id) {
+	    return $this->provider->getFaction($id);
+	}
+	
+	public function getPlayer(Player $player) {
+	
+	} 
+	
+	public function factionExists($id) {
+	    return $this->provider->factionExists($id);
 	}
 }
