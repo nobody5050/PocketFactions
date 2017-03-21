@@ -25,11 +25,11 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 use TheDiamondYT\PocketFactions\PF;
 
-class FactionEntityListener implements Listener {
+class FEntityListener implements Listener {
 
     private $plugin;
     
-    public FactionEntityListener(PF $plugin) {
+    public function __construct(PF $plugin) {
         $this->plugin = $plugin;
     }
     

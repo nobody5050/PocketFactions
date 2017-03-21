@@ -23,11 +23,11 @@ use pocketmine\event\player\PlayerDeathEvent;
 
 use TheDiamondYT\PocketFactions\PF;
 
-class FactionPlayerListener implements Listener {
+class FPlayerListener implements Listener {
 
     private $plugin;
     
-    public FactionPlayerListener(PF $plugin) {
+    public function __construct(PF $plugin) {
         $this->plugin = $plugin;
     }
     

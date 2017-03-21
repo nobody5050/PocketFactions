@@ -27,6 +27,7 @@ use TheDiamondYT\PocketFactions\provider\Provider;
 use TheDiamondYT\PocketFactions\provider\YamlProvider;
 use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\commands\FCommandManager;
+use TheDiamondYT\PocketFactions\listeners\FPlayerListener;
 
 class PF extends PluginBase {
 
@@ -50,7 +51,10 @@ class PF extends PluginBase {
 	    $this->saveResource("config.yml");
 	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
 	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
+	    
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
+	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
+	    
 	    $this->setProvider();
 	    $this->provider->load();
 	}
