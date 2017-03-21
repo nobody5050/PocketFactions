@@ -20,18 +20,19 @@ namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
 
-use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\FPlayer;
 
 class CommandReload extends FCommand {
 
-    public function __construct(Main $plugin) {
+    public function __construct(PF $plugin) {
         parent::__construct($plugin, "reload", $this->translate("reload.desc"));
     }
 
-    public function execute(CommandSender $sender, array $args) {
-        $startTime = $this->time();
+    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
+        $startTime = round(microtime(true) * 1000);
         $this->plugin->reloadConfig();
-        $endTime = $this->time() - $startTime;
+        $endTime = round(microtime(true) * 1000) - $startTime;
         $sender->sendMessage($this->translate("reload.success", [$endTime]));
         return true;
     }

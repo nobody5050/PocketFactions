@@ -20,15 +20,16 @@ namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
 
-use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\FPlayer;
 
 class CommandVersion extends FCommand {
 
-    public function __construct(Main $plugin) {
+    public function __construct(PF $plugin) {
         parent::__construct($plugin, "version", $this->translate("version.desc"), ["ver", "v"]);
     }
 
-    public function execute(CommandSender $sender, array $args) {
+    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
         $sender->sendMessage($this->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
         return true;
     }

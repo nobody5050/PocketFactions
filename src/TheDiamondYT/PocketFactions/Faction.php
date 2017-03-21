@@ -26,6 +26,8 @@ class Faction {
     private $description;
     private $leader;
     
+    private $players = [];
+    
     public function getId() {
         return strtolower($this->tag); // TODO: numeric id?
     }
@@ -39,7 +41,8 @@ class Faction {
     }
     
     public function updateTag($tag) {
-        Main::get()->getProvider()->setFactionTag($tag);
+        $this->tag = $tag;
+        PF::get()->getProvider()->setFactionTag($tag);
     }
     
     public function setDescription($description) {
@@ -50,9 +53,16 @@ class Faction {
         return $this->description;
     }
     
+    public function updateDescription($description) {
+        $this->description = $description;
+        PF::get()->getProvider()->setFactionDescription($description);
+    }
+    
     public function addPlayer(FPlayer $player) {
         if($player->getRole() === Role::LEADER) 
             $this->leader = $player;
+            
+        $this->players[$player->getName()] = $player;
     }
     
     public function setLeader(FPlayer $player) {
@@ -64,6 +74,10 @@ class Faction {
     }
     
     public function create() {
-        Main::get()->getProvider()->createFaction($this);
+        PF::get()->getProvider()->createFaction($this);
+    }
+    
+    public function disband() {
+        PF::get()->getProvider()->disbandFaction($this);
     }
 }

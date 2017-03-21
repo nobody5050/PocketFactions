@@ -16,47 +16,22 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\provider;
+namespace TheDiamondYT\PocketFactions\listeners;
+
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerDeathEvent;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
 
-class SQLiteProvider implements Provider {
+class FactionPlayerListener implements Listener {
 
     private $plugin;
-    private $db;
     
-    private $factions = [];
-
-    public function __construct(PF $plugin) {
+    public FactionPlayerListener(PF $plugin) {
         $this->plugin = $plugin;
-        $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
     }
     
-    public function loadFactions() {
-    
-    }
-    
-    public function getFaction($faction) {
-    
-    }
-    
-    public function createFaction(Faction $faction) {
-        // You should have your own checks using SQLiteProvider::factionExists($tag)
-        // before calling this function.
-        if($this->factionExists($faction->getId()))
-            throw new \Exception("Error while creating faction: faction exists.");
-    }
-    
-    public function disbandFaction(Faction $faction) {
-    
-    }
-    
-    public function setFactionTag($tag) {
-    
-    }
-   
-    public function factionExists($faction) {
-        
+    public function onPlayerDeath(PlayerDeathEvent $event) {
+        $this->plugin->getProvider()->addPlayer($event->getPlayer());
     }
 }

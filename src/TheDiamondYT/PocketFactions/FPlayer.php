@@ -18,15 +18,23 @@
  
 namespace TheDiamondYT\PocketFactions;
 
+use pocketmine\Player;
+
 use TheDiamondYT\PocketFactions\struct\Role;
 
 class FPlayer {
+
+    private $player;
 
     private $title;
     
     private $faction;
     private $factionRole;
-   
+    
+    public function __construct(Player $player) {
+        $this->player = $player;
+    }
+    
     public function setTitle($title) {
         $this->title = $title;
     }

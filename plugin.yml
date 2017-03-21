@@ -2,6 +2,6 @@ name: PocketFactions
 author: TheDiamondYT
 description: A full featured Factions plugin for PocketMine-MP.
 version: 1.0.0
-api: [2.0.0, 3.0.0-ALPHA1, 3.0.0-ALPHA2, 3.0.0-ALPHA3, 3.0.0-ALPHA4]
-main: TheDiamondYT\PocketFactions\Main
+api: [2.0.0, 3.0.0-ALPHA1, 3.0.0-ALPHA2, 3.0.0-ALPHA3, 3.0.0-ALPHA4, 3.0.0-ALPHA5]
+main: TheDiamondYT\PocketFactions\PF
 

@@ -20,29 +20,29 @@ namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
 
-use TheDiamondYT\PocketFactions\Main;
-use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 
 class CommandDisband extends FCommand {
 
-    public function __construct(Main $plugin) {
+    public function __construct(PF $plugin) {
         parent::__construct($plugin, "disband", $this->translate("disband.desc"), $this->translate("disband.args"));
     }
 
-    public function execute(CommandSender $sender, array $args) {
+    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
             $sender->sendMessage($this->getUsage());
             return;
         }
-        if($this->fme->getFaction() === null) {
+        if($fme->getFaction() === null) {
             $sender->sendMessage($this->translate("player.notinfaction"));
             return;
         }
-        if($this->fme->getRole() !== Role::LEADER) {
+        if($fme->getRole() !== Role::LEADER) {
             $sender->sendMessage($this->translate("player.mustbeleader"));
             return;
         }
-        //$this->plugin->getProvider()->disbandFaction($this->fme->getFaction()):
+        $this->plugin->getFaction($fme->getFaction())->disband();
     }
 }

@@ -20,23 +20,23 @@ namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
 
-use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
 
 abstract class FCommand {
 
     public $plugin;
     public $cfg;
-    public $fme;
+    
+    private $sender;
     
     private $name, $desc, $args;
     
-    public function __construct(Main $plugin, $name, $desc, $args = "", $aliases = []) {
+    public function __construct(PF $plugin, $name, $desc, $args = "", $aliases = []) {
         $this->plugin = $plugin;
         $this->name = $name;
         $this->desc = $desc;
         $this->args = $args;
-        $this->fme = new FPlayer;
         $this->cfg = $plugin->getConfig();
     }
 
@@ -52,14 +52,11 @@ abstract class FCommand {
         return "/f $this->name $this->args";
     }
     
-    public function time() {
-        return round(microtime(true) * 1000);
-    }
-    
     public function translate($string, array $params = [])  {
         // $this->plugin returns null?
-        return Main::get()->getLanguage()->translateString($string, $params, null);
+        return PF::get()->getLanguage()->translateString($string, $params, null);
     }
     
-    public abstract function execute(CommandSender $sender, array $args);
+    // TODO: completely replace CommandSender with FPlayer
+    public abstract function execute(CommandSender $sender, FPlayer $fme, array $args);
 }

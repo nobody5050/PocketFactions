@@ -28,7 +28,7 @@ use TheDiamondYT\PocketFactions\provider\YamlProvider;
 use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\commands\FCommandManager;
 
-class Main extends PluginBase {
+class PF extends PluginBase {
 
     private $provider;
     private $language = null;
@@ -39,9 +39,7 @@ class Main extends PluginBase {
     public static $object = null;
    
     public function onLoad() {
-        if(!(self::$object instanceof Main)) {
-            self::$object = $this;
-        }
+        self::$object = $this;
     }
     
     public static function get() {
@@ -54,7 +52,7 @@ class Main extends PluginBase {
 	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
 	    $this->setProvider();
-	    $this->provider->loadFactions();
+	    $this->provider->load();
 	}
 	
 	private function setProvider() {
@@ -85,15 +83,15 @@ class Main extends PluginBase {
 	    return $this->language;
 	}
 	
-	public function getFaction($id) {
-	    return $this->provider->getFaction($id);
+	public function getFaction($faction) {      
+	    return $this->provider->getFaction($faction);
 	}
 	
 	public function getPlayer(Player $player) {
-	
+	    return $this->provider->getPlayer($player);
 	} 
 	
-	public function factionExists($id) {
-	    return $this->provider->factionExists($id);
+	public function factionExists($faction) {
+	    return $this->provider->factionExists($faction);
 	}
 }

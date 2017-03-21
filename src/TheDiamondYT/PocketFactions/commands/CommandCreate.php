@@ -20,17 +20,19 @@ namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
 
-use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 
 class CommandCreate extends FCommand {
 
-    public function __construct(Main $plugin) {
+    public function __construct(PF $plugin) {
         parent::__construct($plugin, "create", $this->translate("create.desc"), $this->translate("create.args"));
     }
 
-    public function execute(CommandSender $sender, array $args) {
+    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
+        parent::execute($sender, $args);
         if(count($args) >= 2 or count($args) === 0) {
             $sender->sendMessage($this->getUsage());
             return;
@@ -47,7 +49,7 @@ class CommandCreate extends FCommand {
         $faction->setTag($args[0]); 
         $faction->create();
              
-        $this->fme->setRole(Role::LEADER);
-        $this->fme->setFaction($faction);
+        $fme->setRole(Role::LEADER);
+        $fme->setFaction($faction);
     }
 }

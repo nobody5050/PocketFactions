@@ -18,7 +18,9 @@
  
 namespace TheDiamondYT\PocketFactions\provider;
 
-use TheDiamondYT\PocketFactions\Main;
+use pocketmine\Player;
+
+use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
 
 class YamlProvider implements Provider {
@@ -27,11 +29,20 @@ class YamlProvider implements Provider {
     private $data;
     
     private $factions = [];
+    private $fplayers = [];
 
-    public function __construct(Main $plugin) {
+    public function __construct(PF $plugin) {
+        $this->plugin = $plugin;
         $plugin->saveResource("factions.yml");
         $this->data = yaml_parse_file($plugin->getDataFolder() . "factions.yml");
-        $this->plugin = $plugin;
+    }
+    
+    public function load() {
+        $startTime = round(microtime(true) * 1000);
+        $this->loadFactions();
+        $this->loadPlayers();
+        $endTime = round(microtime(true) * 1000) - $startTime;
+        $this->plugin->getLogger()->info(sprintf("Loaded faction and player data, took %sms.", $endTime)); // TODO: Translation
     }
     
     public function loadFactions() {
@@ -43,26 +54,49 @@ class YamlProvider implements Provider {
         }
     }
     
-    public function getFaction($id) {
-        if(!$this->factionExists($id)) 
+    public function loadPlayers() {
+    
+    }
+    
+    public function getPlayer() {
+        
+    }
+    
+    public function addPlayer(Player $player) {
+        $this->fplayers[$player->getName()] = new FPlayer($player);
+    }
+    
+    public function getFaction($faction) {
+        if(!$this->factionExists($faction)) 
             return false;
             
-        return $this->factions[(strtolower($id))];
+        return $this->factions[(strtolower($faction))];
     }
     
     public function createFaction(Faction $faction) {
         // You should have your own checks using YamlProvider::factionExists($tag)
         // before calling this function.
         // TODO: Maybe remove exception and just return false?
-        if($this->factionExists($faction->getTag()))
+        if($this->factionExists($faction->getId()))
             throw new \Exception("Error while creating faction: already exists.");
+            
+        //$this->setFactionTag($faction->getTag());
+        //$this->setFactionDescription($faction->getDescription());
+    }
+    
+    public function disbandFaction(Faction $faction) {
+        
     }
     
     public function setFactionTag($tag) {
         
     }
     
-    public function factionExists($tag) {
-        return isset($this->data[strtolower($tag)]);
+    public function setFactionDescription($description) {
+    
+    }
+    
+    public function factionExists($faction) {
+        return isset($this->data[strtolower($faction)]);
     }
 }

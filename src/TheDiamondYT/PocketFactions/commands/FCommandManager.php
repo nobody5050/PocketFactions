@@ -21,17 +21,17 @@ namespace TheDiamondYT\PocketFactions\commands;
 use pocketmine\command\PluginCommand;
 use pocketmine\command\CommandSender;
 
-use TheDiamondYT\PocketFactions\Main;
+use TheDiamondYT\PocketFactions\PF;
 
 class FCommandManager extends PluginCommand {
 
     private $plugin;
-    private $sender;
 
-    public function __construct(Main $plugin) {
+    public function __construct(PF $plugin) {
         parent::__construct("factions", $plugin); 
+        $this->plugin = $plugin;
         $this->setAliases(["faction", "fac", "f"]);
-        $this->setDescription("The main command for PocketFactions."); // TODO: Translation
+        $this->setDescription("The main command for PocketFactions."); // TODO: translation
         $this->registerCommand(new CommandCreate($plugin));
         $this->registerCommand(new CommandDisband($plugin));
         $this->registerCommand(new CommandVersion($plugin));
@@ -39,7 +39,6 @@ class FCommandManager extends PluginCommand {
     }
     
     public function execute(CommandSender $sender, $label, array $args) {
-        $this->sender = $sender;
         if(count($args) > 0) {
             $subcommand = strtolower(array_shift($args));
             if(isset($this->subcommands[$subcommand])) {
@@ -48,7 +47,7 @@ class FCommandManager extends PluginCommand {
                 //$sender->sendMessage($this->plugin->getLanguage()->translateString("command.notfound", [$command->getName()]));
                 return true;
             }
-            $command->execute($sender, $args);
+            $command->execute($sender, $this->plugin->getPlayer($sender), $args);
         }
     }
     

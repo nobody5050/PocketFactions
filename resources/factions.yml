@@ -17,9 +17,13 @@
 
 wilderness:
   tag: 'Wilderness'
-  desc: 'The default faction'
+  desc: ''
+  
+safezone:
+  tag: 'SafeZone'
+  desc: 'Safe from pvp and monsters.'
   
 warzone:
   tag: 'WarZone'
-  desc: 'Not the safest place to be'
+  desc: 'Not the safest place to be.'
                                                                                                                               
