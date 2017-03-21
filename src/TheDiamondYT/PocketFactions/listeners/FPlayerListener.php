@@ -19,7 +19,7 @@
 namespace TheDiamondYT\PocketFactions\listeners;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 
 use TheDiamondYT\PocketFactions\PF;
 
@@ -31,7 +31,7 @@ class FPlayerListener implements Listener {
         $this->plugin = $plugin;
     }
     
-    public function onPlayerDeath(PlayerDeathEvent $event) {
+    public function onPlayerJoin(PlayerJoinEvent $event) {
         $this->plugin->getProvider()->addPlayer($event->getPlayer());
     }
 }
