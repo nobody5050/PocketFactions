@@ -54,7 +54,7 @@ class PF extends PluginBase {
 	    
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
-	    
+	 
 	    $this->setProvider();
 	    $this->provider->load();
 	}
@@ -62,6 +62,11 @@ class PF extends PluginBase {
 	private function setProvider() {
 	    switch($this->cfg["provider"]) { 
 	        case "sqlite":
+	            if(!extension_loaded("sqlite3")) {
+	                $this->getLogger()->warning("Unable to find the SQLite3 exstension. Setting data provider to yaml.");
+	                $this->provider = new YamlProvider($this);
+	                return;
+	            }
 	            $provider = new SQLiteProvider($this);
 	            break;
 	        case "yaml":
@@ -71,6 +76,7 @@ class PF extends PluginBase {
 	            $provider = new YamlProvider($this);
 	            break;
 	    }
+	    // This check is to allow custom data providers in the future
 	    if($provider instanceof Provider) 
 	        $this->provider = $provider;
 	}
