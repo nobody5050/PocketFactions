@@ -90,7 +90,7 @@ class YamlProvider implements Provider {
         $this->fplayers[$player->getName()] = new FPlayer($player);
     }
     
-    public function getFaction($faction) {
+    public function getFaction(string $faction) {
         if(!$this->factionExists($faction)) 
             return false;
                   
@@ -104,20 +104,20 @@ class YamlProvider implements Provider {
     }
     
     public function disbandFaction(Faction $faction) {
-        
+        // I have no idea how to do this
     }
     
-    public function setFactionTag($faction) {
+    public function setFactionTag(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".tag", $faction->getTag());
         $this->fdata->save();
     }
     
-    public function setFactionDescription($faction) {
+    public function setFactionDescription(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".desc", $faction->getDescription());
         $this->fdata->save();
     }
     
-    public function factionExists($faction) {
+    public function factionExists(string $faction) {
         return isset($this->fdata->getAll()[strtolower($faction)]);
     }
 }

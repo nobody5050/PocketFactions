@@ -18,18 +18,30 @@
  
 namespace TheDiamondYT\PocketFactions\provider;
 
+use pocketmine\Player;
+
 use TheDiamondYT\PocketFactions\Faction;
 
 interface Provider {
+    public function load();
+    
     public function loadFactions();
     
-    public function getFaction($faction);
+    public function loadPlayers();
+    
+    public function getPlayer(Player $player);
+    
+    public function addPlayer(Player $player);
+    
+    public function getFaction(string $faction);
     
     public function createFaction(Faction $faction); 
     
     public function disbandFaction(Faction $faction);
     
-    public function setFactionTag($tag);
+    public function setFactionTag(Faction $faction);
+    
+    public function setFactionDescription(Faction $faction);
      
-    public function factionExists($faction);
+    public function factionExists(string $faction);
 }

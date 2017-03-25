@@ -33,11 +33,7 @@ class CommandDisband extends FCommand {
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
             $sender->sendMessage($this->translate("command.mustbeplayer"));
-            return;
-        }
-        if(count($args) >= 2 or count($args) === 0) {
-            $sender->sendMessage($this->getUsage());
-            return;
+            //return;
         }
         if($fme->getFaction() === null) {
             $sender->sendMessage($this->translate("player.notinfaction"));
@@ -47,6 +43,7 @@ class CommandDisband extends FCommand {
             $sender->sendMessage($this->translate("player.mustbeleader"));
             return;
         }
-        $this->plugin->getFaction($fme->getFaction())->disband();
+        $fme->getFaction()->disband();
+        $sender->sendMessage("You disbanded your faction."); // TODO: translation
     }
 }

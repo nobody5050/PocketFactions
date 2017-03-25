@@ -93,7 +93,7 @@ class PF extends PluginBase {
 	    return $this->language;
 	}
 	
-	public function getFaction($faction) {      
+	public function getFaction(string $faction) {      
 	    return $this->provider->getFaction($faction);
 	}
 	
@@ -104,7 +104,7 @@ class PF extends PluginBase {
 	    return null;
 	} 
 	
-	public function factionExists($faction) {
+	public function factionExists(string $faction) {
 	    return $this->provider->factionExists($faction);
 	}
 }

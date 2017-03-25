@@ -27,36 +27,58 @@ class SQLiteProvider implements Provider {
     private $db;
     
     private $factions = [];
+    private $fplayers = [];
 
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
         $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
+    }
+
+    public function load() {
+        $startTime = round(microtime(true) * 1000);
+        $this->loadFactions();
+        $this->loadPlayers();
+        $endTime = round(microtime(true) * 1000) - $startTime;
+        $this->plugin->getLogger()->info(sprintf("Loaded faction and player data, took %sms.", [$endTime]));
     }
     
     public function loadFactions() {
     
     }
     
-    public function getFaction($faction) {
+    public function loadPlayers() {
+    
+    }
+    
+    public function getPlayer(Player $player) {
+    
+    }
+    
+    public function addPlayer(Player $player) {
+    
+    }
+    
+    public function getFaction(string $faction) {
     
     }
     
     public function createFaction(Faction $faction) {
-        // You should have your own checks using SQLiteProvider::factionExists($tag)
-        // before calling this function.
-        if($this->factionExists($faction->getId()))
-            throw new \Exception("Error while creating faction: faction exists.");
+        
     }
     
     public function disbandFaction(Faction $faction) {
     
     }
     
-    public function setFactionTag($tag) {
+    public function setFactionTag(Faction $faction) {
+    
+    }
+    
+    public function setFactionDescription(Faction $faction) {
     
     }
    
-    public function factionExists($faction) {
+    public function factionExists(string $faction) {
         
     }
 }
