@@ -30,7 +30,11 @@ class CommandDisband extends FCommand {
         parent::__construct($plugin, "disband", $this->translate("disband.desc"), $this->translate("disband.args"));
     }
 
-    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
+    public function execute(CommandSender $sender, $fme, array $args) {
+        if(!$sender instanceof Player) {
+            $sender->sendMessage($this->translate("command.mustbeplayer"));
+            return;
+        }
         if(count($args) >= 2 or count($args) === 0) {
             $sender->sendMessage($this->getUsage());
             return;

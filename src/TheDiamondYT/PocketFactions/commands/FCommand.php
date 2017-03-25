@@ -57,6 +57,5 @@ abstract class FCommand {
         return PF::get()->getLanguage()->translateString($string, $params, null);
     }
     
-    // TODO: completely replace CommandSender with FPlayer
-    public abstract function execute(CommandSender $sender, FPlayer $fme, array $args);
+    public abstract function execute(CommandSender $sender, $fme, array $args);
 }

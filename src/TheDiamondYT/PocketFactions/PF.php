@@ -97,8 +97,11 @@ class PF extends PluginBase {
 	    return $this->provider->getFaction($faction);
 	}
 	
-	public function getPlayer(Player $player) {
-	    return $this->provider->getPlayer($player);
+	public function getPlayer($player) {
+	    if($player instanceof Player)
+	        return $this->provider->getPlayer($player);
+	        
+	    return null;
 	} 
 	
 	public function factionExists($faction) {

@@ -29,11 +29,8 @@ class CommandReload extends FCommand {
         parent::__construct($plugin, "reload", $this->translate("reload.desc"));
     }
 
-    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
-        $startTime = round(microtime(true) * 1000);
-        $this->plugin->reloadConfig();
-        $endTime = round(microtime(true) * 1000) - $startTime;
-        $sender->sendMessage($this->translate("reload.success", [$endTime]));
+    public function execute(CommandSender $sender, $fme, array $args) {
+        $this->plugin->getProvider()->load(); // Not working?
         return true;
     }
 }

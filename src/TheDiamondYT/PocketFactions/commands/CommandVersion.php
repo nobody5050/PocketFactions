@@ -29,7 +29,7 @@ class CommandVersion extends FCommand {
         parent::__construct($plugin, "version", $this->translate("version.desc"), ["ver", "v"]);
     }
 
-    public function execute(CommandSender $sender, FPlayer $fme, array $args) {
+    public function execute(CommandSender $sender, $fme, array $args) {
         $sender->sendMessage($this->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
         return true;
     }
