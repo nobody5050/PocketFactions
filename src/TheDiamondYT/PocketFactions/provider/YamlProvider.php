@@ -19,22 +19,26 @@
 namespace TheDiamondYT\PocketFactions\provider;
 
 use pocketmine\Player;
+use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\FPlayer;
 
 class YamlProvider implements Provider {
 
     private $plugin;
-    private $data;
+    private $fdata;
+    private $pdata;
     
     private $factions = [];
     private $fplayers = [];
 
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
-        $plugin->saveResource("factions.yml");
-        $this->data = yaml_parse_file($plugin->getDataFolder() . "factions.yml");
+        $this->fdata = new Config($plugin->getDataFolder() . "factions.yml", Config::YAML);
+        $this->pdata = new Config($plugin->getDataFolder() . "players.yml", Config::YAML);
     }
     
     public function load() {
@@ -46,20 +50,40 @@ class YamlProvider implements Provider {
     }
     
     public function loadFactions() {
-        foreach($this->data as $facs) {
+        $this->checkDefaultFactions();
+        foreach($this->fdata->getAll() as $facs) {
             $faction = new Faction;
             $faction->setTag($facs["tag"]);
             $faction->setDescription($facs["desc"]);
-            $this->factions[strtolower($facs["tag"])] = $faction; // TODO: numeric id instead of tag?
+            $this->factions[$faction->getId()] = $faction;
+        }
+    }
+    
+    // TODO: move to main class?
+    private function checkDefaultFactions() {
+        if(!$this->factionExists("Wilderness")) {
+            $faction = new Faction;
+            $faction->setTag("Wilderness");
+            $faction->setPermanent(true);
+            $this->createFaction($faction);
+        }
+        if(!$this->factionExists("WarZone")) {
+            $faction = new Faction;
+            $faction->setTag("WarZone");
+            $faction->setDescription("Not the safest place to be.");
+            $faction->setPermanent(true);
+            $this->createFaction($faction); // or $faction->create()? idk this seems quicker
         }
     }
     
     public function loadPlayers() {
-    
+        foreach($this->pdata->getAll() as $player) {
+            $this->addPlayer($player);
+        }
     }
     
-    public function getPlayer() {
-        
+    public function getPlayer(Player $player) {
+        return $this->fplayers[$player->getName()];
     }
     
     public function addPlayer(Player $player) {
@@ -69,34 +93,31 @@ class YamlProvider implements Provider {
     public function getFaction($faction) {
         if(!$this->factionExists($faction)) 
             return false;
-            
-        return $this->factions[(strtolower($faction))];
+                  
+        return $this->factions[strtolower($faction)];
     }
-    
+
     public function createFaction(Faction $faction) {
-        // You should have your own checks using YamlProvider::factionExists($tag)
-        // before calling this function.
-        // TODO: Maybe remove exception and just return false?
-        if($this->factionExists($faction->getId()))
-            throw new \Exception("Error while creating faction: already exists.");
-            
-        //$this->setFactionTag($faction->getTag());
-        //$this->setFactionDescription($faction->getDescription());
+        $this->factions[$faction->getId()] = $faction; // TODO: numeric id instead of tag?
+        $this->setFactionTag($faction);
+        $this->setFactionDescription($faction);
     }
     
     public function disbandFaction(Faction $faction) {
         
     }
     
-    public function setFactionTag($tag) {
-        
+    public function setFactionTag($faction) {
+        $this->fdata->setNested($faction->getId() . ".tag", $faction->getTag());
+        $this->fdata->save();
     }
     
-    public function setFactionDescription($description) {
-    
+    public function setFactionDescription($faction) {
+        $this->fdata->setNested($faction->getId() . ".desc", $faction->getDescription());
+        $this->fdata->save();
     }
     
     public function factionExists($faction) {
-        return isset($this->data[strtolower($faction)]);
+        return isset($this->fdata->getAll()[strtolower($faction)]);
     }
 }

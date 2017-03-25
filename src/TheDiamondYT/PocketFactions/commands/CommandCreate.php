@@ -32,7 +32,6 @@ class CommandCreate extends FCommand {
     }
 
     public function execute(CommandSender $sender, FPlayer $fme, array $args) {
-        parent::execute($sender, $args);
         if(count($args) >= 2 or count($args) === 0) {
             $sender->sendMessage($this->getUsage());
             return;

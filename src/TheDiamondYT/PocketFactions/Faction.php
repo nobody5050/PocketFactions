@@ -23,8 +23,10 @@ use TheDiamondYT\PocketFactions\struct\Role;
 class Faction {
 
     private $tag;
-    private $description;
+    private $description = "";
     private $leader;
+    
+    private $permanent = false;
     
     private $players = [];
     
@@ -42,7 +44,7 @@ class Faction {
     
     public function updateTag($tag) {
         $this->tag = $tag;
-        PF::get()->getProvider()->setFactionTag($tag);
+        PF::get()->getProvider()->setFactionTag($this);
     }
     
     public function setDescription($description) {
@@ -58,11 +60,23 @@ class Faction {
         PF::get()->getProvider()->setFactionDescription($description);
     }
     
+    public function setPermanent($value) {
+        $this->permanent = $value;
+    }
+    
+    public function isPermanent() {
+        return $this->permanent === true;
+    }
+    
     public function addPlayer(FPlayer $player) {
         if($player->getRole() === Role::LEADER) 
             $this->leader = $player;
             
         $this->players[$player->getName()] = $player;
+    }
+    
+    public function removePlayer(FPlayer $player) {
+        unset($this->players[$player->getName()]);
     }
     
     public function setLeader(FPlayer $player) {

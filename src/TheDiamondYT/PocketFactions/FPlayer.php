@@ -35,6 +35,10 @@ class FPlayer {
         $this->player = $player;
     }
     
+    public function getName() {
+        return $this->player->getName();
+    }
+    
     public function setTitle($title) {
         $this->title = $title;
     }
