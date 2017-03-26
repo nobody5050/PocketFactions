@@ -60,7 +60,7 @@ class CommandCreate extends FCommand {
         $fme->setRole(Role::LEADER);
         $fme->setFaction($faction);
         
-        // TODO: make this nicer
+        // TODO: make this nicer?
         foreach($this->plugin->getServer()->getOnlinePlayers() as $player) 
             $this->msg($player, $this->plugin->translate("create.success", [$this->describeTo($fme, $fme), $this->getColorTo($fme, $faction) . $args[0]]));
     }

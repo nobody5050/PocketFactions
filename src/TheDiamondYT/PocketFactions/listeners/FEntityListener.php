@@ -37,10 +37,12 @@ class FEntityListener implements Listener {
         if($event instanceof EntityDamageByEntityEvent) {
             if(!$event->getEntity() instanceof Player or !$event->getDamager() instanceof Player)
                 return;
-            if(!$this->plugin->getPlayer($event->getEntity())->isInFaction())
-                return;
-                          
-            $event->setCancelled(true);
+                              
+            $fme = $this->plugin->getPlayer($event->getEntity());
+            $fhim = $this->plugin->getPlayer($event->getDamager()); 
+            
+            if($fme->getFaction() === $fhim->getFaction())              
+                $event->setCancelled(true);
         }
     }
     
