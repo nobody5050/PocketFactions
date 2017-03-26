@@ -22,15 +22,32 @@ use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\struct\Role;
 
-class CommandVersion extends FCommand {
+class CommandLeader extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "version", $plugin->translate("version.desc"), ["ver", "v"]);
+        parent::__construct($plugin, "leader", $plugin->translate("leader.desc"), $plugin->translate("leader.args"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $sender->sendMessage($this->plugin->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
-        return true;
+        if(!$sender instanceof Player) {
+            $sender->sendMessage($this->plugin->translate("command.mustbeplayer"));
+            return;
+        }
+        if($fme->getFaction() === null) {
+            $sender->sendMessage($this->plugin->translate("player.notinfaction"));
+            return;
+        }
+        if($fme->getRole() !== Role::LEADER) {
+            $sender->sendMessage($this->plugin->translate("player.mustbeleader"));
+            return;
+        }
+        $target = $this->plugin->getPlayer($args[0]);
+        if($target === null) {
+            $sender->sendMessage($this->plugin->translate("player.notfound"));
+            return;
+        }
+        $fme->getFaction()->setLeader($target);
     }
 }

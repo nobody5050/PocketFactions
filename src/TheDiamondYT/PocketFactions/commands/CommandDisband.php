@@ -27,20 +27,20 @@ use TheDiamondYT\PocketFactions\struct\Role;
 class CommandDisband extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "disband", $this->translate("disband.desc"), $this->translate("disband.args"));
+        parent::__construct($plugin, "disband", $plugin->translate("disband.desc"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $sender->sendMessage($this->translate("command.mustbeplayer"));
-            //return;
+            $sender->sendMessage($this->plugin->translate("command.mustbeplayer"));
+            return;
         }
         if($fme->getFaction() === null) {
-            $sender->sendMessage($this->translate("player.notinfaction"));
+            $sender->sendMessage($this->plugin->translate("player.notinfaction"));
             return;
         }
         if($fme->getRole() !== Role::LEADER) {
-            $sender->sendMessage($this->translate("player.mustbeleader"));
+            $sender->sendMessage($this->plugin->translate("player.mustbeleader"));
             return;
         }
         $fme->getFaction()->disband();

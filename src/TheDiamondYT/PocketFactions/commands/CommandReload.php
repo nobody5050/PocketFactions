@@ -26,7 +26,7 @@ use TheDiamondYT\PocketFactions\FPlayer;
 class CommandReload extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "reload", $this->translate("reload.desc"));
+        parent::__construct($plugin, "reload", $plugin->translate("reload.desc"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {

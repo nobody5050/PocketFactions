@@ -34,6 +34,7 @@ class FCommandManager extends PluginCommand {
         $this->setDescription("The main command for PocketFactions."); // TODO: translation
         $this->registerCommand(new CommandCreate($plugin));
         $this->registerCommand(new CommandDisband($plugin));
+        $this->registerCommand(new CommandLeader($plugin));
         $this->registerCommand(new CommandVersion($plugin));
         $this->registerCommand(new CommandReload($plugin));
     }

@@ -89,10 +89,6 @@ class PF extends PluginBase {
 	    return $this->cfg;
 	}
 	
-	public function getLanguage() {
-	    return $this->language;
-	}
-	
 	public function getFaction(string $faction) {      
 	    return $this->provider->getFaction($faction);
 	}
@@ -106,5 +102,9 @@ class PF extends PluginBase {
 	
 	public function factionExists(string $faction) {
 	    return $this->provider->factionExists($faction);
+	}
+	
+	public function translate($text, array $params = []) {
+	    return $this->language->translateString($text, $params, null);
 	}
 }

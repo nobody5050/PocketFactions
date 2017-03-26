@@ -29,12 +29,12 @@ use TheDiamondYT\PocketFactions\struct\Role;
 class CommandCreate extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "create", $this->translate("create.desc"), $this->translate("create.args"));
+        parent::__construct($plugin, "create", $plugin->translate("create.desc"), $plugin->translate("create.args"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $sender->sendMessage($this->translate("command.mustbeplayer"));
+            $sender->sendMessage($this->plugin->translate("command.mustbeplayer"));
             return;
         }
         if(count($args) >= 2 or count($args) === 0) {
@@ -42,17 +42,17 @@ class CommandCreate extends FCommand {
             return;
         }
         if($this->plugin->factionExists($args[0])) {
-            $sender->sendMessage($this->translate("tag.exists")); 
+            $sender->sendMessage($this->plugin->translate("tag.exists")); 
             return;
         }
         if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
-            $sender->sendMessage($this->translate("tag.toolong")); 
+            $sender->sendMessage($this->plugin->translate("tag.toolong")); 
             return;
         }
         $faction = new Faction;
         $faction->setTag($args[0]); 
         $faction->create();
-             
+              
         $fme->setRole(Role::LEADER);
         $fme->setFaction($faction);
     }

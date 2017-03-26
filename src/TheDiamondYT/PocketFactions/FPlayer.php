@@ -29,7 +29,7 @@ class FPlayer {
     private $title;
     
     private $faction;
-    private $factionRole;
+    private $role;
     
     public function __construct(Player $player) {
         $this->player = $player;

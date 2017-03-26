@@ -18,7 +18,7 @@
 language: eng
       
 # Data provider that will be used for storing faction data.
-# - yaml, sqlite
+# - yaml
 provider: yaml
 
 # Faction preferences
