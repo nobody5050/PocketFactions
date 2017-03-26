@@ -95,8 +95,6 @@ class YamlProvider implements Provider {
 
     public function createFaction(Faction $faction) {
         $this->factions[$faction->getId()] = $faction; // TODO: numeric id instead of tag?
-        $this->setFactionTag($faction);
-        $this->setFactionDescription($faction);
     }
     
     public function disbandFaction(Faction $faction) {

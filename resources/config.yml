@@ -25,6 +25,9 @@ provider: yaml
 faction:
   create:
     broadcast: true
+    log: false
+  disband:
+    log: false
   tag:
     maxLength: 10
 

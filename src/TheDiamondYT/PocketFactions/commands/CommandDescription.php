@@ -37,15 +37,17 @@ class CommandDescription extends FCommand {
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
             $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
-           // return;
+            return;
         }
         if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
         }
         
+        $fme->getFaction()->setDescription(implode(" ", $args));
+        
         // TODO: make this nicer?
-        foreach($this->plugin->getServer()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("desc.success", [$this->describeTo($fme, $fme), $this->describeTo($fme->getFaction(), $fme), implode(" ", $args)]));
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+            $this->msg($player, $this->plugin->translate("desc.success", [$this->describeTo($fme, $player), $this->describeTo($fme->getFaction(), $fme), implode(" ", $args)]));
     }
 }

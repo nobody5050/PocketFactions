@@ -87,7 +87,11 @@ abstract class FCommand {
      * @param string 
      */
     public function msg($player, string $text) {
-        $player->sendMessage(TF::YELLOW . $text);
+        if($player instanceof FPlayer) {
+            $player->msg(TF::YELLOW . $text);
+        } else {
+            $player->sendMessage(TF::YELLOW . $text);
+        }
     }
     
     public function getCommand(string $label) {
@@ -95,7 +99,7 @@ abstract class FCommand {
     }
     
     // TODO: move to main class?
-    public function describeTo($thing, $me) {
+    public function describeTo($thing, FPlayer $me) {
         if($thing instanceof Faction) {
             if($thing === $me->getFaction()) {
                 $text = "your faction";
@@ -108,10 +112,10 @@ abstract class FCommand {
             if($thing === $me) {
                 $text = "you";
             }
-            elseif($me->getFaction() === $thing->getFaction()) {
+            elseif($thing->getFaction() === $me->getFaction()) {
                 $text = $me->getNameAndTitle();
             } else {
-                $text = $me->getFaction()->getTag() . " " . $me->getName();
+                $text = $thing->getFaction()->getTag() . " " . $thing->getName();
             }
             return $this->plugin->getColorTo($me, $thing->getFaction()) . $text . TF::YELLOW;
         }

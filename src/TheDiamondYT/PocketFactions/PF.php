@@ -118,10 +118,6 @@ class PF extends PluginBase {
 	    return $this->provider->getFaction($faction);
 	}
 	
-	public function createFaction(Faction $faction) {
-	    return $this->provider->createFaction($faction);
-	}
-	
 	/**
 	 * TODO: im bad at docs :/
 	 *

@@ -40,6 +40,8 @@ interface Provider {
     public function setFactionTag(Faction $faction);
     
     public function setFactionDescription(Faction $faction);
+    
+    public function setFactionLeader(Faction $faction);
      
     public function factionExists(string $faction);
 }

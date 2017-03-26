@@ -57,5 +57,8 @@ class CommandDisband extends FCommand {
             if($player->getFaction() !== $myfaction)
                 $this->msg($player, $this->plugin->translate("disband.success"));
         }
+        
+        if($this->cfg["faction"]["disband"]["log"] === true) 
+            PF::log($sender->getName() . " disbanded the faction " . $myfaction->getName());
     }
 }

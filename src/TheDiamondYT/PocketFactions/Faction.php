@@ -22,11 +22,15 @@ use TheDiamondYT\PocketFactions\struct\Role;
 
 /**
  * Represents a Faction.
+ *
+ * TODO: SOMEHOW REMOVE THE UGLY STATIC METHODS
  */
 class Faction {
 
+    private $provider;
+
     private $tag;
-    private $description;
+    private $description = "";
     private $leader;
     
     private $permanent = false;
@@ -51,6 +55,7 @@ class Faction {
      */
     public function setTag(string $tag) {
         $this->tag = $tag;
+        PF::get()->getProvider()->setFactionTag($this);
     }
     
     /**
@@ -60,6 +65,7 @@ class Faction {
      */
     public function setDescription(string $description) {
         $this->description = $description;
+        PF::get()->getProvider()->setFactionDescription($this);
     }
     
     /**
@@ -120,6 +126,7 @@ class Faction {
      */
     public function setLeader(FPlayer $player) {
         $this->leader = $player;
+        PF::get()->getProvider()->setFactionLeader($this);
     }
     
     /** 
@@ -127,5 +134,12 @@ class Faction {
      */
     public function getLeader() {
         return $this->leader;
+    }
+    
+    /**
+     * Creates a new faction.
+     */
+    public function create() {
+        PF::get()->getProvider()->createFaction($this);
     }
 }

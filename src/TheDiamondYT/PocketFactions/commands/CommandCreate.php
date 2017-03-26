@@ -56,18 +56,20 @@ class CommandCreate extends FCommand {
             return;
         }
         $faction = new Faction;
+        $faction->create();
         $faction->setTag($args[0]); 
         $faction->setDescription("Default faction description :(");
-        
-        $this->plugin->createFaction($faction);
         
         $fme->setRole(Role::LEADER);
         $fme->setFaction($faction);
         
         // TODO: make this nicer?
-        foreach($this->plugin->getServer()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("create.success", [$this->describeTo($fme, $fme), $this->plugin->getColorTo($fme, $faction) . $args[0]]));
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+            $this->msg($player, $this->plugin->translate("create.success", [$this->describeTo($fme, $player), $this->plugin->getColorTo($fme, $faction) . $args[0]]));
             
         $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
+        
+        if($this->cfg["faction"]["create"]["log"] === true)
+            PF::log($sender->getName() . " created a new faction " . $args[0]); // Not even gonna do translations
     }
 }
