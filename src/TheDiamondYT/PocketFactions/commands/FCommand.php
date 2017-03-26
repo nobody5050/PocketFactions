@@ -19,6 +19,7 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
@@ -52,9 +53,11 @@ abstract class FCommand {
         return "/f $this->name $this->args";
     }
     
-    public function translate($string, array $params = [])  {
-        // $this->plugin returns null?
-        return PF::get()->getLanguage()->translateString($string, $params, null);
+    /*
+     * Convienience method for sending a message to a player
+     */
+    public function msg($player, string $text) {
+        $player->sendMessage(TF::YELLOW . $text);
     }
     
     public abstract function execute(CommandSender $sender, $fme, array $args);

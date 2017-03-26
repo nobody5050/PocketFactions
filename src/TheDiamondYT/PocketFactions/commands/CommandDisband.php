@@ -19,6 +19,7 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
@@ -32,18 +33,18 @@ class CommandDisband extends FCommand {
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $sender->sendMessage($this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
             return;
         }
         if($fme->getFaction() === null) {
-            $sender->sendMessage($this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
         }
         if($fme->getRole() !== Role::LEADER) {
-            $sender->sendMessage($this->plugin->translate("player.mustbeleader"));
+            $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
             return;
         }
         $fme->getFaction()->disband();
-        $sender->sendMessage("You disbanded your faction."); // TODO: translation
+        $this->msg($sender, "You disbanded your faction."); // TODO: translation
     }
 }

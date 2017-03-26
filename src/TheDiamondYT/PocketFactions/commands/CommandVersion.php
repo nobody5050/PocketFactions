@@ -30,7 +30,7 @@ class CommandVersion extends FCommand {
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $sender->sendMessage($this->plugin->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
+        $this->msg($sender, $this->plugin->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
         return true;
     }
 }

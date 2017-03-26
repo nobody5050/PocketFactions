@@ -32,28 +32,29 @@ class CommandLeader extends FCommand {
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $sender->sendMessage($this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, $this->plugin->translate("command.mustbeplayer"));
             return;
         }
         if($fme->getFaction() === null) {
-            $sender->sendMessage($this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
         }
         if($fme->getRole() !== Role::LEADER) {
-            $sender->sendMessage($this->plugin->translate("player.mustbeleader"));
+            $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
             return;
         }
         
         $target = $this->plugin->getPlayer($args[0]);
         
         if($target === null) {
-            $sender->sendMessage($this->plugin->translate("player.notfound"));
+            $this->msg($sender, $this->plugin->translate("player.notfound"));
             return;
         }
         if($target->getRole() === Role::LEADER) {
-            $sender->sendMessage($this->plugin->translate("player.isleader"));
+            $this->msg($sender, $this->plugin->translate("player.isleader"));
             return;
         }
         $fme->getFaction()->setLeader($target);
+        $this->msg($target, "You were promoted to faction leader"); // TODO: translation and better message
     }
 }

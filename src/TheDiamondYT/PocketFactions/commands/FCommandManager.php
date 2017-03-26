@@ -45,7 +45,7 @@ class FCommandManager extends PluginCommand {
             if(isset($this->subcommands[$subcommand])) {
                 $command = $this->subcommands[$subcommand];
             } else {
-                //$sender->sendMessage($this->plugin->getLanguage()->translateString("command.notfound", [$command->getName()]));
+                $sender->sendMessage($this->plugin->translate("command.notfound", [$subcommand]));
                 return true;
             }
             $command->execute($sender, $this->plugin->getPlayer($sender), $args);

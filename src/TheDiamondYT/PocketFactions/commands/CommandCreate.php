@@ -20,6 +20,7 @@ namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
@@ -34,19 +35,19 @@ class CommandCreate extends FCommand {
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $sender->sendMessage($this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
             return;
         }
         if(count($args) >= 2 or count($args) === 0) {
-            $sender->sendMessage($this->getUsage());
+            $this->msg($sender, TF::RED . $this->getUsage());
             return;
         }
         if($this->plugin->factionExists($args[0])) {
-            $sender->sendMessage($this->plugin->translate("tag.exists")); 
+            $this->msg($sender, $this->plugin->translate("tag.exists")); 
             return;
         }
         if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
-            $sender->sendMessage($this->plugin->translate("tag.toolong")); 
+            $this->msg($sender, $this->plugin->translate("tag.toolong")); 
             return;
         }
         $faction = new Faction;
