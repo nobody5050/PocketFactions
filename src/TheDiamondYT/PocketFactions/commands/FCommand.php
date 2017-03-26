@@ -32,29 +32,58 @@ abstract class FCommand {
     private $sender;
     
     private $name, $desc, $args;
+    private $aliases = [];
     
-    public function __construct(PF $plugin, $name, $desc, $args = "", $aliases = []) {
+    public function __construct(PF $plugin, $name, $desc, $aliases = []) {
         $this->plugin = $plugin;
+        $this->cfg = $plugin->getConfig();
         $this->name = $name;
         $this->desc = $desc;
-        $this->args = $args;
-        $this->cfg = $plugin->getConfig();
+        $this->aliases = $aliases;
     }
 
+    /**
+     * @return string
+     */
     public function getName() {
         return $this->name;
     }
     
+    /** 
+     * @return string
+     */
     public function getDescription() { 
         return $this->desc;
     }
-    
+   
+    /**
+     * @return string
+     */
     public function getUsage() {
         return "/f $this->name $this->args";
     }
     
-    /*
-     * Convienience method for sending a message to a player
+    /**
+     * Set the command arguments. TODO: remove
+     *
+     * @param string
+     */
+    public function setArgs(string $args) {
+        $this->args = $args; 
+    }
+    
+    /**
+     * @return array
+     */
+    public function getAliases() {
+        return $this->aliases;
+    }
+    
+    /**
+     * Convienient method for sending a message to a player
+     *
+     * @param CommandSender|Player 
+     * @param string 
      */
     public function msg($player, string $text) {
         $player->sendMessage(TF::YELLOW . $text);

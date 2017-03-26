@@ -27,7 +27,8 @@ use TheDiamondYT\PocketFactions\struct\Role;
 class CommandLeader extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "leader", $plugin->translate("leader.desc"), $plugin->translate("leader.args"));
+        parent::__construct($plugin, "leader", $plugin->translate("leader.desc"));
+        $this->setArgs($plugin->translate("leader.args"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
@@ -44,7 +45,7 @@ class CommandLeader extends FCommand {
             return;
         }
         
-        $target = $this->plugin->getPlayer($args[0]);
+        $target = $this->plugin->getPlayer($this->plugin->getServer()->getPlayer($args[0]));
         
         if($target === null) {
             $this->msg($sender, $this->plugin->translate("player.notfound"));

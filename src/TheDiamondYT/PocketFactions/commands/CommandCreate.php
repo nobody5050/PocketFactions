@@ -30,7 +30,8 @@ use TheDiamondYT\PocketFactions\struct\Role;
 class CommandCreate extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "create", $plugin->translate("create.desc"), $plugin->translate("create.args"));
+        parent::__construct($plugin, "create", $plugin->translate("create.desc"));
+        $this->setArgs($plugin->translate("create.args")); 
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {

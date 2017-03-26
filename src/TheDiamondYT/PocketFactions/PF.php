@@ -43,6 +43,9 @@ class PF extends PluginBase {
         self::$object = $this;
     }
     
+    /**
+     * @return this
+     */
     public static function get() {
         return self::$object;
     }
@@ -93,6 +96,12 @@ class PF extends PluginBase {
 	    return $this->provider->getFaction($faction);
 	}
 	
+	/**
+	 * TODO: im bad at docs :/
+	 *
+	 * @param CommandSender|Player
+	 * @return Provider::getPlayer()|null
+	 */
 	public function getPlayer($player) {
 	    if($player instanceof Player)
 	        return $this->provider->getPlayer($player);
@@ -100,11 +109,20 @@ class PF extends PluginBase {
 	    return null;
 	} 
 	
+	/**
+	 * @return string
+	 */
 	public function factionExists(string $faction) {
 	    return $this->provider->factionExists($faction);
 	}
 	
-	public function translate($text, array $params = []) {
-	    return $this->language->translateString($text, $params, null);
+	/**
+	 * Translates a message.
+	 *
+	 * @param string
+	 * @param array
+	 */
+	public function translate(string $text, array $params = []) {
+	    return $this->language->translateString($text, $params, null); // Do i really need a return statement?
 	}
 }

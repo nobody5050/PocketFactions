@@ -26,6 +26,9 @@ use TheDiamondYT\PocketFactions\PF;
 class FCommandManager extends PluginCommand {
 
     private $plugin;
+    
+    private $subCommands = [];
+    private $aliasSubCommands = [];
 
     public function __construct(PF $plugin) {
         parent::__construct("factions", $plugin); 
@@ -38,12 +41,14 @@ class FCommandManager extends PluginCommand {
         $this->registerCommand(new CommandVersion($plugin));
         $this->registerCommand(new CommandReload($plugin));
     }
-    
+   
     public function execute(CommandSender $sender, $label, array $args) {
         if(count($args) > 0) {
             $subcommand = strtolower(array_shift($args));
-            if(isset($this->subcommands[$subcommand])) {
-                $command = $this->subcommands[$subcommand];
+            if(isset($this->subCommands[$subcommand])) {
+                $command = $this->subCommands[$subcommand];
+            } elseif(isset($this->aliasSubCommands[$subcommand])) {
+                $command = $this->aliasSubCommands[$subcommand];
             } else {
                 $sender->sendMessage($this->plugin->translate("command.notfound", [$subcommand]));
                 return true;
@@ -52,7 +57,16 @@ class FCommandManager extends PluginCommand {
         }
     }
     
+    /**
+     * Registers a subcommand and its aliases.
+     *
+     * @param FCommand
+     */
     public function registerCommand(FCommand $command) {
-        $this->subcommands[$command->getName()] = $command;
+        $this->subCommands[$command->getName()] = $command;
+        if(!empty($command->getAliases())) {
+            foreach($command->getAliases() as $alias) 
+                $this->aliasSubCommands[$alias] = $command;
+        }
     }
 }     

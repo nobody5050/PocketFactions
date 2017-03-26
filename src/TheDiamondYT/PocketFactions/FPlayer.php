@@ -35,18 +35,34 @@ class FPlayer {
         $this->player = $player;
     }
     
-    public function getName() {
+    /**
+     * @return string
+     */
+    public function getName(): string {
         return $this->player->getName();
     }
     
-    public function setTitle($title) {
+    /**
+     * Sets the players title in the faction.
+     *
+     * @param string
+     */
+    public function setTitle(string $title) {
         $this->title = $title;
     }
-    
-    public function getTitle() {
+  
+    /**
+     * @return string
+     */
+    public function getTitle(): string {
         return $this->title;
     }
     
+    /**
+     * Sets the players role in their faction
+     *
+     * @param int 
+     */
     public function setRole($role) {
         if(Role::byName($role) === "unknown")
             throw new \Exception("Error when setting fplayer role: invalid role '$role'");
@@ -54,10 +70,18 @@ class FPlayer {
         $this->role = $role;
     }
     
-    public function getRole() {
+    /**
+     * @return int
+     */
+    public function getRole(): int {
         return $this->role;
     }
     
+    /**
+     * Sets the players faction.
+     *
+     * @param Faction 
+     */
     public function setFaction(Faction $faction) { 
         if($this->getFaction() !== null)
             $this->getFaction()->removePlayer($this);
@@ -66,7 +90,10 @@ class FPlayer {
         $this->faction = $faction;
     }
     
-    public function getFaction() {     
+    /**
+     * @return Faction
+     */
+    public function getFaction(): Faction {     
         return $this->faction;
     }
 }
