@@ -20,10 +20,13 @@ namespace TheDiamondYT\PocketFactions;
 
 use TheDiamondYT\PocketFactions\struct\Role;
 
+/**
+ * Represents a Faction.
+ */
 class Faction {
 
     private $tag;
-    private $description = "";
+    private $description;
     private $leader;
     
     private $permanent = false;
@@ -34,39 +37,66 @@ class Faction {
         return strtolower($this->tag); // TODO: numeric id?
     }
     
+    /**
+     * @return string
+     */
     public function getTag() {     
         return $this->tag;
     }
     
-    public function setTag($tag) {
+    /**
+     * Set the faction tag.
+     *
+     * @param string
+     */
+    public function setTag(string $tag) {
         $this->tag = $tag;
     }
     
-    public function updateTag($tag) {
-        $this->tag = $tag;
-        PF::get()->getProvider()->setFactionTag($this);
-    }
-    
-    public function setDescription($description) {
+    /**
+     * Set the faction description.
+     *
+     * @param string
+     */
+    public function setDescription(string $description) {
         $this->description = $description;
     }
     
+    /**
+     * @return string
+     */
     public function getDescription() {
         return $this->description;
     }
     
-    public function setPermanent($value) {
+    /**
+     * Set whether or not the faction is permanent.
+     *
+     * @param bool
+     */
+    public function setPermanent(bool $value) {
         $this->permanent = $value;
     }
     
+    /**
+     * @return bool
+     */
     public function isPermanent() {
         return $this->permanent === true;
     }
     
+    /**
+     * @return FPlayer[]
+     */
     public function getOnlinePlayers() {
         return $this->players;
     }
     
+    /**
+     * Add a player to the faction.
+     *
+     * @param FPlayer
+     */
     public function addPlayer(FPlayer $player) {
         if($player->getRole() === Role::LEADER) 
             $this->leader = $player;
@@ -74,14 +104,27 @@ class Faction {
         $this->players[$player->getName()] = $player;
     }
     
+    /**
+     * Remove a player from the faction.
+     *
+     * @param FPlayer
+     */
     public function removePlayer(FPlayer $player) {
         unset($this->players[$player->getName()]);
     }
     
+    /**
+     * Set the faction leader.
+     *
+     * @param FPlayer
+     */
     public function setLeader(FPlayer $player) {
         $this->leader = $player;
     }
     
+    /** 
+     * @return FPlayer
+     */
     public function getLeader() {
         return $this->leader;
     }
