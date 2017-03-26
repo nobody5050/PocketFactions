@@ -88,7 +88,7 @@ class YamlProvider implements Provider {
     
     public function getFaction(string $faction) {
         if(!$this->factionExists($faction)) 
-            return false;
+            return null;
                   
         return $this->factions[strtolower($faction)];
     }

@@ -27,11 +27,11 @@ use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 
-class CommandCreate extends FCommand {
+class CommandDescription extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "create", $plugin->translate("create.desc"));
-        $this->setArgs($plugin->translate("create.args")); 
+        parent::__construct($plugin, "desc", $plugin->translate("desc.desc"));
+        $this->setArgs($plugin->translate("desc.args")); 
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
@@ -39,35 +39,13 @@ class CommandCreate extends FCommand {
             $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
            // return;
         }
-        if(count($args) >= 2 or count($args) === 0) {
-            $this->msg($sender, TF::RED . $this->getUsage());
+        if($fme->getFaction() === null) {
+            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
         }
-        if($fme->getFaction() !== null) {
-            $this->msg($sender, $this->plugin->translate("player.isinfaction"));
-            return;
-        }
-        if($this->plugin->factionExists($args[0])) {
-            $this->msg($sender, $this->plugin->translate("tag.exists")); 
-            return;
-        }
-        if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
-            $this->msg($sender, $this->plugin->translate("tag.toolong")); 
-            return;
-        }
-        $faction = new Faction;
-        $faction->setTag($args[0]); 
-        $faction->setDescription("Default faction description :(");
-        
-        $this->plugin->createFaction($faction);
-        
-        $fme->setRole(Role::LEADER);
-        $fme->setFaction($faction);
         
         // TODO: make this nicer?
         foreach($this->plugin->getServer()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("create.success", [$this->describeTo($fme, $fme), $this->plugin->getColorTo($fme, $faction) . $args[0]]));
-            
-        $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
+            $this->msg($player, $this->plugin->translate("desc.success", [$this->describeTo($fme, $fme), $this->describeTo($fme->getFaction(), $fme), implode(" ", $args)]));
     }
 }

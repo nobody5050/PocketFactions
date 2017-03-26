@@ -61,7 +61,7 @@ abstract class FCommand {
      * @return string
      */
     public function getUsage() {
-        return "/f $this->name $this->args";
+        return TF::AQUA . "/f $this->name " . TF::DARK_AQUA . $this->args;
     }
     
     /**
@@ -90,11 +90,14 @@ abstract class FCommand {
         $player->sendMessage(TF::YELLOW . $text);
     }
     
+    public function getCommand(string $label) {
+        return $this->plugin->getCommandManager()->getCommand($label);
+    }
+    
     // TODO: move to main class?
     public function describeTo($thing, $me) {
-        $text = "unknown";
         if($thing instanceof Faction) {
-            if($me->getFaction() === $thing) {
+            if($thing === $me->getFaction()) {
                 $text = "your faction";
             } else {
                 $text = $thing->getTag();
@@ -105,14 +108,14 @@ abstract class FCommand {
             if($thing === $me) {
                 $text = "you";
             }
-            elseif($me->getFaction() === $thing) {
-                $text = $me->getTitle() . " " . $me->getName();
+            elseif($me->getFaction() === $thing->getFaction()) {
+                $text = $me->getNameAndTitle();
             } else {
                 $text = $me->getFaction()->getTag() . " " . $me->getName();
             }
             return $this->plugin->getColorTo($me, $thing->getFaction()) . $text . TF::YELLOW;
         }
-        return $text;
+        return TF::RED . "unknown" . TF::YELLOW;
     }
     
     public abstract function execute(CommandSender $sender, $fme, array $args);

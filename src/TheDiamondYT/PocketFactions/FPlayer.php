@@ -42,11 +42,11 @@ class FPlayer {
         return $this->player->getName();
     }
     
-    public function msg(string $text) {
-        $this->player->sendMessage($text);
+    public function getNameAndTitle(): string {
+        return $this->title . " " . $this->getName();
     }
     
-    /**
+    /** 
      * Sets the players title in the faction.
      *
      * @param string
@@ -60,6 +60,10 @@ class FPlayer {
      */
     public function getTitle(): string {
         return $this->title;
+    }
+    
+    public function msg(string $text) {
+        $this->player->sendMessage($text);
     }
     
     /**

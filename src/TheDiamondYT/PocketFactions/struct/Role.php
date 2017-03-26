@@ -24,6 +24,12 @@ class Role {
     const ADMINISTRATOR = 2;
     const LEADER = 3;
     
+    /**
+     * Returns a faction role as a string
+     *
+     * @param int
+     * @return string
+     */
     public static function byName($role) {
         switch($role) {
             case Role::MEMBER:

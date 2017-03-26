@@ -38,6 +38,7 @@ class FCommandManager extends PluginCommand {
         $this->registerCommand(new CommandCreate($plugin));
         $this->registerCommand(new CommandDisband($plugin));
         $this->registerCommand(new CommandLeader($plugin));
+        $this->registerCommand(new CommandDescription($plugin));
         $this->registerCommand(new CommandVersion($plugin));
         $this->registerCommand(new CommandReload($plugin));
     }
@@ -68,5 +69,12 @@ class FCommandManager extends PluginCommand {
             foreach($command->getAliases() as $alias) 
                 $this->aliasSubCommands[$alias] = $command;
         }
+    }
+    
+    /**
+     * @return FCommand
+     */
+    public function getCommand(string $label) {
+        return $this->subCommands[$label];
     }
 }     

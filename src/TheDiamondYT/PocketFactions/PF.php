@@ -22,6 +22,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\lang\BaseLang;
 use pocketmine\Player;
+use pocketmine\Server;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\provider\Provider;
 use TheDiamondYT\PocketFactions\provider\YamlProvider;
@@ -34,6 +36,8 @@ class PF extends PluginBase {
     private $provider;
     private $language = null;
     private $cfg;
+    
+    private $fcommandManager;
     
     private $factions = [];
     
@@ -49,27 +53,38 @@ class PF extends PluginBase {
     public static function get() {
         return self::$object;
     }
+   
+    /**
+     * Log a message to the console.
+     * WHY DID I MAKE THIS STATIC LOL
+     *
+     * @param string
+     */
+    public static function log(string $text) {
+        Server::getInstance()->getLogger()->info("§b[§dPocketFactions§b]§e $text");
+    }
 
 	public function onEnable() {
 	    $startTime = microtime(true);
 	    $this->saveResource("config.yml");
 	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
 	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
+	    $this->fcommandManager = new FCommandManager($this);
 	    
-	    $this->getServer()->getCommandMap()->register(FCommandManager::class, new FCommandManager($this));
+	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
 	 
 	    $this->setProvider();
 	    $this->provider->loadFactions();
 	    $this->provider->loadPlayers();
-	    $this->getLogger()->info($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2)]));
+	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2)]));
 	}
 	
 	private function setProvider() {
 	    switch($this->cfg["provider"]) { 
 	        case "sqlite":
 	            if(!extension_loaded("sqlite3")) {
-	                $this->getLogger()->warning("Unable to find the SQLite3 exstension. Setting data provider to yaml.");
+	                self::log("Unable to find the SQLite3 exstension. Setting data provider to yaml.");
 	                $this->provider = new YamlProvider($this);
 	                return;
 	            }
@@ -85,6 +100,10 @@ class PF extends PluginBase {
 	    // This check is to allow custom data providers in the future
 	    if($provider instanceof Provider) 
 	        $this->provider = $provider;
+	}
+	
+	public function getCommandManager(): FCommandManager {
+	    return $this->fcommandManager;
 	}
 	
 	public function getProvider() {
