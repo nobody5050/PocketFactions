@@ -20,6 +20,7 @@ namespace TheDiamondYT\PocketFactions\listeners;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerChatEvent;
 
 use TheDiamondYT\PocketFactions\PF;
 
@@ -33,5 +34,9 @@ class FPlayerListener implements Listener {
     
     public function onPlayerJoin(PlayerJoinEvent $event) {
         $this->plugin->getProvider()->addPlayer($event->getPlayer());
+    }
+    
+    public function onPlayerChat(PlayerChatEvent $event) {
+        
     }
 }

@@ -23,8 +23,6 @@ use pocketmine\Player;
 use TheDiamondYT\PocketFactions\Faction;
 
 interface Provider {
-    public function load();
-    
     public function loadFactions();
     
     public function loadPlayers();

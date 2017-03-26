@@ -51,6 +51,7 @@ class PF extends PluginBase {
     }
 
 	public function onEnable() {
+	    $startTime = microtime(true);
 	    $this->saveResource("config.yml");
 	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
 	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
@@ -59,7 +60,9 @@ class PF extends PluginBase {
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
 	 
 	    $this->setProvider();
-	    $this->provider->load();
+	    $this->provider->loadFactions();
+	    $this->provider->loadPlayers();
+	    $this->getLogger()->info($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2)]));
 	}
 	
 	private function setProvider() {
@@ -129,4 +132,16 @@ class PF extends PluginBase {
 	public function translate(string $text, array $params = []) {
 	    return $this->language->translateString($text, $params, null); // Do i really need a return statement?
 	}
+	
+	/**
+	 * Get colour to another player (That totally made sense).
+	 */
+	public function getColorTo($me, $him) {
+        if($me->getFaction() === $him) {
+            $colour = TF::GREEN;
+        } else {
+            $colour = TF::WHITE;
+        }
+        return $colour;
+    }
 }

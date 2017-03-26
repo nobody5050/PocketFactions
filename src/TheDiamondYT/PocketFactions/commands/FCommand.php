@@ -90,6 +90,7 @@ abstract class FCommand {
         $player->sendMessage(TF::YELLOW . $text);
     }
     
+    // TODO: move to main class?
     public function describeTo($thing, $me) {
         $text = "unknown";
         if($thing instanceof Faction) {
@@ -98,7 +99,7 @@ abstract class FCommand {
             } else {
                 $text = $thing->getTag();
             }
-            return $this->getColorTo($me, $thing) . $text . TF::YELLOW;
+            return $this->plugin->getColorTo($me, $thing) . $text . TF::YELLOW;
         }
         elseif($thing instanceof FPlayer) {
             if($thing === $me) {
@@ -109,18 +110,9 @@ abstract class FCommand {
             } else {
                 $text = $me->getFaction()->getTag() . " " . $me->getName();
             }
-            return $this->getColorTo($me, $thing->getFaction()) . $text . TF::YELLOW;
+            return $this->plugin->getColorTo($me, $thing->getFaction()) . $text . TF::YELLOW;
         }
         return $text;
-    }
-    
-    public function getColorTo($me, $him) {
-        if($me->getFaction() === $him) {
-            $colour = TF::GREEN;
-        } else {
-            $colour = TF::WHITE;
-        }
-        return $colour;
     }
     
     public abstract function execute(CommandSender $sender, $fme, array $args);

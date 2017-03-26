@@ -41,14 +41,6 @@ class YamlProvider implements Provider {
         $this->pdata = new Config($plugin->getDataFolder() . "players.yml", Config::YAML);
     }
     
-    public function load() {
-        $startTime = round(microtime(true) * 1000);
-        $this->loadFactions();
-        $this->loadPlayers();
-        $endTime = round(microtime(true) * 1000) - $startTime;
-        $this->plugin->getLogger()->info($this->plugin->translate("console.data.loaded", [$endTime])); 
-    }
-    
     public function loadFactions() {
         $this->checkDefaultFactions();
         foreach($this->fdata->getAll() as $facs) {
