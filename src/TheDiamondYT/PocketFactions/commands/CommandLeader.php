@@ -43,9 +43,15 @@ class CommandLeader extends FCommand {
             $sender->sendMessage($this->plugin->translate("player.mustbeleader"));
             return;
         }
+        
         $target = $this->plugin->getPlayer($args[0]);
+        
         if($target === null) {
             $sender->sendMessage($this->plugin->translate("player.notfound"));
+            return;
+        }
+        if($target->getRole() === Role::LEADER) {
+            $sender->sendMessage($this->plugin->translate("player.isleader"));
             return;
         }
         $fme->getFaction()->setLeader($target);
