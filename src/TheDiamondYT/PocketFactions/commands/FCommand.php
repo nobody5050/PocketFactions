@@ -23,6 +23,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\Faction;
 
 abstract class FCommand {
 
@@ -87,6 +88,39 @@ abstract class FCommand {
      */
     public function msg($player, string $text) {
         $player->sendMessage(TF::YELLOW . $text);
+    }
+    
+    public function describeTo($thing, $me) {
+        $text = "unknown";
+        if($thing instanceof Faction) {
+            if($me->getFaction() === $thing) {
+                $text = "your faction";
+            } else {
+                $text = $thing->getTag();
+            }
+            return $this->getColorTo($me, $thing) . $text . TF::YELLOW;
+        }
+        elseif($thing instanceof FPlayer) {
+            if($thing === $me) {
+                $text = "you";
+            }
+            elseif($me->getFaction() === $thing) {
+                $text = $me->getTitle() . " " . $me->getName();
+            } else {
+                $text = $me->getFaction()->getTag() . " " . $me->getName();
+            }
+            return $this->getColorTo($me, $thing->getFaction()) . $text . TF::YELLOW;
+        }
+        return $text;
+    }
+    
+    public function getColorTo($me, $him) {
+        if($me->getFaction() === $him) {
+            $colour = TF::GREEN;
+        } else {
+            $colour = TF::WHITE;
+        }
+        return $colour;
     }
     
     public abstract function execute(CommandSender $sender, $fme, array $args);

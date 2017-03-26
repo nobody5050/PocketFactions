@@ -53,9 +53,15 @@ class CommandCreate extends FCommand {
         }
         $faction = new Faction;
         $faction->setTag($args[0]); 
-        $faction->create();
-              
+        $faction->setDescription("Default faction description :(");
+        
+        $this->plugin->createFaction($faction);
+        
         $fme->setRole(Role::LEADER);
         $fme->setFaction($faction);
+        
+        // TODO: make this nicer
+        foreach($this->plugin->getServer()->getOnlinePlayers() as $player) 
+            $this->msg($player, $this->plugin->translate("create.success", [$this->describeTo($fme, $fme), $this->getColorTo($fme, $faction) . $args[0]]));
     }
 }

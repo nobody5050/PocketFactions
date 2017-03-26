@@ -55,17 +55,16 @@ class Faction {
         return $this->description;
     }
     
-    public function updateDescription($description) {
-        $this->description = $description;
-        PF::get()->getProvider()->setFactionDescription($description);
-    }
-    
     public function setPermanent($value) {
         $this->permanent = $value;
     }
     
     public function isPermanent() {
         return $this->permanent === true;
+    }
+    
+    public function getOnlinePlayers() {
+        return $this->players;
     }
     
     public function addPlayer(FPlayer $player) {
@@ -85,13 +84,5 @@ class Faction {
     
     public function getLeader() {
         return $this->leader;
-    }
-    
-    public function create() {
-        PF::get()->getProvider()->createFaction($this);
-    }
-    
-    public function disband() {
-        PF::get()->getProvider()->disbandFaction($this);
     }
 }

@@ -46,7 +46,7 @@ class YamlProvider implements Provider {
         $this->loadFactions();
         $this->loadPlayers();
         $endTime = round(microtime(true) * 1000) - $startTime;
-        $this->plugin->getLogger()->info(sprintf("Loaded faction and player data, took %sms.", $endTime)); // TODO: Translation
+        $this->plugin->getLogger()->info($this->plugin->translate("console.data.loaded", [$endTime])); 
     }
     
     public function loadFactions() {
@@ -82,6 +82,10 @@ class YamlProvider implements Provider {
         }
     }
     
+    public function getOnlinePlayers() {
+        return $this->fplayers;
+    }
+    
     public function getPlayer(Player $player) {
         return $this->fplayers[$player->getName()];
     }
@@ -114,6 +118,11 @@ class YamlProvider implements Provider {
     
     public function setFactionDescription(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".desc", $faction->getDescription());
+        $this->fdata->save();
+    }
+    
+    public function setFactionLeader(Faction $faction) {
+        $this->fdata->setNested($faction->getId() . ".leader", $faction->getLeader()->getName());
         $this->fdata->save();
     }
     

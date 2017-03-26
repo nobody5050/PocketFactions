@@ -42,6 +42,10 @@ class FPlayer {
         return $this->player->getName();
     }
     
+    public function msg(string $text) {
+        $this->player->sendMessage($text);
+    }
+    
     /**
      * Sets the players title in the faction.
      *
@@ -91,9 +95,9 @@ class FPlayer {
     }
     
     /**
-     * @return Faction
+     * @return Faction|null
      */
-    public function getFaction(): Faction {     
+    public function getFaction() {     
         return $this->faction;
     }
 }

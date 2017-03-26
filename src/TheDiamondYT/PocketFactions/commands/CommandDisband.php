@@ -44,7 +44,18 @@ class CommandDisband extends FCommand {
             $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
             return;
         }
-        $fme->getFaction()->disband();
-        $this->msg($sender, "You disbanded your faction."); // TODO: translation
+        if($fme->getFaction()->isPermanent()) {
+            $this->msg($sender, $this->plugin->translate("disband.ispermanent"));
+            return;
+        }
+        $myfaction = $fme->getFaction();
+        $players = $myfaction->getOnlinePlayers();
+        
+        //$this->plugin->disbandFaction($myfaction);
+
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
+            if($player->getFaction() !== $myfaction)
+                $this->msg($player, $this->plugin->translate("disband.success"));
+        }
     }
 }

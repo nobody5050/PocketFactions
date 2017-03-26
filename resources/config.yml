@@ -23,6 +23,8 @@ provider: yaml
 
 # Faction preferences
 faction:
+  create:
+    broadcast: true
   tag:
     maxLength: 10
 
