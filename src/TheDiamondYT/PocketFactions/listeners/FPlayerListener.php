@@ -20,9 +20,13 @@ namespace TheDiamondYT\PocketFactions\listeners;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\struct\ChatMode;
 
 class FPlayerListener implements Listener {
 
@@ -36,7 +40,19 @@ class FPlayerListener implements Listener {
         $this->plugin->getProvider()->addPlayer($event->getPlayer());
     }
     
+    public function onPlayerQuit(PlayerQuitEvent $event) {
+        $this->plugin->getProvider()->removePlayer($event->getPlayer());
+    }
+    
     public function onPlayerChat(PlayerChatEvent $event) {
-        
+        $fme = $this->plugin->getPlayer($event->getPlayer());
+        $players = [];
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
+            $players[$player->getName()] = $player;
+            
+        if($fme->getChatMode() === ChatMode::PUBLIC) {
+            $format = Relation::getColorTo($fme, $player->getFaction())  . $fme->getFaction()->getTag() . " " . TF::WHITE . sprintf($event->getFormat(), $event->getPlayer()->getDisplayName(), $event->getMessage());
+        }
+        $event->setFormat($format);
     }
 }

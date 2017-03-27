@@ -19,8 +19,11 @@
 namespace TheDiamondYT\PocketFactions;
 
 use pocketmine\Player;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\struct\ChatMode;
 
 class FPlayer {
 
@@ -30,6 +33,7 @@ class FPlayer {
     
     private $faction;
     private $role;
+    private $chatMode;
     
     public function __construct(Player $player) {
         $this->player = $player;
@@ -42,8 +46,16 @@ class FPlayer {
         return $this->player->getName();
     }
     
-    public function getNameAndTitle(): string {
+    public function getNameAndTitle(FPlayer $him): string {
         return $this->title . " " . $this->getName();
+    }
+    
+    public function getChatMode(): int {
+        return $this->chatMode ?? ChatMode::PUBLIC;
+    }
+    
+    public function setChatMode(int $mode) {
+        $this->chatMode = $mode;
     }
     
     /** 

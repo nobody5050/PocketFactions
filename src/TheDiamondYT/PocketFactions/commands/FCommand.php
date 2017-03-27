@@ -98,29 +98,5 @@ abstract class FCommand {
         return $this->plugin->getCommandManager()->getCommand($label);
     }
     
-    // TODO: move to main class?
-    public function describeTo($thing, FPlayer $me) {
-        if($thing instanceof Faction) {
-            if($thing === $me->getFaction()) {
-                $text = "your faction";
-            } else {
-                $text = $thing->getTag();
-            }
-            return $this->plugin->getColorTo($me, $thing) . $text . TF::YELLOW;
-        }
-        elseif($thing instanceof FPlayer) {
-            if($thing === $me) {
-                $text = "you";
-            }
-            elseif($thing->getFaction() === $me->getFaction()) {
-                $text = $me->getNameAndTitle();
-            } else {
-                $text = $thing->getFaction()->getTag() . " " . $thing->getName();
-            }
-            return $this->plugin->getColorTo($me, $thing->getFaction()) . $text . TF::YELLOW;
-        }
-        return TF::RED . "unknown" . TF::YELLOW;
-    }
-    
     public abstract function execute(CommandSender $sender, $fme, array $args);
 }

@@ -57,6 +57,7 @@ class FCommandManager extends PluginCommand {
             }
             $command->execute($sender, $this->plugin->getPlayer($sender), $args);
         } else {
+            // TODO: better solution
             $this->getCommand("help")->execute($sender, $this->plugin->getPlayer($sender), $args);
         }
     }

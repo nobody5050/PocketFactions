@@ -48,6 +48,6 @@ class CommandDescription extends FCommand {
         
         // TODO: make this nicer?
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("desc.success", [$this->describeTo($fme, $player), $this->describeTo($fme->getFaction(), $fme), implode(" ", $args)]));
+            $this->msg($player, $this->plugin->translate("desc.success", [$this->plugin->describeTo($fme, $player), $this->plugin->describeTo($fme->getFaction(), $fme), implode(" ", $args)]));
     }
 }

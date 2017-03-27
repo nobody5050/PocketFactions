@@ -55,16 +55,17 @@ class YamlProvider implements Provider {
     private function checkDefaultFactions() {
         if(!$this->factionExists("Wilderness")) {
             $faction = new Faction;
+            $faction->create();
             $faction->setTag("Wilderness");
             $faction->setPermanent(true);
             $this->createFaction($faction);
         }
         if(!$this->factionExists("WarZone")) {
             $faction = new Faction;
+            $faction->create();
             $faction->setTag("WarZone");
             $faction->setDescription("Not the safest place to be.");
             $faction->setPermanent(true);
-            $this->createFaction($faction); // or $faction->create()? idk this seems quicker
         }
     }
     
@@ -84,6 +85,10 @@ class YamlProvider implements Provider {
     
     public function addPlayer(Player $player) {
         $this->fplayers[$player->getName()] = new FPlayer($player);
+    }
+    
+    public function removePlayer(Player $player) {
+        unset($this->fplayers[$player->getName()]);
     }
     
     public function getFaction(string $faction) {

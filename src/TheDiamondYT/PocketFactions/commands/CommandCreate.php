@@ -65,7 +65,7 @@ class CommandCreate extends FCommand {
         
         // TODO: make this nicer?
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("create.success", [$this->describeTo($fme, $player), $this->plugin->getColorTo($fme, $faction) . $args[0]]));
+            $this->msg($player, $this->plugin->translate("create.success", [$this->plugin->describeTo($fme, $player), $this->plugin->getColorTo($fme, $faction) . $args[0]]));
             
         $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
         

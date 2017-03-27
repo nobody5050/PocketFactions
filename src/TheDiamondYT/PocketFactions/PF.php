@@ -30,6 +30,7 @@ use TheDiamondYT\PocketFactions\provider\YamlProvider;
 use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\commands\FCommandManager;
 use TheDiamondYT\PocketFactions\listeners\FPlayerListener;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
 class PF extends PluginBase {
 
@@ -149,14 +150,34 @@ class PF extends PluginBase {
 	}
 	
 	/**
-	 * Get colour to another player (That totally made sense).
+	 * TODO: remove
 	 */
 	public function getColorTo($me, $him) {
-        if($me->getFaction() === $him) {
-            $colour = TF::GREEN;
-        } else {
-            $colour = TF::WHITE;
+        return Relation::getColorTo($me, $him);
+    }
+   
+    // TODO: move to Relation and fix format
+    public function describeTo($thing, FPlayer $me) {
+        $colour = TF::YELLOW;
+        if($thing instanceof Faction) {
+            if($thing === $me->getFaction()) {
+                $text = "your faction";
+            } else {
+                $text = $thing->getTag();
+            }
+            return $this->getColorTo($me, $thing) . $text . $colour;
         }
-        return $colour;
+        elseif($thing instanceof FPlayer) {
+            if($thing === $me) {
+                $text = "you";
+            }
+            elseif($thing->getFaction() === $me->getFaction()) {
+                $text = TF::GREEN . $me->getNameAndTitle($thing); 
+            } else {
+                $text = $me->getName();
+            }
+            return $this->getColorTo($me, $thing->getFaction()) . $text . $colour;
+        }
+        return TF::RED . "unknown" . TF::YELLOW;
     }
 }
