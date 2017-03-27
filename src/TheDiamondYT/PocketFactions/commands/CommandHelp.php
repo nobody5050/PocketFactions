@@ -19,17 +19,38 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
 
-class CommandVersion extends FCommand {
+class CommandHelp extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "version", $plugin->translate("version.desc"), ["ver", "v"]);
+        parent::__construct($plugin, "help", $plugin->translate("help.desc"), ["h"]);
+        $this->setArgs($plugin->translate("help.args"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $this->msg($sender, $this->plugin->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
+        if(count($args) === 0) {
+            $page = 1;
+        } 
+        elseif(is_numeric($args[0])) {
+            $page = (int) array_shift($args);
+            if($page <= 0)
+                $page = 1;
+        } else {
+            return false;
+        }
+        $commands = [];
+        foreach($this->plugin->getCommandManager()->getCommands() as $command) 
+            $commands[$command->getName()] = $command;
+        
+        ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
+        $commands = array_chunk($commands, 5);
+        $page = (int) min(count($commands), $page);
+        $this->msg($sender, $this->plugin->translate("help.header", [$page, count($commands)]));
+        foreach($commands[$page - 1] as $command)
+            $this->msg($sender, $command->getUsage() . " " . TF::YELLOW . $command->getDescription());
     }
 }

@@ -70,6 +70,6 @@ class CommandCreate extends FCommand {
         $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
         
         if($this->cfg["faction"]["create"]["log"] === true)
-            PF::log($sender->getName() . " created a new faction " . $args[0]); // Not even gonna do translations
+            PF::log(TF::GRAY . $sender->getName() . " created a new faction " . $args[0]); // Not even gonna do translations
     }
 }
