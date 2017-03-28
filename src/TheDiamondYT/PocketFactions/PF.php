@@ -78,7 +78,7 @@ class PF extends PluginBase {
 	    $this->setProvider();
 	    $this->provider->loadFactions();
 	    $this->provider->loadPlayers();
-	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2)]));
+	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
 	}
 	
 	private function setProvider() {

@@ -45,8 +45,9 @@ class YamlProvider implements Provider {
         $this->checkDefaultFactions();
         foreach($this->fdata->getAll() as $facs) {
             $faction = new Faction;
-            $faction->setTag($facs["tag"]);
-            $faction->setDescription($facs["desc"]);
+            $faction->setTag($facs["tag"], false);
+            $faction->setDescription($facs["desc"] ?? "", false);
+            //$faction->setLeader($this->getPlayer($this->plugin->getServer()->getPlayer($facs["leader"])), false); 
             $this->factions[$faction->getId()] = $faction;
         }
     }
@@ -58,7 +59,6 @@ class YamlProvider implements Provider {
             $faction->create();
             $faction->setTag("Wilderness");
             $faction->setPermanent(true);
-            $this->createFaction($faction);
         }
         if(!$this->factionExists("WarZone")) {
             $faction = new Faction;
@@ -103,7 +103,8 @@ class YamlProvider implements Provider {
     }
     
     public function disbandFaction(Faction $faction) {
-        // I have no idea how to do this
+        unset($this->factions[$faction->getId()]);
+        // TODO: remove from file too, but idk how
     }
     
     public function setFactionTag(Faction $faction) {

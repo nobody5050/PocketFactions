@@ -52,20 +52,24 @@ class Faction {
      * Set the faction tag.
      *
      * @param string
+     * @param bool
      */
-    public function setTag(string $tag) {
+    public function setTag(string $tag, bool $update = true) {
         $this->tag = $tag;
-        PF::get()->getProvider()->setFactionTag($this);
+        if($update)
+            PF::get()->getProvider()->setFactionTag($this);
     }
     
     /**
      * Set the faction description.
      *
      * @param string
+     * @param bool
      */
-    public function setDescription(string $description) {
+    public function setDescription(string $description, bool $update = true) {
         $this->description = $description;
-        PF::get()->getProvider()->setFactionDescription($this);
+        if($update)
+            PF::get()->getProvider()->setFactionDescription($this);
     }
     
     /**
@@ -123,10 +127,12 @@ class Faction {
      * Set the faction leader.
      *
      * @param FPlayer
+     * @param bool
      */
-    public function setLeader(FPlayer $player) {
+    public function setLeader(FPlayer $player, bool $update = true) {
         $this->leader = $player;
-        PF::get()->getProvider()->setFactionLeader($this);
+        if($update)
+            PF::get()->getProvider()->setFactionLeader($this);
     }
     
     /** 
