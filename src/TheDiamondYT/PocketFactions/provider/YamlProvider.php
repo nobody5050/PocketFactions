@@ -42,30 +42,12 @@ class YamlProvider implements Provider {
     }
     
     public function loadFactions() {
-        $this->checkDefaultFactions();
         foreach($this->fdata->getAll() as $facs) {
             $faction = new Faction;
             $faction->setTag($facs["tag"], false);
             $faction->setDescription($facs["desc"] ?? "", false);
             //$faction->setLeader($this->getPlayer($this->plugin->getServer()->getPlayer($facs["leader"])), false); 
             $this->factions[$faction->getId()] = $faction;
-        }
-    }
-    
-    // TODO: move to main class?
-    private function checkDefaultFactions() {
-        if(!$this->factionExists("Wilderness")) {
-            $faction = new Faction;
-            $faction->create();
-            $faction->setTag("Wilderness");
-            $faction->setPermanent(true);
-        }
-        if(!$this->factionExists("WarZone")) {
-            $faction = new Faction;
-            $faction->create();
-            $faction->setTag("WarZone");
-            $faction->setDescription("Not the safest place to be.");
-            $faction->setPermanent(true);
         }
     }
     

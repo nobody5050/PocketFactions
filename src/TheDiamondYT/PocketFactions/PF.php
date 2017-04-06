@@ -78,9 +78,34 @@ class PF extends PluginBase {
 	    $this->setProvider();
 	    $this->provider->loadFactions();
 	    $this->provider->loadPlayers();
+	    $this->checkFactions();
 	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
 	}
 	
+	/**
+	 * Checks if the default factions are created. 
+	 * If not, create them.
+	 */
+	private function checkFactions() {
+        if(!$this->factionExists("Wilderness")) {
+            $faction = new Faction;
+            $faction->create();
+            $faction->setTag("Wilderness");
+            $faction->setPermanent(true);
+        }
+        if(!$this->factionExists("WarZone")) {
+            $faction = new Faction;
+            $faction->create();
+            $faction->setTag("WarZone");
+            $faction->setDescription("Not the safest place to be.");
+            $faction->setPermanent(true);
+        }
+	}
+	
+	/**
+	 * Sets the data provider for the plugin.
+	 * TODO: Allow custom providers.
+	 */
 	private function setProvider() {
 	    switch($this->cfg["provider"]) { 
 	        case "sqlite":
@@ -120,7 +145,7 @@ class PF extends PluginBase {
 	}
 	
 	/**
-	 * TODO: im bad at docs :/
+	 * Returns an faction player.
 	 *
 	 * @param CommandSender|Player
 	 * @return FPlayer|null
