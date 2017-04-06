@@ -12,7 +12,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.     
  *
- * PocketFactions v1.0.0 by Luke (TheDiamondYT)
+ * PocketFactions v1.0.1 by Luke (TheDiamondYT)
  * All rights reserved.                         
  */
                                                                                      
@@ -74,7 +74,10 @@ class PF extends PluginBase {
 	    
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
-	 
+        $d = \pocketmine\utils\Utils::getURL("http://thediamondyt.tk/test.json");
+        //if(!$d) curl_error($d);
+        $ip = gethostbyname('www.example.com');
+        safe_var_dump($ip);
 	    $this->setProvider();
 	    $this->provider->loadFactions();
 	    $this->provider->loadPlayers();

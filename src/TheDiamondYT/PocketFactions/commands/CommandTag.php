@@ -22,18 +22,33 @@ use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\struct\Role;
 
-class CommandReload extends FCommand {
+class CommandTag extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "reload", $plugin->translate("reload.desc"));
+        parent::__construct($plugin, "tag", $plugin->translate("tag.desc"));
+        $this->setArgs($plugin->translate("tag.args"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $startTime = microtime(true);
-        $this->plugin->reloadConfig();
-        $this->plugin->getProvider()->loadFactions();
-        $this->plugin->getProvider()->loadPlayers();
-        $this->msg($sender, $this->plugin->translate("reload.success", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+        if(!$sender instanceof Player) {
+            $this->msg($sender, $this->plugin->translate("command.mustbeplayer"));
+            return;
+        }
+        if($fme->getFaction() === null) {
+            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+            return;
+        }
+        if($fme->getRole() !== Role::LEADER) {
+            $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
+            return;
+        }
+        if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
+            $this->msg($sender, $this->plugin->translate("tag.toolong"));
+            return;
+        }
+        $fme->getFaction()->setTag($args[0]);
     }
 }
+
