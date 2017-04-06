@@ -74,10 +74,7 @@ class PF extends PluginBase {
 	    
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
-        $d = \pocketmine\utils\Utils::getURL("http://thediamondyt.tk/test.json");
-        //if(!$d) curl_error($d);
-        $ip = gethostbyname('www.example.com');
-        safe_var_dump($ip);
+
 	    $this->setProvider();
 	    $this->provider->loadFactions();
 	    $this->provider->loadPlayers();
@@ -126,7 +123,7 @@ class PF extends PluginBase {
 	 * TODO: im bad at docs :/
 	 *
 	 * @param CommandSender|Player
-	 * @return Provider::getPlayer()|null
+	 * @return FPlayer|null
 	 */
 	public function getPlayer($player) {
 	    if($player instanceof Player)
@@ -136,7 +133,7 @@ class PF extends PluginBase {
 	} 
 	
 	/**
-	 * @return string
+	 * @return bool 
 	 */
 	public function factionExists(string $faction) {
 	    return $this->provider->factionExists($faction);
@@ -145,11 +142,11 @@ class PF extends PluginBase {
 	/**
 	 * Translates a message.
 	 *
-	 * @param string
-	 * @param array
+	 * @param string 
+	 * @param array 
 	 */
 	public function translate(string $text, array $params = []) {
-	    return $this->language->translateString($text, $params, null); // Do i really need a return statement?
+	    return $this->language->translateString($text, $params, null); 
 	}
 	
 	/**
