@@ -1,10 +1,15 @@
 # PocketFactions
 A full-featured Factions plugin for [PocketMine-MP](https://github.com/pmmp/PocketMine-MP).
 
+![screenshot](screenshot.png)
+
 # What works?
 
 * Creating factions
 * Changing faction description
+* Changing faction leader
+* Basic faction chat
+* 
 
 I put a ton of work into this to make it as close to [PC Factions](https://github.com/MassiveCraft/Factions) (The old version, not the s**t new one).
 So please, give the repo a star.
@@ -19,6 +24,7 @@ Stalk my social media, please.
 * [PocketMine Forums](https://forums.pmmp.io/members/thediamondyt.622/)  
 * [Instagram](https://instagram.com/bruhitzzluke)  
 * [Snapchat (lukedabs21)](http://snapchat.com/add/lukedabs21)   
+* MCPE Username: TheDiamondYT7
   
 ## Credit
 The command code is based off (but not completely copied from) [MyPlot](https://github.com/wiez/MyPlot) by Wies. Thank you!

@@ -24,12 +24,12 @@ class ChatMode {
     const ALLY = 2;
     
     /**
-     * Returns a faction chat mod as a string
+     * Returns a faction chat mode as a string
      *
      * @param int
      * @return string
      */
-    public static function byName($chat) {
+    public static function byName(int $chat): string {
         switch($chat) {
             case ChatMode::PUBLIC:
                 return "public";

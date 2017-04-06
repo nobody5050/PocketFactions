@@ -30,7 +30,7 @@ class Role {
      * @param int
      * @return string
      */
-    public static function byName($role) {
+    public static function byName(int $role): string {
         switch($role) {
             case Role::MEMBER:
                 return "member";

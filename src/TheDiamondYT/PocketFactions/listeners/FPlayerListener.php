@@ -46,13 +46,17 @@ class FPlayerListener implements Listener {
     
     public function onPlayerChat(PlayerChatEvent $event) {
         $fme = $this->plugin->getPlayer($event->getPlayer());
-        $players = [];
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
-            $players[$player->getName()] = $player;
-            
-        if($fme->getChatMode() === ChatMode::PUBLIC) {
-            $format = Relation::getColorTo($fme, $player->getFaction())  . $fme->getFaction()->getTag() . " " . TF::WHITE . sprintf($event->getFormat(), $event->getPlayer()->getDisplayName(), $event->getMessage());
+            switch($fme->getChatMode()) {
+                case ChatMode::PUBLIC:
+                    return;
+                case ChatMode::FACTION:
+                    $colour = TF::GREEN;
+                    break;
+                case ChatMode::ALLY:
+                    $colour = TF::PURPLE;
+            }
+            $event->setCancelled(true);
+            $this->plugin->getServer()->broadcastMessage($colour . $fme->getTitle() . " " . $fme->getName() . " " . $event->getMessage());
         }
-        $event->setFormat($format);
-    }
 }

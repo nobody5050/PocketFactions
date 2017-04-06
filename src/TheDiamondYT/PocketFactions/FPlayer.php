@@ -46,10 +46,6 @@ class FPlayer {
         return $this->player->getName();
     }
     
-    public function getNameAndTitle(FPlayer $him): string {
-        return $this->title . " " . $this->getName();
-    }
-    
     public function getChatMode(): int {
         return $this->chatMode ?? ChatMode::PUBLIC;
     }
@@ -68,10 +64,19 @@ class FPlayer {
     }
   
     /**
+     * TODO: tidy this up?
+     *
      * @return string
      */
     public function getTitle(): string {
-        return $this->title;
+        if($this->role === Role::LEADER)
+            $prefix = "**";
+        elseif($this->role === Role::MODERATOR)
+            $prefix = "*";
+        elseif($this->role === Role::MEMBER)
+            $prefix = "";
+            
+        return $prefix . $this->title ?? $prefix;
     }
     
     public function msg(string $text) {
