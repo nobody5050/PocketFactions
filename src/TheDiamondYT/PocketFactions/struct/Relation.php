@@ -18,6 +18,9 @@
  
 namespace TheDiamondYT\PocketFactions\struct;
 
+use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\FPlayer;
+
 use pocketmine\utils\TextFormat as TF;
 
 class Relation {
@@ -26,12 +29,33 @@ class Relation {
     const ALLY = 2;
     const ENEMY = 3;
     
-   public static function getColorTo($me, $him) {
-       if($me->getFaction() === $him) {
-           $colour = TF::GREEN;
-       } else {
-           $colour = TF::WHITE;
-       }
-       return $colour;
-   }
+    public static function describeToPlayer($me, $him) {
+        if($me === $him) {
+            $text= "you";
+        }
+        elseif($me->getFaction() === $him->getFaction()) {
+            $text = TF::GREEN . $me->getTitle() . " " . $me->getName();
+        } else {
+            $text = $me->getName();
+        }
+        return Relation::getColorTo($me, $him) . $text . TF::YELLOW;
+    }
+   
+    public static function describeToFaction($me, $him) {
+        if($me->getFaction() === $him->getFaction()) {
+            $text = "your faction";
+        } else {
+            $text = $faction->getTag();
+        }
+        return Relation::getColorTo($me, $him) . $text . TF::YELLOW;
+    }
+    
+    public static function getColorTo($me, $him) {
+        if($me->getFaction() === $him->getFaction()) {
+            $colour = TF::GREEN;
+        } else {
+            $colour = TF::WHITE;
+        }
+        return $colour;
+    }
 }

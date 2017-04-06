@@ -88,8 +88,6 @@ class FPlayer {
             throw new \Exception("Error when setting fplayer role: invalid role '$role'");
         
         $this->role = $role;
-        if($role === Role::LEADER)
-            $this->faction->setLeader($this);
     }
     
     /**

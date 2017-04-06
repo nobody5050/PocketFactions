@@ -26,6 +26,7 @@ use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
 class CommandCreate extends FCommand {
 
@@ -63,9 +64,8 @@ class CommandCreate extends FCommand {
         $fme->setRole(Role::LEADER);
         $fme->setFaction($faction);
         
-        // TODO: make this nicer?
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("create.success", [$this->plugin->describeTo($fme, $player), $this->plugin->getColorTo($fme, $faction) . $args[0]]));
+            $this->msg($player, $this->plugin->translate("create.success", [Relation::describeToPlayer($fme, $player), Relation::getColorTo($fme, $player) . $args[0]]));
             
         $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
         

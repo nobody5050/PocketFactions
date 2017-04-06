@@ -109,7 +109,7 @@ class Faction {
      */
     public function addPlayer(FPlayer $player) {
         if($player->getRole() === Role::LEADER) 
-            $this->leader = $player;
+            $this->setLeader($player);
             
         $this->players[$player->getName()] = $player;
     }

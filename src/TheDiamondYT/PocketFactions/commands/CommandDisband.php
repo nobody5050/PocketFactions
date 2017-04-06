@@ -48,17 +48,14 @@ class CommandDisband extends FCommand {
             $this->msg($sender, $this->plugin->translate("disband.ispermanent"));
             return;
         }
-        $myfaction = $fme->getFaction();
-        $players = $myfaction->getOnlinePlayers();
+        $faction = $fme->getFaction();
         
         //$this->plugin->disbandFaction($myfaction);
 
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            if($player->getFaction() !== $myfaction)
-                $this->msg($player, $this->plugin->translate("disband.success"));
-        }
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+            $this->msg($player, $this->plugin->translate("disband.success"));
         
         if($this->cfg["faction"]["disband"]["log"] === true) 
-            PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $myfaction->getName());
+            PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());
     }
 }

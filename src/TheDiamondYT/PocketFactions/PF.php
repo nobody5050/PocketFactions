@@ -148,36 +148,4 @@ class PF extends PluginBase {
 	public function translate(string $text, array $params = []) {
 	    return $this->language->translateString($text, $params, null); 
 	}
-	
-	/**
-	 * TODO: remove
-	 */
-	public function getColorTo($me, $him) {
-        return Relation::getColorTo($me, $him);
-    }
-   
-    // TODO: move to Relation and fix format
-    public function describeTo($thing, FPlayer $me) {
-        $colour = TF::YELLOW;
-        if($thing instanceof Faction) {
-            if($thing === $me->getFaction()) {
-                $text = "your faction";
-            } else {
-                $text = $thing->getTag();
-            }
-            return $this->getColorTo($me, $thing) . $text . $colour;
-        }
-        elseif($thing instanceof FPlayer) {
-            if($thing === $me) {
-                $text = "you";
-            }
-            elseif($thing->getFaction() === $me->getFaction()) {
-                $text = TF::GREEN . $me->getNameAndTitle($thing); 
-            } else {
-                $text = $me->getName();
-            }
-            return $this->getColorTo($me, $thing->getFaction()) . $text . $colour;
-        }
-        return TF::RED . "unknown" . TF::YELLOW;
-    }
 }

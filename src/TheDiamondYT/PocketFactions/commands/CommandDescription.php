@@ -26,6 +26,7 @@ use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
 class CommandDescription extends FCommand {
 
@@ -46,9 +47,8 @@ class CommandDescription extends FCommand {
         
         $fme->getFaction()->setDescription(implode(" ", $args));
         
-        // TODO: make this nicer?
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
             if($player->getFaction() === $fme->getFaction())
-                $this->msg($player, $this->plugin->translate("desc.success", [$this->plugin->describeTo($fme, $player), $this->plugin->describeTo($fme->getFaction(), $fme), implode(" ", $args)]));
+                $this->msg($player, $this->plugin->translate("desc.success", [Relation::describeToPlayer($fme, $player), Relation::getColorTo($fme, $player), implode(" ", $args)]));
     }
 }
