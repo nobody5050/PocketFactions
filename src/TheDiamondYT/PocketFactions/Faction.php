@@ -18,27 +18,43 @@
  
 namespace TheDiamondYT\PocketFactions;
 
+use pocketmine\utils\UUID;
+
 use TheDiamondYT\PocketFactions\struct\Role;
 
 /**
  * Represents a Faction.
- *
- * TODO: SOMEHOW REMOVE THE UGLY STATIC METHODS
  */
 class Faction {
 
-    private $provider;
-
+    private $id;
     private $tag;
-    private $description = "";
+    private $description;
     private $leader;
     
     private $permanent = false;
     
     private $players = [];
     
+    /**
+     * Constructor.
+     * TODO: check if the id exists.
+     *
+     * @param string|(nothing)
+     */
+    public function __construct(string $uuid = "") {
+        if($uuid === "") {
+            $this->id = UUID::fromRandom()->toString(); 
+            return;
+        }
+        $this->id = $uuid;
+    }
+    
+    /**
+     * @return string
+     */
     public function getId() {
-        return strtolower($this->tag); // TODO: numeric id?
+        return $this->id;
     }
     
     /**
@@ -76,7 +92,7 @@ class Faction {
      * @return string
      */
     public function getDescription() {
-        return $this->description;
+        return $this->description ?? "Default faction description :(";
     }
     
     /**
@@ -92,7 +108,7 @@ class Faction {
      * @return bool
      */
     public function isPermanent() {
-        return $this->permanent === true;
+        return $this->permanent;
     }
     
     /**
@@ -147,5 +163,12 @@ class Faction {
      */
     public function create() {
         PF::get()->getProvider()->createFaction($this);
+    }
+    
+    /**
+     * Disbands the current faction.
+     */
+    public function disband() {
+        PF::get()->getProvider()->disbandFaction($this);
     }
 }

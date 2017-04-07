@@ -42,12 +42,12 @@ class YamlProvider implements Provider {
     }
     
     public function loadFactions() {
-        foreach($this->fdata->getAll() as $facs) {
-            $faction = new Faction;
+        foreach($this->fdata->getAll() as $id => $facs) {
+            $faction = new Faction($id); 
             $faction->setTag($facs["tag"], false);
             $faction->setDescription($facs["desc"] ?? "", false);
             //$faction->setLeader($this->getPlayer($this->plugin->getServer()->getPlayer($facs["leader"])), false); 
-            $this->factions[$faction->getId()] = $faction;
+            $this->factions[$id] = $faction;
         }
     }
     
@@ -73,15 +73,18 @@ class YamlProvider implements Provider {
         unset($this->fplayers[$player->getName()]);
     }
     
-    public function getFaction(string $faction) {
-        if(!$this->factionExists($faction)) 
+    public function getFaction(string $tag) {
+        if(!$this->factionExists($tag)) // Is this even needed?
             return null;
-                  
-        return $this->factions[strtolower($faction)];
+        
+        foreach($this->factions as $facs) {
+            if($facs->getTag() === $tag)
+                return $this->factions[$facs->getId()];
+        }
     }
 
     public function createFaction(Faction $faction) {
-        $this->factions[$faction->getId()] = $faction; // TODO: numeric id instead of tag?
+        $this->factions[$faction->getId()] = $faction; 
     }
     
     public function disbandFaction(Faction $faction) {
@@ -104,7 +107,11 @@ class YamlProvider implements Provider {
         $this->fdata->save();
     }
     
-    public function factionExists(string $faction) {
-        return isset($this->fdata->getAll()[strtolower($faction)]);
+    public function factionExists(string $faction): bool {
+        foreach($this->factions as $facs) {
+            if($facs->getTag() === $faction)
+                return true;
+        }
+        return false;
     }
 }

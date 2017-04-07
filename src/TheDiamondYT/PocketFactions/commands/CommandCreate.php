@@ -56,10 +56,9 @@ class CommandCreate extends FCommand {
             $this->msg($sender, $this->plugin->translate("tag.toolong")); 
             return;
         }
-        $faction = new Faction;
+        $faction = new Faction();
         $faction->create();
         $faction->setTag($args[0]); 
-        $faction->setDescription("Default faction description :(");
         
         $fme->setRole(Role::LEADER);
         $fme->setFaction($faction);

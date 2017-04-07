@@ -57,7 +57,6 @@ class PF extends PluginBase {
    
     /**
      * Log a message to the console.
-     * WHY DID I MAKE THIS STATIC LOL
      *
      * @param string
      */
@@ -65,6 +64,7 @@ class PF extends PluginBase {
         Server::getInstance()->getLogger()->info("§b[§dPocketFactions§b]§e $text");
     }
 
+    // TODO: cleanup
 	public function onEnable() {
 	    $startTime = microtime(true);
 	    $this->saveResource("config.yml");
@@ -85,16 +85,18 @@ class PF extends PluginBase {
 	/**
 	 * Checks if the default factions are created. 
 	 * If not, create them.
+	 *
+	 * TODO: set faction id in config
 	 */
 	private function checkFactions() {
         if(!$this->factionExists("Wilderness")) {
-            $faction = new Faction;
+            $faction = new Faction("7a3ee880-46ba-38df-844e-e073ad0713d4");
             $faction->create();
             $faction->setTag("Wilderness");
             $faction->setPermanent(true);
         }
         if(!$this->factionExists("WarZone")) {
-            $faction = new Faction;
+            $faction = new Faction("4aacbf95-ac8b-3f68-898a-372ee8a818e3");
             $faction->create();
             $faction->setTag("WarZone");
             $faction->setDescription("Not the safest place to be.");
@@ -158,6 +160,7 @@ class PF extends PluginBase {
 	} 
 	
 	/**
+	 * @param string
 	 * @return bool 
 	 */
 	public function factionExists(string $faction) {

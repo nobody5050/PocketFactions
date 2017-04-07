@@ -40,8 +40,12 @@ class CommandTag extends FCommand {
             $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
         }
-        if($fme->getRole() !== Role::LEADER) {
+        if(!$fme->isLeader()) {
             $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
+            return;
+        }
+        if(empty($args)) {
+            $this->msg($sender, $this->getUsage());
             return;
         }
         if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {

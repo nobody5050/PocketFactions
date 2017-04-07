@@ -25,6 +25,9 @@ use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
 
+/**
+ * Represents a faction player.
+ */
 class FPlayer {
 
     private $player;
@@ -35,6 +38,11 @@ class FPlayer {
     private $role;
     private $chatMode;
     
+    /**
+     * Constructor.
+     * 
+     * @param Player 
+     */
     public function __construct(Player $player) {
         $this->player = $player;
     }
@@ -46,11 +54,22 @@ class FPlayer {
         return $this->player->getName();
     }
     
+    /**
+     * @return int
+     */
     public function getChatMode(): int {
         return $this->chatMode ?? ChatMode::PUBLIC;
     }
     
+    /**
+     * Sets the players chat mode.
+     *
+     * @param int
+     */
     public function setChatMode(int $mode) {
+        if(ChatMode::byName($mode) === "unknown")
+            throw new \Exception("Invalid chat mode '$mode'");
+            
         $this->chatMode = $mode;
     }
     
@@ -79,8 +98,13 @@ class FPlayer {
         return $prefix . $this->title ?? $prefix;
     }
     
+    /**
+     * Sends a message to the player.
+     *
+     * @param string
+     */
     public function msg(string $text) {
-        $this->player->sendMessage($text);
+        $this->player->sendMessage(TF::YELLOW . $text);
     }
     
     /**
@@ -90,7 +114,7 @@ class FPlayer {
      */
     public function setRole($role) {
         if(Role::byName($role) === "unknown")
-            throw new \Exception("Error when setting fplayer role: invalid role '$role'");
+            throw new \Exception("Invalid role '$role'");
         
         $this->role = $role;
     }
@@ -103,19 +127,40 @@ class FPlayer {
     }
     
     /**
+     * @return bool
+     */
+    public function isLeader(): bool {
+        return $this->role === Role::LEADER;
+    }
+    
+    /**
      * Sets the players faction.
      *
      * @param Faction 
      */
     public function setFaction(Faction $faction) { 
-        if($this->getFaction() !== null)
-            $this->getFaction()->removePlayer($this);
+        if($this->faction !== null)
+            $this->faction->removePlayer($this);
             
         $faction->addPlayer($this); 
         $this->faction = $faction;
     }
     
     /**
+     * Leave the current faction.
+     */
+    public function leaveFaction() {
+        if(!$this->permanent && $this->isLeader()){
+            $this->msg(PF::get()->translate("player.mustgiveleader"));
+            return;
+        } 
+        $this->faction->removePlayer($this);
+        $this->faction = null;
+    }
+    
+    /**
+     * TODO: if null, return wilderness faction.
+     *
      * @return Faction|null
      */
     public function getFaction() {     

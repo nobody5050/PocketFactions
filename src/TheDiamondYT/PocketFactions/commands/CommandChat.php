@@ -54,7 +54,7 @@ class CommandChat extends FCommand {
             case "p":
             case "public":
                 $mode = ChatMode::PUBLIC;
-                $text = "Public only chat mode.";
+                $text = "Public chat mode.";
                 break;
             case "f":
             case "faction":
