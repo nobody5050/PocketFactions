@@ -37,7 +37,8 @@ class FPlayerListener implements Listener {
     }
     
     public function onPlayerJoin(PlayerJoinEvent $event) {
-        $this->plugin->getProvider()->addPlayer($event->getPlayer());
+        if(!$this->plugin->getProvider()->playerExists($event->getPlayer()->getName()))
+            $this->plugin->getProvider()->addPlayer($event->getPlayer());
     }
     
     public function onPlayerQuit(PlayerQuitEvent $event) {

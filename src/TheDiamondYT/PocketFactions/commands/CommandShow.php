@@ -42,9 +42,12 @@ class CommandShow extends FCommand {
         $this->sender = $sender;
         $faction = $fme->getFaction();
         if(!empty($args)) {
-            $faction = $this->plugin->getFaction($args[0]);
-            if($faction === null)
-                $faction = $fme->getFaction(); // just show our faction
+            $faction = $this->plugin->getFaction($args[0]); // check for faction
+            if($faction === null)  {
+                $faction = ($p = $this->plugin->getPlayer($args[0]))->getFaction(); // check for player
+                if($p === null)
+                    $faction = $fme->getFaction();  // just return our faction if not found
+            }
         }    
         $long = $this->cfg["faction"]["show"]["longHeader"];
         $this->msg($sender, $this->plugin->translate($long ? "show.header.long" : "show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));

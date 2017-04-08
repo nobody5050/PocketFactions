@@ -40,12 +40,7 @@ class FPlayer {
     
     private $adminBypassing = false;
     
-    /**
-     * Constructor.
-     * 
-     * @param Player 
-     */
-    public function __construct(Player $player) {
+    public function setPlayer(Player $player) {
         $this->player = $player;
     }
     
@@ -57,7 +52,7 @@ class FPlayer {
      * @return string
      */
     public function getName(): string {
-        return $this->player->getName();
+        return $this->player === null ? "Unknown" : $this->player->getName();
     }
     
     /**
@@ -110,7 +105,8 @@ class FPlayer {
      * @param string
      */
     public function msg(string $text) {
-        $this->player->sendMessage(TF::YELLOW . $text);
+        if($this->player !== null)
+            $this->player->sendMessage(TF::YELLOW . $text);
     }
     
     /**
@@ -160,12 +156,14 @@ class FPlayer {
      *
      * @param Faction 
      */
-    public function setFaction(Faction $faction) { 
+    public function setFaction(Faction $faction, bool $update = true) { 
         if($this->faction !== null)
             $this->faction->removePlayer($this);
             
         $faction->addPlayer($this); 
-        $this->faction = $faction;
+        $this->faction = $faction; 
+        if($update)
+            PF::get()->getProvider()->setPlayerFaction($this);
     }
     
     /**

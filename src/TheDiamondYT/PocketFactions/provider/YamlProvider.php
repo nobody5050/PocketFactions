@@ -52,8 +52,12 @@ class YamlProvider implements Provider {
     }
     
     public function loadPlayers() {
-        foreach($this->pdata->getAll() as $player) {
-            //$this->addPlayer($player);
+        foreach($this->pdata->getAll() as $name => $player) {
+            $p = $this->plugin->getServer()->getPlayer($name);
+            $fplayer = new FPlayer();
+            if($p !== null) $fplayer->setPlayer($p);
+            $fplayer->setFaction($this->getFaction($player["faction"]) ?? $this->getFaction("Wilderness"));
+            $this->fplayers[$name] = $fplayer;
         }
     }
     
@@ -62,13 +66,18 @@ class YamlProvider implements Provider {
     }
     
     public function getPlayer(Player $player) {
+        if(!$this->playerExists($player->getName()))
+            return null;
+            
         return $this->fplayers[$player->getName()];
     }
     
     public function addPlayer(Player $player) {
-        $fplayer = new FPlayer($player);
-        $fplayer->setFaction($this->getFaction("Wilderness")); // TODO: check for faction
+        $fplayer = new FPlayer();
+        $fplayer->setPlayer($player);
+        $fplayer->setFaction($this->getFaction("Wilderness"));
         $this->fplayers[$player->getName()] = $fplayer;
+        $this->setPlayerFaction($fplayer);
     }
     
     public function removePlayer(Player $player) {
@@ -76,7 +85,7 @@ class YamlProvider implements Provider {
     }
     
     public function getFaction(string $tag) {
-        if(!$this->factionExists($tag)) // is this even needed?
+        if(!$this->factionExists($tag)) 
             return null;
         
         foreach($this->factions as $facs) {
@@ -108,6 +117,11 @@ class YamlProvider implements Provider {
     public function setFactionLeader(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".leader", $faction->getLeader()->getName());
         $this->fdata->save();
+    }
+    
+    public function setPlayerFaction(FPlayer $player) {
+        $this->pdata->setNested($player->getName() . ".faction", $player->getFaction()->getTag());
+        $this->pdata->save();
     }
     
     public function factionExists(string $faction): bool {

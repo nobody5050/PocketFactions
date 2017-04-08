@@ -89,8 +89,6 @@ class PF extends PluginBase {
 	/**
 	 * Checks if the default factions are created. 
 	 * If not, create them.
-	 *
-	 * TODO: set faction id in config
 	 */
 	private function checkFactions() {
         if(!$this->factionExists("Wilderness")) {
@@ -110,42 +108,60 @@ class PF extends PluginBase {
 	
 	/**
 	 * Sets the data provider for the plugin.
-	 * TODO: Allow custom providers.
+	 *
+	 * @param Provider
 	 */
-	private function setProvider() {
-	    switch($this->cfg["provider"]) { 
-	        case "sqlite":
-	            if(!extension_loaded("sqlite3")) {
-	                self::log("Unable to find the SQLite3 exstension. Setting data provider to yaml.");
-	                $this->provider = new YamlProvider($this);
-	                return;
-	            }
-	            $provider = new SQLiteProvider($this);
-	            break;
-	        case "yaml":
-	            $provider = new YamlProvider($this);
-	            break;
-	        default:
-	            $provider = new YamlProvider($this);
-	            break;
+	public function setProvider($provider = null) {
+	    if($provider === null) {
+	        switch($this->cfg["provider"]) { 
+	            case "sqlite":
+	                if(!extension_loaded("sqlite3")) {
+	                    self::log("Unable to find the SQLite3 exstension. Setting data provider to yaml.");
+	                    $this->provider = new YamlProvider($this);
+	                    return;
+	                }
+	                $provider = new SQLiteProvider($this);
+	                break;
+	            case "yaml":
+	                $provider = new YamlProvider($this);
+	                break;
+	            default:
+	                $provider = new YamlProvider($this);
+	                break;
+	        }
 	    }
-	    // This check is to allow custom data providers in the future
+	    // This check is to allow custom data providers
 	    if($provider instanceof Provider) 
 	        $this->provider = $provider;
 	}
 	
+	/**
+	 * @return FCommandManager
+	 */
 	public function getCommandManager(): FCommandManager {
 	    return $this->fcommandManager;
 	}
 	
-	public function getProvider() {
+	/**
+	 * @return Provider
+	 */
+	public function getProvider(): Provider {
 	    return $this->provider;
 	}
 	
-	public function getConfig() {
+	/**
+	 * @return array
+	 */
+	public function getConfig(): array {
 	    return $this->cfg;
 	}
-	
+
+    /**
+     * Returns a faction from its tag.
+     *
+     * @param string
+     * @return Faction|null
+     */
 	public function getFaction(string $faction) {      
 	    return $this->provider->getFaction($faction);
 	}
@@ -169,6 +185,14 @@ class PF extends PluginBase {
 	 */
 	public function factionExists(string $faction) {
 	    return $this->provider->factionExists($faction);
+	}
+	
+	/** 
+	 * @param string
+	 * @return bool
+	 */
+	public function playerExists(string $player) {
+	    return $this->provider->playerExists($player);
 	}
 	
 	/**

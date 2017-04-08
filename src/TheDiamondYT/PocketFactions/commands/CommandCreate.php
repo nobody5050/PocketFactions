@@ -52,6 +52,10 @@ class CommandCreate extends FCommand {
             $this->msg($sender, $this->plugin->translate("tag.exists")); 
             return;
         }
+        if($this->plugin->playerExists($args[0])) {
+            $this->msg($sender, $this->plugin->translate("tag.isplayer"));
+            return;
+        }
         if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
             $this->msg($sender, $this->plugin->translate("tag.toolong")); 
             return;

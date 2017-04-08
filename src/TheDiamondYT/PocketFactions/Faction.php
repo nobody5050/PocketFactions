@@ -169,7 +169,7 @@ class Faction {
     public function addAlliance(Faction $faction, bool $update = true) {
         $this->allies[$faction->getTag()] = $faction; // TODO: use faction id
         //if($update)
-        //    PF::get()->getProvider()->setFactionAlly($this);
+        //    PF::get()->getProvider()->setFactionAlliance($this);
     }
    
    /**
