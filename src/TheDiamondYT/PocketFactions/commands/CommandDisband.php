@@ -24,6 +24,7 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
 class CommandDisband extends FCommand {
 
@@ -32,10 +33,10 @@ class CommandDisband extends FCommand {
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
-            return;
-        }
+        //if(!$sender instanceof Player) {
+        //    $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+        //    return;
+        //}
         if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
@@ -50,10 +51,10 @@ class CommandDisband extends FCommand {
         }
         $faction = $fme->getFaction();
         
-        //$this->plugin->disbandFaction($myfaction);
+        $faction->disband();
 
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("disband.success"));
+            $this->msg($player, $this->plugin->translate("disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));
         
         if($this->cfg["faction"]["logFactionDisband"] === true) 
             PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());

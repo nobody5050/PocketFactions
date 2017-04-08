@@ -74,7 +74,7 @@ class YamlProvider implements Provider {
     }
     
     public function getFaction(string $tag) {
-        if(!$this->factionExists($tag)) // Is this even needed?
+        if(!$this->factionExists($tag)) // is this even needed?
             return null;
         
         foreach($this->factions as $facs) {
@@ -89,7 +89,8 @@ class YamlProvider implements Provider {
     
     public function disbandFaction(Faction $faction) {
         unset($this->factions[$faction->getId()]);
-        // TODO: remove from file too, but idk how
+        $this->fdata->remove($faction->getId());
+        $this->fdata->save();
     }
     
     public function setFactionTag(Faction $faction) {

@@ -40,7 +40,6 @@ class Role {
     
     /**
      * Returns a role from a name.
-     * TODO: remove loop
      *
      * @param string
      * @return int|null
@@ -55,7 +54,6 @@ class Role {
     
     /**
      * Returns true if a role exists.
-     * TODO: remove loop
      *
      * @param string
      * @return bool
