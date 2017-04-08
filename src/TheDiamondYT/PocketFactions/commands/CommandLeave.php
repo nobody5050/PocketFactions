@@ -19,45 +19,35 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\Player;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\struct\ChatMode;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandTag extends FCommand {
+class CommandLeave extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "tag", $plugin->translate("tag.desc"));
-        $this->setArgs($plugin->translate("tag.args"));
+        parent::__construct($plugin, "leave", $plugin->translate("leave.desc"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        //if(!$sender instanceof Player) {
-        //    $this->msg($sender, $this->plugin->translate("command.mustbeplayer"));
-        //    return;
-        //}
+        if(!$sender instanceof Player) {
+            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+            return;
+        }
         if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
-        }
-        if(!$fme->isLeader()) {
-            $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
+        }  
+        if(!$fme->getFaction()->isPermanent() && $fme->isLeader()) {
+            $this->msg($sender, $this->plugin->translate("player.mustgiveleader"));
             return;
         }
-        if(empty($args)) {
-            $this->msg($sender, $this->getUsage());
-            return;
-        }
-        if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
-            $this->msg($sender, $this->plugin->translate("tag.toolong"));
-            return;
-        }
-        
-        $fme->getFaction()->setTag($args[0]);
-        
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
-            $this->msg($sender, $this->plugin->translate("tag.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), $args[0]]));
+        $fme->leaveFaction();
     }
 }
-

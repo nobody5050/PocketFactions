@@ -49,8 +49,8 @@ class Relation {
             $text = "your faction";
         } else {
             $text = $faction->getTag();
-        }
-        return self::getColorToFaction($me, $him) . $text . TF::YELLOW;
+        } 
+        return self::getColorToFaction($me, $him->getFaction()) . $text . TF::YELLOW;
     }
     
     public static function getColorToPlayer($me, $him) {
