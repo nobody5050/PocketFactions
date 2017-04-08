@@ -23,6 +23,9 @@ use TheDiamondYT\PocketFactions\FPlayer;
 
 use pocketmine\utils\TextFormat as TF;
 
+/**
+ * TODO: some SERIOUS cleanup
+ */
 class Relation {
     const NEUTRAL = 0;
     const FACTION = 1;
@@ -31,14 +34,14 @@ class Relation {
     
     public static function describeToPlayer($me, $him) {
         if($me === $him) {
-            $text= "you";
+            $text= "You";
         }
         elseif($me->getFaction() === $him->getFaction()) {
             $text = TF::GREEN . $me->getTitle() . " " . $me->getName();
         } else {
             $text = $me->getName();
         }
-        return Relation::getColorTo($me, $him) . $text . TF::YELLOW;
+        return self::getColorToPlayer($me, $him) . $text . TF::YELLOW;
     }
    
     public static function describeToFaction($me, $him) {
@@ -47,12 +50,25 @@ class Relation {
         } else {
             $text = $faction->getTag();
         }
-        return Relation::getColorTo($me, $him) . $text . TF::YELLOW;
+        return self::getColorToFaction($me, $him) . $text . TF::YELLOW;
     }
     
-    public static function getColorTo($me, $him) {
+    public static function getColorToPlayer($me, $him) {
         if($me->getFaction() === $him->getFaction()) {
             $colour = TF::GREEN;
+        } elseif($him->getFaction() !== null && $me->getFaction()->isAllyWith($him->getFaction())) {
+            $colour = TF::LIGHT_PURPLE;
+        } else {
+            $colour = TF::WHITE;
+        }
+        return $colour;
+    }
+    
+    public static function getColorToFaction($mine, $that) {
+        if($mine->getFaction() === $that) {
+            $colour = TF::GREEN;
+        } elseif($mine->getFaction() !== null && $mine->getFaction()->isAllyWith($that)) {
+            $colour = TF::LIGHT_PURPLE;
         } else {
             $colour = TF::WHITE;
         }

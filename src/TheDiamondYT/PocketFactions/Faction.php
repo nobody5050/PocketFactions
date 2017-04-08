@@ -36,8 +36,10 @@ class Faction {
     private $leader;
     
     private $permanent = false;
+    private $open = false;
     
     private $players = [];
+    private $allies = [];
     
     /**
      * Constructor.
@@ -110,8 +112,24 @@ class Faction {
     /**
      * @return bool
      */
-    public function isPermanent() {
+    public function isPermanent(): bool {
         return $this->permanent;
+    }
+    
+    /**
+     * Set whether or not a faction is joinable without invitation.
+     *
+     * @param bool
+     */
+    public function setOpen(bool $value) {
+        $this->open = $value;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool {
+        return $this->open;
     }
     
     /**
@@ -127,7 +145,7 @@ class Faction {
      * @param FPlayer
      */
     public function addPlayer(FPlayer $player) {
-        if($player->getRole() === Role::get("Leader")) 
+        if($player->getRole() === Role::get("Leader"))
             $this->setLeader($player);
             
         $this->players[$player->getName()] = $player;
@@ -140,6 +158,40 @@ class Faction {
      */
     public function removePlayer(FPlayer $player) {
         unset($this->players[$player->getName()]);
+    }
+    
+    /**
+     * Add an alliance with another faction.
+     *
+     * @param Faction
+     * @param bool
+     */
+    public function addAlliance(Faction $faction, bool $update = true) {
+        $this->allies[$faction->getTag()] = $faction; // TODO: use faction id
+        //if($update)
+        //    PF::get()->getProvider()->setFactionAlly($this);
+    }
+   
+   /**
+    * Remove an alliance with another faction.
+    *
+    * @param Faction
+    */
+    public function removeAlliance(Faction $faction) {
+        unset($this->allies[$faction->getTag()]);
+    }
+    
+    /**
+     * Returns true if in an alliance with the specified faction.
+     *
+     * @param Faction
+     * @return bool
+     */
+    public function isAllyWith(Faction $faction): bool {
+        if(in_array($faction, $this->allies))
+            return true;
+        
+        return false;
     }
     
     /**

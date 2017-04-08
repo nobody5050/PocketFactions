@@ -28,4 +28,6 @@ faction:
   helpPageLength: 5
   tag:
     maxLength: 10
+  show:
+    longHeader: false
 

@@ -64,7 +64,7 @@ class CommandCreate extends FCommand {
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("create.success", [Relation::describeToPlayer($fme, $player), Relation::getColorTo($fme, $player) . $args[0]]));
+            $this->msg($player, $this->plugin->translate("create.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $args[0]]));
             
         $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
         

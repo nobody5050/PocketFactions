@@ -35,14 +35,20 @@ class FCommandManager extends PluginCommand {
         $this->plugin = $plugin;
         $this->setAliases(["faction", "fac", "f"]);
         $this->setDescription("The main command for PocketFactions."); // TODO: translation
-        $this->registerCommand(new CommandHelp($plugin));
-        $this->registerCommand(new CommandCreate($plugin));
-        $this->registerCommand(new CommandDisband($plugin));
-        $this->registerCommand(new CommandLeader($plugin));
-        $this->registerCommand(new CommandDescription($plugin));
-        $this->registerCommand(new CommandChat($plugin));
-        $this->registerCommand(new CommandVersion($plugin));
-        $this->registerCommand(new CommandReload($plugin));
+        
+        $this->registerCommands();
+    }
+    
+    private function registerCommands() {
+        $this->registerCommand(new CommandHelp($this->plugin));
+        $this->registerCommand(new CommandCreate($this->plugin));
+        $this->registerCommand(new CommandDisband($this->plugin));
+        $this->registerCommand(new CommandLeader($this->plugin));
+        $this->registerCommand(new CommandDescription($this->plugin));
+        $this->registerCommand(new CommandChat($this->plugin));
+        $this->registerCommand(new CommandShow($this->plugin));
+        $this->registerCommand(new CommandVersion($this->plugin));
+        $this->registerCommand(new CommandReload($this->plugin));
     }
    
     public function execute(CommandSender $sender, $label, array $args) {

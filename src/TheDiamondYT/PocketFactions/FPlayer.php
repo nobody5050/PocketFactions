@@ -47,6 +47,10 @@ class FPlayer {
         $this->player = $player;
     }
     
+    public function getPlayer(): Player {
+        return $this->player;
+    }
+    
     /**
      * @return string
      */
@@ -95,7 +99,7 @@ class FPlayer {
         elseif($this->role === Role::get("Member"))
             $prefix = "";
             
-        return $prefix . $this->title ?? $prefix;
+        return $prefix . ($this->title ?? $prefix);
     }
     
     /**

@@ -19,41 +19,46 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandDescription extends FCommand {
+class CommandShow extends FCommand {
+
+    private $sender;
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "desc", $plugin->translate("desc.desc"));
-        $this->setArgs($plugin->translate("desc.args")); 
+        parent::__construct($plugin, "show", $plugin->translate("show.desc"), ["who"]);
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
-            return;
+       // if(!$sender instanceof Player) {
+       //     $this->msg($sender, $this->plugin->translate("command.mustbeplayer"));
+       //     return;
+       // }
+        $this->sender = $sender;
+        $faction = $fme->getFaction();
+        if(!empty($args)) {
+            $faction = $this->plugin->getFaction($args[0]);
+            if($faction === null)
+                $faction = $fme->getFaction(); // just show our faction
         }
-        if($fme->getFaction() === null) {
+        if($faction === null) { // TODO: show wilderness info
             $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
-        }
-        if(empty($args)) {
-            $this->msg($sender, $this->getUsage());
-            return;
-        }
+        } 
         
-        $fme->getFaction()->setDescription(implode(" ", $args));
+        $long = $this->cfg["faction"]["show"]["longHeader"];
+        $this->msg($sender, $this->plugin->translate($long ? "show.header.long" : "show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
         
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            if($player->getFaction() === $fme->getFaction())
-                $this->msg($player, $this->plugin->translate("desc.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player), implode(" ", $args)]));
-        }
+        $this->add("Description", $faction->getDescription());
+        $this->add("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");
+    }
+    
+    private function add(string $key, string $value) {
+        $this->msg($this->sender, TF::GOLD . "$key: " . TF::YELLOW . $value);
     }
 }

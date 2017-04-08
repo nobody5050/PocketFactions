@@ -54,7 +54,7 @@ class FPlayerListener implements Listener {
                     $colour = TF::GREEN;
                     break;
                 case ChatMode::ALLY:
-                    $colour = TF::PURPLE;
+                    $colour = TF::LIGHT_PURPLE;
             }
             $event->setCancelled(true);
             $this->plugin->getServer()->broadcastMessage($colour . $fme->getTitle() . " " . $fme->getName() . " " . $event->getMessage());
