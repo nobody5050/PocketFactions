@@ -53,7 +53,7 @@ class YamlProvider implements Provider {
     
     public function loadPlayers() {
         foreach($this->pdata->getAll() as $player) {
-            $this->addPlayer($player);
+            //$this->addPlayer($player);
         }
     }
     
@@ -66,7 +66,9 @@ class YamlProvider implements Provider {
     }
     
     public function addPlayer(Player $player) {
-        $this->fplayers[$player->getName()] = new FPlayer($player);
+        $fplayer = new FPlayer($player);
+        $fplayer->setFaction($this->getFaction("Wilderness")); // TODO: check for faction
+        $this->fplayers[$player->getName()] = $fplayer;
     }
     
     public function removePlayer(Player $player) {

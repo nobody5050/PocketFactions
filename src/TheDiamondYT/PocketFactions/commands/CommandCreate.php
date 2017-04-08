@@ -44,7 +44,7 @@ class CommandCreate extends FCommand {
             $this->msg($sender, TF::RED . $this->getUsage());
             return;
         }
-        if($fme->getFaction() !== null) {
+        if($fme->getFaction()->isPermanent() && $fme->getFaction() !== null) {
             $this->msg($sender, $this->plugin->translate("player.isinfaction"));
             return;
         }
@@ -56,6 +56,7 @@ class CommandCreate extends FCommand {
             $this->msg($sender, $this->plugin->translate("tag.toolong")); 
             return;
         }
+        
         $faction = new Faction();
         $faction->create();
         $faction->setTag($args[0]); 

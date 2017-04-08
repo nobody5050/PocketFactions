@@ -64,13 +64,18 @@ class Relation {
         return $colour;
     }
     
+    // This looks horrible lol
     public static function getColorToFaction($mine, $that) {
-        if($mine->getFaction() === $that) {
-            $colour = TF::GREEN;
+        if($that->getId() === Faction::WILDERNESS_ID) {
+            return TF::DARK_GREEN;
+        } elseif($that->getId() === Faction::WARZONE_ID) {
+            return TF::DARK_RED;
+        } elseif($mine->getFaction() === $that) {
+            return TF::GREEN;
         } elseif($mine->getFaction() !== null && $mine->getFaction()->isAllyWith($that)) {
-            $colour = TF::LIGHT_PURPLE;
+            return TF::LIGHT_PURPLE;
         } else {
-            $colour = TF::WHITE;
+            return TF::WHITE;
         }
         return $colour;
     }

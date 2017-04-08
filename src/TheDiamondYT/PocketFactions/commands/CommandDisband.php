@@ -52,6 +52,8 @@ class CommandDisband extends FCommand {
         $faction = $fme->getFaction();
         
         $faction->disband();
+        
+        $fme->setFaction($this->plugin->getFaction("Wilderness"));
 
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
             $this->msg($player, $this->plugin->translate("disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));

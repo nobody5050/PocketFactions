@@ -38,6 +38,8 @@ class FPlayer {
     private $role;
     private $chatMode;
     
+    private $adminBypassing = false;
+    
     /**
      * Constructor.
      * 
@@ -127,7 +129,23 @@ class FPlayer {
      * @return int
      */
     public function getRole(): int {
-        return $this->role;
+        return $this->role ?? Role::UNKNOWN;
+    }
+    
+    /**
+     * Toggle admin bypass mode.
+     *
+     * @param bool 
+     */
+    public function setAdminBypassing(bool $value) {
+        $this->adminBypassing = $value;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isAdminBypassing(): bool {
+        return $this->adminBypassing;
     }
     
     /**

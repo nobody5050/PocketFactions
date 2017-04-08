@@ -45,12 +45,7 @@ class CommandShow extends FCommand {
             $faction = $this->plugin->getFaction($args[0]);
             if($faction === null)
                 $faction = $fme->getFaction(); // just show our faction
-        }
-        if($faction === null) { // TODO: show wilderness info
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
-            return;
-        } 
-        
+        }    
         $long = $this->cfg["faction"]["show"]["longHeader"];
         $this->msg($sender, $this->plugin->translate($long ? "show.header.long" : "show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
         

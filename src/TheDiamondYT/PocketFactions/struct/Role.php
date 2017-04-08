@@ -19,6 +19,8 @@
 namespace TheDiamondYT\PocketFactions\struct;
 
 class Role {
+    const UNKNOWN = -1;
+    
     private static $roles = [];
     
     public static function init() {
