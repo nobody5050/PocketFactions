@@ -31,6 +31,7 @@ use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\commands\FCommandManager;
 use TheDiamondYT\PocketFactions\listeners\FPlayerListener;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\struct\Role;
 
 class PF extends PluginBase {
 
@@ -49,7 +50,7 @@ class PF extends PluginBase {
     }
     
     /**
-     * @return this
+     * @return PF
      */
     public static function get() {
         return self::$object;
@@ -64,7 +65,7 @@ class PF extends PluginBase {
         Server::getInstance()->getLogger()->info("§b[§dPocketFactions§b]§e $text");
     }
 
-    // TODO: cleanup
+    // TODO: HUGE cleanup
 	public function onEnable() {
 	    $startTime = microtime(true);
 	    $this->saveResource("config.yml");
@@ -79,6 +80,9 @@ class PF extends PluginBase {
 	    $this->provider->loadFactions();
 	    $this->provider->loadPlayers();
 	    $this->checkFactions();
+	    
+	    Role::init();
+	    
 	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
 	}
 	
@@ -90,13 +94,13 @@ class PF extends PluginBase {
 	 */
 	private function checkFactions() {
         if(!$this->factionExists("Wilderness")) {
-            $faction = new Faction("7a3ee880-46ba-38df-844e-e073ad0713d4");
+            $faction = new Faction(Faction::WILDERNESS_ID);
             $faction->create();
             $faction->setTag("Wilderness");
             $faction->setPermanent(true);
         }
         if(!$this->factionExists("WarZone")) {
-            $faction = new Faction("4aacbf95-ac8b-3f68-898a-372ee8a818e3");
+            $faction = new Faction(Faction::WARZONE_ID);
             $faction->create();
             $faction->setTag("WarZone");
             $faction->setDescription("Not the safest place to be.");

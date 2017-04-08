@@ -27,6 +27,9 @@ use TheDiamondYT\PocketFactions\struct\Role;
  */
 class Faction {
 
+    const WILDERNESS_ID = "7a3ee880-46ba-38df-844e-e073ad0713d4";
+    const WARZONE_ID = "4aacbf95-ac8b-3f68-898a-372ee8a818e3";
+
     private $id;
     private $tag;
     private $description;
@@ -124,7 +127,7 @@ class Faction {
      * @param FPlayer
      */
     public function addPlayer(FPlayer $player) {
-        if($player->getRole() === Role::LEADER) 
+        if($player->getRole() === Role::get("Leader")) 
             $this->setLeader($player);
             
         $this->players[$player->getName()] = $player;

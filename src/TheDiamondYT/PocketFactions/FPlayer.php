@@ -88,11 +88,11 @@ class FPlayer {
      * @return string
      */
     public function getTitle(): string {
-        if($this->role === Role::LEADER)
+        if($this->role === Role::get("Leader"))
             $prefix = "**";
-        elseif($this->role === Role::MODERATOR)
+        elseif($this->role === Role::get("Moderator"))
             $prefix = "*";
-        elseif($this->role === Role::MEMBER)
+        elseif($this->role === Role::get("Member"))
             $prefix = "";
             
         return $prefix . $this->title ?? $prefix;
@@ -113,8 +113,8 @@ class FPlayer {
      * @param int 
      */
     public function setRole($role) {
-        if(Role::byName($role) === "unknown")
-            throw new \Exception("Invalid role '$role'");
+        //if(!Role::exists($role))
+        //    throw new \Exception("Invalid role '$role'");
         
         $this->role = $role;
     }
@@ -130,7 +130,7 @@ class FPlayer {
      * @return bool
      */
     public function isLeader(): bool {
-        return $this->role === Role::LEADER;
+        return $this->role === Role::get("Leader");
     }
     
     /**
@@ -150,17 +150,11 @@ class FPlayer {
      * Leave the current faction.
      */
     public function leaveFaction() {
-        if(!$this->permanent && $this->isLeader()){
-            $this->msg(PF::get()->translate("player.mustgiveleader"));
-            return;
-        } 
         $this->faction->removePlayer($this);
         $this->faction = null;
     }
     
     /**
-     * TODO: if null, return wilderness faction.
-     *
      * @return Faction|null
      */
     public function getFaction() {     

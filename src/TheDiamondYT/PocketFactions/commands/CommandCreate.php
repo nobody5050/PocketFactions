@@ -38,7 +38,7 @@ class CommandCreate extends FCommand {
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
             $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
-           // return;
+            return;
         }
         if(count($args) >= 2 or count($args) === 0) {
             $this->msg($sender, TF::RED . $this->getUsage());
@@ -60,7 +60,7 @@ class CommandCreate extends FCommand {
         $faction->create();
         $faction->setTag($args[0]); 
         
-        $fme->setRole(Role::LEADER);
+        $fme->setRole(Role::get("Leader"));
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
@@ -68,7 +68,7 @@ class CommandCreate extends FCommand {
             
         $this->msg($sender, $this->plugin->translate("create.setdesc", [($this->getCommand("desc"))->getUsage()]));
         
-        if($this->cfg["faction"]["create"]["log"] === true)
-            PF::log(TF::GRAY . $sender->getName() . " created a new faction " . $args[0]); // Not even gonna do translations
+        if($this->cfg["faction"]["logFactionCreate"] === true)
+            PF::log(TF::GRAY . $sender->getName() . " created a new faction $args[0]"); // Not even gonna do translation
     }
 }

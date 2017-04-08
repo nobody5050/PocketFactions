@@ -19,6 +19,7 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
@@ -31,5 +32,6 @@ class CommandVersion extends FCommand {
 
     public function execute(CommandSender $sender, $fme, array $args) {
         $this->msg($sender, $this->plugin->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
+        $this->msg($sender, TF::AQUA . "By Luke (TheDiamondYT)");
     }
 }

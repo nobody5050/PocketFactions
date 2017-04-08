@@ -51,8 +51,9 @@ class CommandDescription extends FCommand {
         
         $fme->getFaction()->setDescription(implode(" ", $args));
         
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             if($player->getFaction() === $fme->getFaction())
                 $this->msg($player, $this->plugin->translate("desc.success", [Relation::describeToPlayer($fme, $player), Relation::getColorTo($fme, $player), implode(" ", $args)]));
+        }
     }
 }

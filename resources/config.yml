@@ -12,7 +12,7 @@
 #
 # PocketFactions v1.0.1 by Luke (TheDiamondYT)
 # All rights reserved.                     
-               
+       
 # Language used by the plugin
 # - eng
 language: eng
@@ -23,11 +23,9 @@ provider: yaml
 
 # Faction preferences
 faction:
-  create:
-    broadcast: true
-    log: false
-  disband:
-    log: false
+  logFactionCreate: false
+  logFactionDisband: false
+  helpPageLength: 5
   tag:
     maxLength: 10
 

@@ -47,7 +47,7 @@ class YamlProvider implements Provider {
             $faction->setTag($facs["tag"], false);
             $faction->setDescription($facs["desc"] ?? "", false);
             //$faction->setLeader($this->getPlayer($this->plugin->getServer()->getPlayer($facs["leader"])), false); 
-            $this->factions[$id] = $faction;
+            $this->createFaction($faction);
         }
     }
     
@@ -110,6 +110,14 @@ class YamlProvider implements Provider {
     public function factionExists(string $faction): bool {
         foreach($this->factions as $facs) {
             if($facs->getTag() === $faction)
+                return true;
+        }
+        return false;
+    }
+    
+    public function playerExists(string $name): bool {
+        foreach($this->fplayers as $player) {
+            if($player->getName() === $name) 
                 return true;
         }
         return false;

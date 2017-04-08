@@ -19,29 +19,52 @@
 namespace TheDiamondYT\PocketFactions\struct;
 
 class Role {
-    const MEMBER = 0;
-    const MODERATOR = 1;
-    const ADMINISTRATOR = 2;
-    const LEADER = 3;
+    private static $roles = [];
+    
+    public static function init() {
+        self::addRole(0, "Member");
+        self::addRole(1, "Moderator");
+        self::addRole(2, "Administrator");
+        self::addRole(3, "Leader");
+    }
     
     /**
-     * Returns a faction role as a string
+     * Creates a new role.
      *
      * @param int
-     * @return string
+     * @param string
+     */ 
+    public static function addRole(int $id, string $name) {
+        self::$roles[$id] = $name;
+    }
+    
+    /**
+     * Returns a role from a name.
+     * TODO: remove loop
+     *
+     * @param string
+     * @return int|null
      */
-    public static function byName(int $role): string {
-        switch($role) {
-            case Role::MEMBER:
-                return "member";
-            case Role::MODERATOR:
-                return "moderator";
-            case Role::ADMINISTRATOR:
-                return "admin";
-            case Role::LEADER:
-                return "leader";
-            default:
-                return "unknown";
+    public static function get(string $name) {
+        foreach(self::$roles as $id => $role) {
+            if(strtolower($role) === strtolower($name))
+                return $id;
         }
+        return null;
+    }
+    
+    /**
+     * Returns true if a role exists.
+     * TODO: remove loop
+     *
+     * @param string
+     * @return bool
+     */
+    public static function exists(string $name): bool {
+        foreach(self::$roles as $id => $role) {
+            if(strtolower($role) === strtolower($name))
+                return true;
+        }
+        return false;
     }
 }

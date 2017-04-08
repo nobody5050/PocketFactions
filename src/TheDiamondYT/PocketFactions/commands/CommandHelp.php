@@ -43,11 +43,11 @@ class CommandHelp extends FCommand {
             return false;
         }
         $commands = [];
-        foreach($this->plugin->getCommandManager()->getCommands() as $command) 
+        foreach($this->plugin->getCommandManager()->getCommands() as $command)
             $commands[$command->getName()] = $command;
         
         ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
-        $commands = array_chunk($commands, 5);
+        $commands = array_chunk($commands, $this->cfg["factions"]["helpPageLength"] ?? 5);
         $page = (int) min(count($commands), $page);
         $this->msg($sender, $this->plugin->translate("help.header", [$page, count($commands)]));
         foreach($commands[$page - 1] as $command)
