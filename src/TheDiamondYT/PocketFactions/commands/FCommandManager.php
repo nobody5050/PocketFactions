@@ -34,8 +34,7 @@ class FCommandManager extends PluginCommand {
         parent::__construct("factions", $plugin); 
         $this->plugin = $plugin;
         $this->setAliases(["faction", "fac", "f"]);
-        $this->setDescription("The main command for PocketFactions."); // TODO: translation
-        
+        $this->setDescription($plugin->translate("command.desc"));  
         $this->registerCommands();
     }
     

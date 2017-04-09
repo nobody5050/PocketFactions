@@ -45,6 +45,7 @@ class FPlayerListener implements Listener {
         $this->plugin->getProvider()->removePlayer($event->getPlayer());
     }
     
+    // This could do with some cleanup
     public function onPlayerChat(PlayerChatEvent $event) {
         $fme = $this->plugin->getPlayer($event->getPlayer());
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
@@ -53,11 +54,13 @@ class FPlayerListener implements Listener {
                     return;
                 case ChatMode::FACTION:
                     $colour = TF::GREEN;
+                    $title = true;
                     break;
                 case ChatMode::ALLY:
                     $colour = TF::LIGHT_PURPLE;
+                    $title = false;
             }
             $event->setCancelled(true);
-            $this->plugin->getServer()->broadcastMessage($colour . $fme->getTitle() . " " . $fme->getName() . " " . $event->getMessage());
+            $this->plugin->getServer()->broadcastMessage($colour . $title ? $fme->getNameAndTitle() : " " . $fme->getNameAndPrefix() . " " . $event->getMessage());
         }
 }

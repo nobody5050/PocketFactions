@@ -74,6 +74,21 @@ class FPlayer {
         $this->chatMode = $mode;
     }
     
+    /**
+     * Return the players role prefix.
+     *
+     * @return string
+     */
+    public function getPrefix(): string { 
+        if($this->role === Role::get("Leader")) {
+            return "**";
+        } elseif($this->role === Role::get("Moderator")) {
+            return "*";
+        } else {
+            return "";
+        }
+    }
+    
     /** 
      * Sets the players title in the faction.
      *
@@ -84,19 +99,30 @@ class FPlayer {
     }
   
     /**
-     * TODO: tidy this up?
+     * Return the players title.
      *
      * @return string
      */
     public function getTitle(): string {
-        if($this->role === Role::get("Leader"))
-            $prefix = "**";
-        elseif($this->role === Role::get("Moderator"))
-            $prefix = "*";
-        elseif($this->role === Role::get("Member"))
-            $prefix = "";
-            
-        return $prefix . ($this->title ?? $prefix);
+        return $this->title;
+    }
+    
+    /**
+     * Return the players prefix, name and title.
+     *
+     * @return string
+     */
+    public function getNameAndTitle(): string {
+        return $this->getPrefix() . ($this->title ?? $this->getPrefix()) . " " . $this->getName();
+    }
+    
+    /**
+     * Return the players prefix and name.
+     *
+     * @return string
+     */
+    public function getNameAndPrefix(): string {
+        return $this->getPrefix() . " " . $this->getName();
     }
     
     /**
@@ -145,6 +171,8 @@ class FPlayer {
     }
     
     /**
+     * Returns true if the player is leader.
+     *
      * @return bool
      */
     public function isLeader(): bool {

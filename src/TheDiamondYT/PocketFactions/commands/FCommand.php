@@ -94,6 +94,23 @@ abstract class FCommand {
         }
     }
     
+    /**
+     * Check if a string contains alphanumeric characters.
+     *
+     * @param string 
+     * @return bool
+     */
+    public function alphanum(string $text) {
+        if(function_exists("ctype_alnum")) 
+            return ctype_alnum($text);
+                  
+        return preg_match("/^[a-z0-9]+$/i", $text) > 0;
+    }
+    
+    /**
+     * @param string
+     * @return FCommand|null
+     */
     public function getCommand(string $label) {
         return $this->plugin->getCommandManager()->getCommand($label);
     }

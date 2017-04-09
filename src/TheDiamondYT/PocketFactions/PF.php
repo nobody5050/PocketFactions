@@ -35,6 +35,8 @@ use TheDiamondYT\PocketFactions\struct\Role;
 
 class PF extends PluginBase {
 
+    const PREFIX = "§b[§dPocketFactions§b]";
+
     private $provider;
     private $language = null;
     private $cfg;
@@ -62,7 +64,11 @@ class PF extends PluginBase {
      * @param string
      */
     public static function log(string $text) {
-        Server::getInstance()->getLogger()->info("§b[§dPocketFactions§b]§e $text");
+        Server::getInstance()->getLogger()->info(self::PREFIX . "§e $text");
+    }
+    
+    public static function logError(string $text) {
+        Server::getInstance()->getLogger()->critical(self::PREFIX . "§c $text);
     }
 
     // TODO: HUGE cleanup
@@ -131,8 +137,12 @@ class PF extends PluginBase {
 	        }
 	    }
 	    // This check is to allow custom data providers
-	    if($provider instanceof Provider) 
+	    if($provider instanceof Provider) {
 	        $this->provider = $provider;
+	    } else {
+	        self::logError("Data provider " . get_class($provider) . " is not an instance of Provider.");
+	        $this->getServer()->getPluginManager()->disablePlugin($this);
+	    }
 	}
 	
 	/**
