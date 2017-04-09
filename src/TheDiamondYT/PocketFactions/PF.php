@@ -92,7 +92,7 @@ class PF extends PluginBase {
 	    // Read language file
 	    $lang = $this->cfg["language"];
 	    $this->language = new Config($this->getFile() . "resources/lang/" . $lang . ".json", Config::JSON);
-	    safe_var_dump(json_last_error_msg());
+
 	    // Initialize command manager and events
 	    $this->fcommandManager = new FCommandManager($this);
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
