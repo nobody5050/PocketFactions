@@ -19,22 +19,18 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
 
-class CommandReload extends FCommand {
+class CommandSave extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "reload", $plugin->translate("reload.desc"));
+        parent::__construct($plugin, "save", "Save config");
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $startTime = microtime(true);
-        $this->plugin->reloadConfig();
-        $this->plugin->getProvider()->loadFactions();
-        $this->plugin->getProvider()->loadPlayers();
         $this->plugin->getProvider()->save();
-        $this->msg($sender, $this->plugin->translate("reload.success", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+        $this->msg($sender, "Saved config"); // TODO: translation
     }
 }

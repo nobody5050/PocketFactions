@@ -84,12 +84,16 @@ class PF extends PluginBase {
 
 	    $this->setProvider();
 	    $this->provider->loadFactions();
-	    $this->provider->loadPlayers();
 	    $this->checkFactions();
+	    $this->provider->loadPlayers();
 	    
 	    Role::init();
 	    
 	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+	}
+	
+	public function onDisable() {
+	    $this->provider->save();
 	}
 	
 	/**

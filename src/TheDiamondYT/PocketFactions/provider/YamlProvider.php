@@ -41,6 +41,11 @@ class YamlProvider implements Provider {
         $this->pdata = new Config($plugin->getDataFolder() . "players.yml", Config::YAML);
     }
     
+    public function save() {
+        $this->fdata->save();
+        $this->pdata->save();
+    }
+    
     public function loadFactions() {
         foreach($this->fdata->getAll() as $id => $facs) {
             $faction = new Faction($id); 
@@ -101,27 +106,22 @@ class YamlProvider implements Provider {
     public function disbandFaction(Faction $faction) {
         unset($this->factions[$faction->getId()]);
         $this->fdata->remove($faction->getId());
-        $this->fdata->save();
     }
     
     public function setFactionTag(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".tag", $faction->getTag());
-        $this->fdata->save();
     }
     
     public function setFactionDescription(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".desc", $faction->getDescription());
-        $this->fdata->save();
     }
     
     public function setFactionLeader(Faction $faction) {
         $this->fdata->setNested($faction->getId() . ".leader", $faction->getLeader()->getName());
-        $this->fdata->save();
     }
     
     public function setPlayerFaction(FPlayer $player) {
         $this->pdata->setNested($player->getName() . ".faction", $player->getFaction()->getTag());
-        $this->pdata->save();
     }
     
     public function factionExists(string $faction): bool {
