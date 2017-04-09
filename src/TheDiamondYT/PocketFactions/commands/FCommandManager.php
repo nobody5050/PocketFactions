@@ -34,23 +34,23 @@ class FCommandManager extends PluginCommand {
         parent::__construct("factions", $plugin); 
         $this->plugin = $plugin;
         $this->setAliases(["faction", "fac", "f"]);
-        $this->setDescription($plugin->translate("command.desc"));  
+        $this->setDescription($plugin->translate("commands.description"));  
         $this->registerCommands();
     }
     
     private function registerCommands() {
-        $this->registerCommand(new CommandHelp($this->plugin));
-        $this->registerCommand(new CommandCreate($this->plugin));
-        $this->registerCommand(new CommandDisband($this->plugin));
-        $this->registerCommand(new CommandLeader($this->plugin));
-        $this->registerCommand(new CommandDescription($this->plugin));
-        $this->registerCommand(new CommandChat($this->plugin));
         $this->registerCommand(new CommandBypass($this->plugin));
+        $this->registerCommand(new CommandChat($this->plugin));
+        $this->registerCommand(new CommandCreate($this->plugin));
+        $this->registerCommand(new CommandDescription($this->plugin));
+        $this->registerCommand(new CommandDisband($this->plugin));
+        $this->registerCommand(new CommandHelp($this->plugin));
+        $this->registerCommand(new CommandLeader($this->plugin));
         $this->registerCommand(new CommandShow($this->plugin));
         $this->registerCommand(new CommandSave($this->plugin));
         $this->registerCommand(new CommandTag($this->plugin));
-        $this->registerCommand(new CommandVersion($this->plugin));
         $this->registerCommand(new CommandReload($this->plugin));
+        $this->registerCommand(new CommandVersion($this->plugin));
     }
    
     public function execute(CommandSender $sender, $label, array $args) {
@@ -61,7 +61,7 @@ class FCommandManager extends PluginCommand {
             } elseif(isset($this->aliasSubCommands[$subcommand])) {
                 $command = $this->aliasSubCommands[$subcommand];
             } else {
-                $sender->sendMessage($this->plugin->translate("command.notfound", [$subcommand]));
+                $sender->sendMessage($this->plugin->translate("commands.not-found", [$subcommand]));
                 return true;
             }
             $command->execute($sender, $this->plugin->getPlayer($sender), $args);

@@ -27,11 +27,11 @@ use TheDiamondYT\PocketFactions\FPlayer;
 class CommandVersion extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "version", $plugin->translate("version.desc"), ["ver", "v"]);
+        parent::__construct($plugin, "version", $plugin->translate("commands.version.description"), ["ver", "v"]);
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $this->msg($sender, $this->plugin->translate("version.success", [$this->plugin->getDescription()->getFullName()]));
+        $this->msg($sender, $this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
         $this->msg($sender, TF::AQUA . "By Luke (TheDiamondYT)");
     }
 }

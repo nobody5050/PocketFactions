@@ -28,21 +28,21 @@ use TheDiamondYT\PocketFactions\struct\Relation;
 class CommandTag extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "tag", $plugin->translate("tag.desc"));
-        $this->setArgs($plugin->translate("tag.args"));
+        parent::__construct($plugin, "tag", $plugin->translate("commands.tag.description"));
+        $this->setArgs("<tag>");
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         //if(!$sender instanceof Player) {
-        //    $this->msg($sender, $this->plugin->translate("command.mustbeplayer"));
+        //    $this->msg($sender, $this->plugin->translate("commands.only-player"));
         //    return;
         //}
         if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
         }
         if(!$fme->isLeader()) {
-            $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
+            $this->msg($sender, $this->plugin->translate("player.only-leader"));
             return;
         }
         if(empty($args)) {
@@ -50,14 +50,14 @@ class CommandTag extends FCommand {
             return;
         }
         if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
-            $this->msg($sender, $this->plugin->translate("tag.toolong"));
+            $this->msg($sender, $this->plugin->translate("faction.tag.too-long"));
             return;
         }
         
         $fme->getFaction()->setTag($args[0]);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
-            $this->msg($sender, $this->plugin->translate("tag.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), $args[0]]));
+            $this->msg($sender, $this->plugin->translate("commands.tag.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), $args[0]]));
     }
 }
 

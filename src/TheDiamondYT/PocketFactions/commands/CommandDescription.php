@@ -31,17 +31,17 @@ use TheDiamondYT\PocketFactions\struct\Relation;
 class CommandDescription extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "desc", $plugin->translate("desc.desc"));
-        $this->setArgs($plugin->translate("desc.args")); 
+        parent::__construct($plugin, "desc", $plugin->translate("commands.description.description"));
+        $this->setArgs("<description>"); 
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;
         }
         if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.has-faction"));
             return;
         }  
         if(empty($args)) {
@@ -54,7 +54,7 @@ class CommandDescription extends FCommand {
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             if($player->getFaction() === $faction)
-                $this->msg($player, $this->plugin->translate("desc.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), implode(" ", $args)]));
+                $this->msg($player, $this->plugin->translate("commands.description.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), implode(" ", $args)]));
         }
     }
 }

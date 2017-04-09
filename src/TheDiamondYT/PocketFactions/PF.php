@@ -20,9 +20,9 @@ namespace TheDiamondYT\PocketFactions;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
-use pocketmine\lang\BaseLang;
 use pocketmine\Player;
 use pocketmine\Server;
+use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\provider\Provider;
@@ -38,7 +38,7 @@ class PF extends PluginBase {
     const PREFIX = "§b[§dPocketFactions§b]";
 
     private $provider;
-    private $language = null;
+    private $language;
     private $cfg;
     
     private $fcommandManager;
@@ -63,37 +63,50 @@ class PF extends PluginBase {
      *
      * @param string
      */
-    public static function log(string $text) {
-        Server::getInstance()->getLogger()->info(self::PREFIX . "§e $text");
+    public static function log($text) {
+        Server::getInstance()->getLogger()->info(self::PREFIX . TF::YELLOW . " $text");
     }
     
-    public static function logError(string $text) {
-        Server::getInstance()->getLogger()->critical(self::PREFIX . "§c $text");
+    /**
+     * Log an error to the console.
+     *
+     * @param string
+     */
+    public static function logError($text) {
+        Server::getInstance()->getLogger()->critical(self::PREFIX . TF::RED . " $text");
     }
 
-    // TODO: HUGE cleanup
 	public function onEnable() {
-	    $startTime = microtime(true);
-	    $this->saveResource("config.yml");
-	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
-	    $this->language = new BaseLang($this->cfg["language"], $this->getFile() . "resources/lang/");
-	    $this->fcommandManager = new FCommandManager($this);
-	    
-	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
-	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
-
-	    $this->setProvider();
-	    $this->provider->loadFactions();
-	    $this->checkFactions();
-	    $this->provider->loadPlayers();
-	    
-	    Role::init();
-	    
-	    self::log($this->translate("console.data.loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+	    $this->initialize(microtime(true));   
 	}
 	
 	public function onDisable() {
 	    $this->provider->save();
+	}
+	
+	private function initialize($startTime) {
+	    // Create config
+	    $this->saveResource("config.yml"); // TODO: why is getConfig() returning null? Have to use this -_-
+	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
+
+	    // Read language file
+	    $lang = $this->cfg["language"];
+	    $this->language = new Config($this->getFile() . "resources/lang/" . $lang . ".json", Config::JSON);
+	    safe_var_dump(json_last_error_msg());
+	    // Initialize command manager and events
+	    $this->fcommandManager = new FCommandManager($this);
+	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
+	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
+
+        // Load faction data (this is in a specific order)
+	    $this->setProvider(); 
+	    $this->provider->loadFactions();
+	    $this->checkFactions();
+	    $this->provider->loadPlayers();
+	    
+	    Role::init(); // Initialize faction roles
+	 
+	    self::log($this->translate("console.data-loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
 	}
 	
 	/**
@@ -216,6 +229,12 @@ class PF extends PluginBase {
 	 * @param array 
 	 */
 	public function translate(string $text, array $params = []) {
-	    return $this->language->translateString($text, $params, null); 
+	    $lang = $this->cfg["language"];  
+	    if($this->language->getNested($text)) {
+	        if(!empty($params))
+	            return vsprintf($this->language->getNested($text), $params);
+	            
+	        return $this->language->getNested($text);
+	    }
 	}
 }

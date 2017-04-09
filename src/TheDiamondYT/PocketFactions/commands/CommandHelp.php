@@ -27,8 +27,8 @@ use TheDiamondYT\PocketFactions\FPlayer;
 class CommandHelp extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "help", $plugin->translate("help.desc"), ["h"]);
-        $this->setArgs($plugin->translate("help.args"));
+        parent::__construct($plugin, "help", $plugin->translate("commands.help.description"), ["h"]);
+        $this->setArgs("<page>");
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
@@ -49,7 +49,7 @@ class CommandHelp extends FCommand {
         ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
         $commands = array_chunk($commands, $this->cfg["factions"]["helpPageLength"] ?? 5);
         $page = (int) min(count($commands), $page);
-        $this->msg($sender, $this->plugin->translate("help.header", [$page, count($commands)]));
+        $this->msg($sender, $this->plugin->translate("commands.help.header", [$page, count($commands)]));
         foreach($commands[$page - 1] as $command)
             $this->msg($sender, $command->getUsage() . " " . TF::YELLOW . $command->getDescription());
     }

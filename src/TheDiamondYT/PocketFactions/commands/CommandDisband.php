@@ -29,24 +29,24 @@ use TheDiamondYT\PocketFactions\struct\Relation;
 class CommandDisband extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "disband", $plugin->translate("disband.desc"));
+        parent::__construct($plugin, "disband", $plugin->translate("commands.disband.description"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         //if(!$sender instanceof Player) {
-        //    $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+        //    $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
         //    return;
         //}
         if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
         }
         if(!$fme->isLeader() && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
+            $this->msg($sender, $this->plugin->translate("player.only-leader"));
             return;
         }
         if($fme->getFaction()->isPermanent()) {
-            $this->msg($sender, $this->plugin->translate("faction.ispermanent"));
+            $this->msg($sender, $this->plugin->translate("faction.permanent"));
             return;
         }
         
@@ -66,7 +66,7 @@ class CommandDisband extends FCommand {
         $faction->disband();
 
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));
+            $this->msg($player, $this->plugin->translate("commands.disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));
         
         if($this->cfg["faction"]["logFactionDisband"] === true) 
             PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());

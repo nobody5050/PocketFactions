@@ -32,22 +32,22 @@ use TheDiamondYT\PocketFactions\struct\Relation;
 class CommandLeave extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "leave", $plugin->translate("leave.desc"));
+        parent::__construct($plugin, "leave", $plugin->translate("commands.leave.description"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;
         }
         if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
         }  
-        if(!$fme->getFaction()->isPermanent() && $fme->isLeader()) {
-            $this->msg($sender, $this->plugin->translate("player.mustgiveleader"));
+        /*if(!$fme->getFaction()->isPermanent() && $fme->isLeader()) {
+            $this->msg($sender, /*$this->plugin->translate("player.give-leader"));
             return;
-        }
+        }*/
         $fme->leaveFaction();
     }
 }

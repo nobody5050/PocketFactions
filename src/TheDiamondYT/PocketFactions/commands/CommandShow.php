@@ -31,12 +31,12 @@ class CommandShow extends FCommand {
     private $sender;
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "show", $plugin->translate("show.desc"), ["who"]);
+        parent::__construct($plugin, "show", $plugin->translate("commands.show.description"), ["who"]);
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
        // if(!$sender instanceof Player) {
-       //     $this->msg($sender, $this->plugin->translate("command.mustbeplayer"));
+       //     $this->msg($sender, $this->plugin->translate("commands.only-player"));
        //     return;
        // }
         $this->sender = $sender;
@@ -50,7 +50,7 @@ class CommandShow extends FCommand {
             }
         }    
         $long = $this->cfg["faction"]["show"]["longHeader"];
-        $this->msg($sender, $this->plugin->translate($long ? "show.header.long" : "show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
+        $this->msg($sender, $this->plugin->translate($long ? "commands.show.header-long" : "commands.show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
         
         $this->add("Description", $faction->getDescription());
         $this->add("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");

@@ -31,16 +31,16 @@ use TheDiamondYT\PocketFactions\struct\Relation;
 class CommandBypass extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "bypass", $plugin->translate("bypass.desc"));
+        parent::__construct($plugin, "bypass", $plugin->translate("commands.bypass.description"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;
         }
         if(!$sender->hasPermission("factions.bypass")) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("bypass.nopermission"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.bypass.fail"));
             return;
         }    
         if($fme->isAdminBypassing()) {
@@ -51,6 +51,6 @@ class CommandBypass extends FCommand {
             $value = true;
         }
         $fme->setAdminBypassing($value);
-        $this->msg($sender, $this->plugin->translate("bypass.success", [$status]));
+        $this->msg($sender, $this->plugin->translate("commands.bypass.success", [$status]));
     }
 }

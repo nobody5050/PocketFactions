@@ -1,0 +1,72 @@
+{
+    "console": {
+        "data-loaded": "Loaded language and faction data, took %ss (%sms)."
+    },
+    "player": {
+       "not-found": "That player cannot be found",
+       "no-faction": "You are not in a faction.",
+       "only-leader": "You must be leader to do this.",
+       "already-leader": "That player is already leader.",
+       "has-faction": "You must leave your current faction first."
+    },
+    "faction": {
+        "permanent": "Your faction is permanent and cannot be disbanded.",
+        "tag": {
+            "exists": "That tag is already in use.",
+            "exists-player": "There is a player by that name online.",
+            "too-long": "That tag is too long.",
+            "invalid-chars": "That tag contains invalid characters."
+        }
+    },
+    "commands": {
+        "description": "The main command for PocketFactions.",
+        "not-found": "The command '%s' was not found.",
+        "only-player": "You must execute this command in-game",
+        "bypass": {
+            "description": "Toggle admin bypass mode.",
+            "success": "You have §3%s §eadmin bypass mode.",
+            "fail": "You don't have permission to enable admin bypass mode."
+        },
+        "chat": {
+            "description": "Change your chat mode.",
+            "fail": "Unrecognized chat mode. Please enter 'p', 'f', or 'a'."
+        },
+        "create": {
+            "description": "Create a new faction.",
+            "success": "%s created a new faction %s.",
+            "after": "You should now %s."
+        },
+        "description": {
+            "description": "Change your faction description.",
+            "success": "%s changed the description for %s to: %s."
+        }, 
+        "disband": {
+            "description": "Disband your faction.",
+            "success": "%s disbanded the faction %."
+        },
+        "help": {
+            "description": "Show help for faction commands.",
+            "header": "______.[ §2Faction Help (%s/%s) §6].______"
+        },
+        "leader": {
+            "description": "Promote a player to faction leader."
+        },
+        "reload": {
+            "description": "Reload the config and faction data from disk.",
+            "success": "Reloaded config and faction data, took %ss (%sms)."
+        },
+        "show": {
+            "description": "Display information about a faction.",
+            "header-long": "__________.[ %s §6].__________",
+            "header": "_______.[ %s §6]._______"
+        },
+        "tag": {
+            "description": "Change your faction tag.",
+            "success": "%s changed the tag for %s to: %s."
+        },
+        "version": {
+            "description": "Display the version of PocketFactions you are running.",
+            "success": "You are running %s."
+        }
+    }
+}

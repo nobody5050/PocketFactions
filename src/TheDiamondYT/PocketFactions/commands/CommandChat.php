@@ -32,17 +32,17 @@ use TheDiamondYT\PocketFactions\struct\Relation;
 class CommandChat extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "chat", $plugin->translate("chat.desc"), ["c"]);
-        $this->setArgs($plugin->translate("chat.args")); 
+        parent::__construct($plugin, "chat", $plugin->translate("commands.chat.description"), ["c"]);
+        $this->setArgs("<mode>"); 
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;
         }
         if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
         }  
         if(empty($args)) {
@@ -67,7 +67,7 @@ class CommandChat extends FCommand {
                 $text = "Alliance only chat mode.";
                 break;
             default:
-                $this->msg($sender, $this->plugin->translate("chat.wrongopt"));
+                $this->msg($sender, $this->plugin->translate("chat.fail"));
                 return;
         }
         $fme->setChatMode($mode);

@@ -19,43 +19,42 @@
 namespace TheDiamondYT\PocketFactions\commands;
 
 use pocketmine\command\CommandSender;
+use pocketmine\Player;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandLeader extends FCommand {
+class CommandTitle extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "leader", $plugin->translate("commands.leader.description"));
-        $this->setArgs("<player>");
+        parent::__construct($plugin, "title", "Change a players title");
+       // $this->setArgs($plugin->translate("title.args")); 
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         if(!$sender instanceof Player) {
-            $this->msg($sender, $this->plugin->translate("commands.only-player"));
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;
         }
-        if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.has-faction"));
+        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
-        }
-        if(!$fme->isLeader()) {
-            $this->msg($sender, $this->plugin->translate("player.only-leader"));
+        }  
+        if(empty($args)) {
+            $this->msg($sender, $this->getUsage());
             return;
         }
         
-        $target = $this->plugin->getPlayer($this->plugin->getServer()->getPlayer($args[0]));
+        $faction = $fme->getFaction();
+        $faction->setDescription(implode(" ", $args));
         
-        if($target === null) {
-            $this->msg($sender, $this->plugin->translate("player.not-found"));
-            return;
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
+            if($player->getFaction() === $faction)
+               // $this->msg($player, $this->plugin->translate("commands.title.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), implode(" ", $args)]));
         }
-        if($target->getRole() === Role::LEADER) {
-            $this->msg($sender, $this->plugin->translate("player.already-leader"));
-            return;
-        }
-        $fme->getFaction()->setLeader($target);
-        $this->msg($target, "You were promoted to faction leader"); // TODO: translation and better message
     }
 }
