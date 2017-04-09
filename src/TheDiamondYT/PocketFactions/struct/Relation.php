@@ -48,7 +48,7 @@ class Relation {
         if($me->getFaction() === $him->getFaction()) {
             $text = "your faction";
         } else {
-            $text = $faction->getTag();
+            $text = $me->getFaction()->getTag();
         } 
         return self::getColorToFaction($me, $him->getFaction()) . $text . TF::YELLOW;
     }

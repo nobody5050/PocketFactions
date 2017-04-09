@@ -68,7 +68,7 @@ class PF extends PluginBase {
     }
     
     public static function logError(string $text) {
-        Server::getInstance()->getLogger()->critical(self::PREFIX . "§c $text);
+        Server::getInstance()->getLogger()->critical(self::PREFIX . "§c $text");
     }
 
     // TODO: HUGE cleanup

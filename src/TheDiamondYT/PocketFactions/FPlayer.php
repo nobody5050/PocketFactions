@@ -32,11 +32,11 @@ class FPlayer {
 
     private $player;
 
-    private $title;
+    private $title = "";
     
     private $faction;
-    private $role;
-    private $chatMode;
+    private $role = Role::UNKNOWN;
+    private $chatMode = ChatMode::PUBLIC; // TODO: move these to the functions
     
     private $adminBypassing = false;
     
@@ -59,7 +59,7 @@ class FPlayer {
      * @return int
      */
     public function getChatMode(): int {
-        return $this->chatMode ?? ChatMode::PUBLIC;
+        return $this->chatMode;
     }
     
     /**
@@ -151,7 +151,7 @@ class FPlayer {
      * @return int
      */
     public function getRole(): int {
-        return $this->role ?? Role::UNKNOWN;
+        return $this->role;
     }
     
     /**

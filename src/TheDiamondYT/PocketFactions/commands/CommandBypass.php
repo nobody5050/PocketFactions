@@ -28,11 +28,10 @@ use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandDescription extends FCommand {
+class CommandBypass extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "desc", $plugin->translate("desc.desc"));
-        $this->setArgs($plugin->translate("desc.args")); 
+        parent::__construct($plugin, "bypass", $plugin->translate("bypass.desc"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
@@ -40,21 +39,18 @@ class CommandDescription extends FCommand {
             $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
             return;
         }
-        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.notinfaction"));
+        if(!$sender->hasPermission("factions.bypass")) {
+            $this->msg($sender, TF::RED . $this->plugin->translate("bypass.nopermission"));
             return;
-        }  
-        if(empty($args)) {
-            $this->msg($sender, $this->getUsage());
-            return;
+        }    
+        if($fme->isAdminBypassing()) {
+            $status = "disabled";
+            $value = false;
+        } else {
+            $status = "enabled";
+            $value = true;
         }
-        
-        $faction = $fme->getFaction();
-        $faction->setDescription(implode(" ", $args));
-        
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            if($player->getFaction() === $faction)
-                $this->msg($player, $this->plugin->translate("desc.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), implode(" ", $args)]));
-        }
+        $fme->setAdminBypassing($value);
+        $this->msg($sender, $this->plugin->translate("bypass.success", [$status]));
     }
 }

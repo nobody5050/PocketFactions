@@ -37,11 +37,11 @@ class CommandDisband extends FCommand {
         //    $this->msg($sender, TF::RED . $this->plugin->translate("command.mustbeplayer"));
         //    return;
         //}
-        if($fme->getFaction() === null) {
+        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
             $this->msg($sender, $this->plugin->translate("player.notinfaction"));
             return;
         }
-        if(!$fme->isLeader()) {
+        if(!$fme->isLeader() && !$fme->isAdminBypassing()) {
             $this->msg($sender, $this->plugin->translate("player.mustbeleader"));
             return;
         }
@@ -49,11 +49,21 @@ class CommandDisband extends FCommand {
             $this->msg($sender, $this->plugin->translate("faction.ispermanent"));
             return;
         }
+        
         $faction = $fme->getFaction();
         
-        $faction->disband();
+        if(!empty($args)) {
+            if($fme->isAdminBypassing()) {
+                $faction = $this->plugin->getFaction($args[0]);
+                if($faction === null)
+                    $faction = $fme->getFaction();
+            }
+        }
         
-        $fme->setFaction($this->plugin->getFaction("Wilderness"));
+        foreach($faction->getOnlinePlayers() as $player)
+            $player->setFaction($this->plugin->getFaction("Wilderness"));
+        
+        $faction->disband();
 
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
             $this->msg($player, $this->plugin->translate("disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));
