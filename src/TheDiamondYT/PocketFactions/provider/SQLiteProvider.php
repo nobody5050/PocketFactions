@@ -19,7 +19,7 @@
 namespace TheDiamondYT\PocketFactions\provider;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\entity\Faction;
 
 class SQLiteProvider implements Provider {
 

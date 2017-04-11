@@ -30,6 +30,7 @@ use TheDiamondYT\PocketFactions\provider\YamlProvider;
 use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\command\FCommandManager;
 use TheDiamondYT\PocketFactions\listener\FPlayerListener;
+use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\Role;
 

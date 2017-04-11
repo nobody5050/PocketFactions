@@ -16,7 +16,7 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions;
+namespace TheDiamondYT\PocketFactions\entity;
 
 use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;

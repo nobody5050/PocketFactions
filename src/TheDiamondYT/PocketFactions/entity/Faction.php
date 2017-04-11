@@ -16,10 +16,11 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions;
+namespace TheDiamondYT\PocketFactions\entity;
 
 use pocketmine\utils\UUID;
 
+use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\Role;
 
 /**
@@ -45,10 +46,10 @@ class Faction {
      * Constructor.
      * TODO: check if the id exists.
      *
-     * @param string|(nothing)
+     * @param string
      */
-    public function __construct(string $uuid = "") {
-        if($uuid === "") {
+    public function __construct(string $uuid = null) {
+        if($uuid === null) {
             $this->id = UUID::fromRandom()->toString(); 
             return;
         }
@@ -211,6 +212,15 @@ class Faction {
      */
     public function getLeader() {
         return $this->leader;
+    }
+    
+    /**
+     * Returns true if the current factions the wilderness.
+     *
+     * @return bool
+     */
+    public function isNone(): bool {
+        return $this->getId() === self::WILDERNESS_ID;
     }
     
     /**

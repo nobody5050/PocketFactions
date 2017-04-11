@@ -20,7 +20,7 @@ namespace TheDiamondYT\PocketFactions\provider;
 
 use pocketmine\Player;
 
-use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\entity\Faction;
 
 interface Provider {
     public function loadFactions();
