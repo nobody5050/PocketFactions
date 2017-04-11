@@ -17,17 +17,25 @@
 # - eng
 language: eng
       
-# Data provider that will be used for storing faction data.
+# Data provider that will be used for storing faction data
 # - yaml
 provider: yaml
 
 # Faction preferences
 faction:
+  # Log faction create or disband to the console
   logFactionCreate: false
   logFactionDisband: false
+  
+  # The length of /f help
   helpPageLength: 5
-  tag:
-    maxLength: 10
-  show:
-    longHeader: false
+  
+  # The maximum length for faction tags
+  maxTagLength: 10
+  
+  # The minimum length for faction tags
+  minTagLength: 3
+  
+  # Show a long header on /f show
+  longShowHeader: false
 

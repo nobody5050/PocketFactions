@@ -1,6 +1,7 @@
 {
     "console": {
-        "data-loaded": "Loaded language and faction data, took %ss (%sms)."
+        "data-loaded": "Loaded language and faction data, took %ss (%sms).",
+        "commands-loaded": "Loaded faction commands, took %ss (%sms)."
     },
     "player": {
        "not-found": "That player cannot be found",
@@ -15,6 +16,7 @@
             "exists": "That tag is already in use.",
             "exists-player": "There is a player by that name online.",
             "too-long": "That tag is too long.",
+            "too-short": "That tag is too short.",
             "invalid-chars": "That tag contains invalid characters."
         }
     },
@@ -46,7 +48,7 @@
         },
         "help": {
             "description": "Show help for faction commands.",
-            "header": "______.[ §2Faction Help (%s/%s) §6].______"
+            "header": "§6______.[ §2Faction Help (%s/%s) §6].______"
         },
         "leader": {
             "description": "Promote a player to faction leader."
@@ -57,8 +59,8 @@
         },
         "show": {
             "description": "Display information about a faction.",
-            "header-long": "__________.[ %s §6].__________",
-            "header": "_______.[ %s §6]._______"
+            "header-long": "§6__________.[ %s §6].__________",
+            "header": "§6_______.[ %s §6]._______"
         },
         "tag": {
             "description": "Change your faction tag.",

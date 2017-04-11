@@ -16,41 +16,41 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
+use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandHelp extends FCommand {
+class CommandBypass extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "help", $plugin->translate("commands.help.description"), ["h"]);
-        $this->setArgs("<page>");
+        parent::__construct($plugin, "bypass", $plugin->translate("commands.bypass.description"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        if(count($args) === 0) {
-            $page = 1;
-        } 
-        elseif(is_numeric($args[0])) {
-            $page = (int) array_shift($args);
-            if($page <= 0)
-                $page = 1;
-        } else {
-            return false;
+        if(!$sender instanceof Player) {
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
+            return;
         }
-        $commands = [];
-        foreach($this->plugin->getCommandManager()->getCommands() as $command)
-            $commands[$command->getName()] = $command;
-        
-        ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
-        $commands = array_chunk($commands, $this->cfg["factions"]["helpPageLength"] ?? 5);
-        $page = (int) min(count($commands), $page);
-        $this->msg($sender, $this->plugin->translate("commands.help.header", [$page, count($commands)]));
-        foreach($commands[$page - 1] as $command)
-            $this->msg($sender, $command->getUsage() . " " . TF::YELLOW . $command->getDescription());
+        if(!$sender->hasPermission("factions.bypass")) {
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.bypass.fail"));
+            return;
+        }    
+        if($fme->isAdminBypassing()) {
+            $status = "disabled";
+            $value = false;
+        } else {
+            $status = "enabled";
+            $value = true;
+        }
+        $fme->setAdminBypassing($value);
+        $this->msg($sender, $this->plugin->translate("commands.bypass.success", [$status]));
     }
 }

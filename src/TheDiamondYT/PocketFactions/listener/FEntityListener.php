@@ -16,7 +16,7 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\listeners;
+namespace TheDiamondYT\PocketFactions\listener;
 
 use pocketmine\event\Listener;
 use pocketmine\event\entity\EntityExplodeEvent;

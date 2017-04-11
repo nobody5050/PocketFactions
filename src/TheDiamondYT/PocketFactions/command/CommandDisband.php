@@ -16,48 +16,59 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandTag extends FCommand {
+class CommandDisband extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "tag", $plugin->translate("commands.tag.description"));
-        $this->setArgs("<tag>");
+        parent::__construct($plugin, "disband", $plugin->translate("commands.disband.description"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
         //if(!$sender instanceof Player) {
-        //    $this->msg($sender, $this->plugin->translate("commands.only-player"));
+        //    $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
         //    return;
         //}
-        if($fme->getFaction() === null) {
+        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
             $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
         }
-        if(!$fme->isLeader()) {
+        if(!$fme->isLeader() && !$fme->isAdminBypassing()) {
             $this->msg($sender, $this->plugin->translate("player.only-leader"));
             return;
         }
-        if(empty($args)) {
-            $this->msg($sender, $this->getUsage());
-            return;
-        }
-        if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
-            $this->msg($sender, $this->plugin->translate("faction.tag.too-long"));
+        if($fme->getFaction()->isPermanent()) {
+            $this->msg($sender, $this->plugin->translate("faction.permanent"));
             return;
         }
         
-        $fme->getFaction()->setTag($args[0]);
+        $faction = $fme->getFaction();
         
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
-            $this->msg($sender, $this->plugin->translate("commands.tag.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), $args[0]]));
+        if(!empty($args)) {
+            if($fme->isAdminBypassing()) {
+                $faction = $this->plugin->getFaction($args[0]);
+                if($faction === null)
+                    $faction = $fme->getFaction();
+            }
+        }
+        
+        foreach($faction->getOnlinePlayers() as $player)
+            $player->setFaction($this->plugin->getFaction("Wilderness"));
+        
+        $faction->disband();
+
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+            $this->msg($player, $this->plugin->translate("commands.disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));
+        
+        if($this->cfg["faction"]["logFactionDisband"] === true) 
+            PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());
     }
 }
-

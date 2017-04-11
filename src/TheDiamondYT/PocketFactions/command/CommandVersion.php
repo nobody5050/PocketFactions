@@ -16,41 +16,22 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
-use TheDiamondYT\PocketFactions\struct\Role;
-use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandBypass extends FCommand {
+class CommandVersion extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "bypass", $plugin->translate("commands.bypass.description"));
+        parent::__construct($plugin, "version", $plugin->translate("commands.version.description"), ["ver", "v"]);
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
-        if(!$sender->hasPermission("factions.bypass")) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.bypass.fail"));
-            return;
-        }    
-        if($fme->isAdminBypassing()) {
-            $status = "disabled";
-            $value = false;
-        } else {
-            $status = "enabled";
-            $value = true;
-        }
-        $fme->setAdminBypassing($value);
-        $this->msg($sender, $this->plugin->translate("commands.bypass.success", [$status]));
+        $this->msg($sender, $this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
+        $this->msg($sender, TF::AQUA . "By Luke (TheDiamondYT)");
     }
 }

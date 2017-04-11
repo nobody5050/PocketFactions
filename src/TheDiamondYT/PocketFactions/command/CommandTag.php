@@ -16,46 +16,52 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandLeader extends FCommand {
+class CommandTag extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "leader", $plugin->translate("commands.leader.description"));
-        $this->setArgs("<player>");
+        parent::__construct($plugin, "tag", $plugin->translate("commands.tag.description"));
+        $this->setArgs("<tag>");
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, $this->plugin->translate("commands.only-player"));
-            return;
-        }
+        //if(!$sender instanceof Player) {
+        //    $this->msg($sender, $this->plugin->translate("commands.only-player"));
+        //    return;
+        //}
         if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.has-faction"));
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
             return;
         }
         if(!$fme->isLeader()) {
             $this->msg($sender, $this->plugin->translate("player.only-leader"));
             return;
         }
-        
-        $target = $this->plugin->getPlayer($this->plugin->getServer()->getPlayer($args[0]));
-        
-        if($target === null) {
-            $this->msg($sender, $this->plugin->translate("player.not-found"));
+        if(empty($args)) {
+            $this->msg($sender, $this->getUsage());
             return;
         }
-        if($target->getRole() === Role::LEADER) {
-            $this->msg($sender, $this->plugin->translate("player.already-leader"));
+        if(strlen($args[0]) > $this->cfg["faction"]["maxTagLength"]) {
+            $this->msg($sender, $this->plugin->translate("faction.tag.too-long"));
             return;
         }
-        $fme->getFaction()->setLeader($target);
-        $this->msg($target, "You were promoted to faction leader"); // TODO: translation and better message
+        if(strlen($args[0]) < $this->cfg["faction"]["minTagLength"]) {
+            $this->msg($sender, $this->plugin->translate("faction.tag.too-short"));
+            return;
+        }
+        
+        $fme->getFaction()->setTag($args[0]);
+        
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
+            $this->msg($sender, $this->plugin->translate("commands.tag.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), $args[0]]));
     }
 }
+

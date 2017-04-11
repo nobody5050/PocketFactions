@@ -16,32 +16,21 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\provider;
+namespace TheDiamondYT\PocketFactions\command;
 
-use pocketmine\Player;
+use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat as TF;
 
-use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\PF;
 
-interface Provider {
-    public function loadFactions();
-    
-    public function loadPlayers();
-    
-    public function getPlayer($player);
-    
-    public function addPlayer(Player $player);
-    
-    public function getFaction(string $faction);
-    
-    public function createFaction(Faction $faction); 
-    
-    public function disbandFaction(Faction $faction);
-    
-    public function setFactionTag(Faction $faction);
-    
-    public function setFactionDescription(Faction $faction);
-    
-    public function setFactionLeader(Faction $faction);
-     
-    public function factionExists(string $faction);
+class CommandSave extends FCommand {
+
+    public function __construct(PF $plugin) {
+        parent::__construct($plugin, "save", "Save config");
+    }
+
+    public function execute(CommandSender $sender, $fme, array $args) {
+        $this->plugin->getProvider()->save();
+        $this->msg($sender, "Saved config"); // TODO: translation
+    }
 }

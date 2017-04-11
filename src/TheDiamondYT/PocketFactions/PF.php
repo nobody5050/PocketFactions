@@ -28,14 +28,14 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\provider\Provider;
 use TheDiamondYT\PocketFactions\provider\YamlProvider;
 use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
-use TheDiamondYT\PocketFactions\commands\FCommandManager;
-use TheDiamondYT\PocketFactions\listeners\FPlayerListener;
+use TheDiamondYT\PocketFactions\command\FCommandManager;
+use TheDiamondYT\PocketFactions\listener\FPlayerListener;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\Role;
 
 class PF extends PluginBase {
 
-    const PREFIX = "§b[§dPocketFactions§b]";
+    const PREFIX = "§b[§dPocketFactions§b] ";
 
     private $provider;
     private $language;
@@ -64,7 +64,7 @@ class PF extends PluginBase {
      * @param string
      */
     public static function log($text) {
-        Server::getInstance()->getLogger()->info(self::PREFIX . TF::YELLOW . " $text");
+        Server::getInstance()->getLogger()->info(self::PREFIX . TF::YELLOW . "$text");
     }
     
     /**
@@ -73,7 +73,7 @@ class PF extends PluginBase {
      * @param string
      */
     public static function logError($text) {
-        Server::getInstance()->getLogger()->critical(self::PREFIX . TF::RED . " $text");
+        Server::getInstance()->getLogger()->critical(self::PREFIX . TF::RED . "$text");
     }
 
 	public function onEnable() {
@@ -94,7 +94,7 @@ class PF extends PluginBase {
 	    $this->language = new Config($this->getFile() . "resources/lang/" . $lang . ".json", Config::JSON);
 
 	    // Initialize command manager and events
-	    $this->fcommandManager = new FCommandManager($this);
+	    $this->fcommandManager = new FCommandManager($this); // This takes a long time (50+ ms!)
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
 
@@ -196,14 +196,11 @@ class PF extends PluginBase {
 	/**
 	 * Returns an faction player.
 	 *
-	 * @param CommandSender|Player
+	 * @param Player|string
 	 * @return FPlayer|null
 	 */
 	public function getPlayer($player) {
-	    if($player instanceof Player)
-	        return $this->provider->getPlayer($player);
-	        
-	    return null;
+	    return $this->provider->getPlayer($player);
 	} 
 	
 	/**
@@ -227,6 +224,7 @@ class PF extends PluginBase {
 	 *
 	 * @param string 
 	 * @param array 
+	 * @return string
 	 */
 	public function translate(string $text, array $params = []) {
 	    $lang = $this->cfg["language"];  

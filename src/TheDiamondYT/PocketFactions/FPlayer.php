@@ -31,16 +31,18 @@ use TheDiamondYT\PocketFactions\struct\ChatMode;
 class FPlayer {
 
     private $player;
+    private $plugin;
 
     private $title = "";
     
     private $faction;
     private $role = Role::UNKNOWN;
-    private $chatMode = ChatMode::PUBLIC; // TODO: move these to the functions
+    private $chatMode = ChatMode::PUBLIC; // TODO: move these to the functions,
     
     private $adminBypassing = false;
     
-    public function setPlayer(Player $player) {
+    public function __construct(PF $plugin, Player $player) {
+        $this->plugin = $plugin;
         $this->player = $player;
     }
     
@@ -191,7 +193,7 @@ class FPlayer {
         $faction->addPlayer($this); 
         $this->faction = $faction; 
         if($update)
-            PF::get()->getProvider()->setPlayerFaction($this);
+            $this->plugin->getProvider()->setPlayerFaction($this);
     }
     
     /**

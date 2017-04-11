@@ -57,32 +57,30 @@ class YamlProvider implements Provider {
     }
     
     public function loadPlayers() {
-        foreach($this->pdata->getAll() as $name => $player) {
+        /*foreach($this->pdata->getAll() as $name => $player) {
             $p = $this->plugin->getServer()->getPlayer($name);
-            $fplayer = new FPlayer();
-            if($p !== null) $fplayer->setPlayer($p);
+            $fplayer = new FPlayer($this->plugin, $p);
             $fplayer->setFaction($this->getFaction($player["faction"]) ?? $this->getFaction("Wilderness"));
             $this->fplayers[$name] = $fplayer;
-        }
+        }*/
     }
     
     public function getOnlinePlayers() {
         return $this->fplayers;
     }
     
-    public function getPlayer(Player $player) {
-        if(!$this->playerExists($player->getName()))
-            return null;
+    public function getPlayer($player) {
+        if($player instanceof Player) 
+            return $this->fplayers[$player->getName()];
             
-        return $this->fplayers[$player->getName()];
+        return $this->fplayers[$player];
     }
     
     public function addPlayer(Player $player) {
-        $fplayer = new FPlayer();
-        $fplayer->setPlayer($player);
+        $fplayer = new FPlayer($this->plugin, $player);
         $fplayer->setFaction($this->getFaction("Wilderness"));
         $this->fplayers[$player->getName()] = $fplayer;
-        $this->setPlayerFaction($fplayer);
+        //$this->setPlayerFaction($fplayer);
     }
     
     public function removePlayer(Player $player) {
@@ -133,10 +131,10 @@ class YamlProvider implements Provider {
     }
     
     public function playerExists(string $name): bool {
-        foreach($this->fplayers as $player) {
+        /*foreach($this->fplayers as $player) {
             if($player->getName() === $name) 
                 return true;
-        }
+        }*/
         return false;
     }
 }

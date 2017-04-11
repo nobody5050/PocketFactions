@@ -13,25 +13,35 @@
  * (at your option) any later version.     
  *
  * PocketFactions v1.0.1 by Luke (TheDiamondYT)
- * All rights reserved.                         
+ * All rights reserved.           
  */
- 
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\event;
 
-use pocketmine\command\CommandSender;
-use pocketmine\utils\TextFormat as TF;
+use pocketmine\event\Event;
+usd pocketmine\event\Cancellable;
+use pocketmine\Player;
 
-use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+class FactionCreateEvent extends Event implements Cancellable {
 
-class CommandVersion extends FCommand {
+    private $creator;
+    private $tag;
 
-    public function __construct(PF $plugin) {
-        parent::__construct($plugin, "version", $plugin->translate("commands.version.description"), ["ver", "v"]);
+    public function __construct(Player $creator, string $tag) {
+        $this->creator = $creator;
+        $this->tag = $tag;
     }
-
-    public function execute(CommandSender $sender, $fme, array $args) {
-        $this->msg($sender, $this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
-        $this->msg($sender, TF::AQUA . "By Luke (TheDiamondYT)");
+    
+    /**
+     * @return string
+     */
+    public function getTag(): string {
+        return $this->tag;
+    }
+    
+    /**
+     * @param string
+     */
+    public function setTag(string $tag) {
+        $this->tag = $tag;
     }
 }

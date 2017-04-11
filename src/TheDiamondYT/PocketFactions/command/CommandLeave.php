@@ -16,25 +16,38 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
+use pocketmine\Player;
+use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\struct\ChatMode;
+use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
 
-class CommandReload extends FCommand {
+class CommandLeave extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "reload", $plugin->translate("commamds.reload.description"));
+        parent::__construct($plugin, "leave", $plugin->translate("commands.leave.description"));
     }
 
     public function execute(CommandSender $sender, $fme, array $args) {
-        $startTime = microtime(true);
-        $this->plugin->reloadConfig();
-        $this->plugin->getProvider()->loadFactions();
-        $this->plugin->getProvider()->loadPlayers();
-        $this->plugin->getProvider()->save();
-        $this->msg($sender, $this->plugin->translate("commands.reload.success", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+        if(!$sender instanceof Player) {
+            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
+            return;
+        }
+        if($fme->getFaction() === null) {
+            $this->msg($sender, $this->plugin->translate("player.no-faction"));
+            return;
+        }  
+        /*if(!$fme->getFaction()->isPermanent() && $fme->isLeader()) {
+            $this->msg($sender, /*$this->plugin->translate("player.give-leader"));
+            return;
+        }*/
+        $fme->leaveFaction();
     }
 }

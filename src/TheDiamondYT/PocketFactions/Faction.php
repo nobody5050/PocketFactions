@@ -145,7 +145,7 @@ class Faction {
      * @param FPlayer
      */
     public function addPlayer(FPlayer $player) {
-        if($player->getRole() === Role::get("Leader"))
+        if($player->isLeader())
             $this->setLeader($player);
             
         $this->players[$player->getName()] = $player;
@@ -168,8 +168,8 @@ class Faction {
      */
     public function addAlliance(Faction $faction, bool $update = true) {
         $this->allies[$faction->getTag()] = $faction; // TODO: use faction id
-        //if($update)
-        //    PF::get()->getProvider()->setFactionAlliance($this);
+        if($update)
+            PF::get()->getProvider()->setFactionAlliance($this);
     }
    
    /**

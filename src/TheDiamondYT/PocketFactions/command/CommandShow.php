@@ -16,7 +16,7 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
@@ -49,8 +49,8 @@ class CommandShow extends FCommand {
                     $faction = $fme->getFaction();  // just return our faction if not found
             }
         }    
-        $long = $this->cfg["faction"]["show"]["longHeader"];
-        $this->msg($sender, $this->plugin->translate($long ? "commands.show.header-long" : "commands.show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
+        $long = $this->cfg["faction"]["longShowHeader"];
+        $this->msg($sender, $this->plugin->translate(TF::GOLD . $long ? "commands.show.header-long" : "commands.show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
         
         $this->add("Description", $faction->getDescription());
         $this->add("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");

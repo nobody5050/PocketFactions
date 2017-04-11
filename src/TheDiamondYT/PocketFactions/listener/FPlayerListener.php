@@ -16,7 +16,7 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\listeners;
+namespace TheDiamondYT\PocketFactions\listener;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -37,8 +37,7 @@ class FPlayerListener implements Listener {
     }
     
     public function onPlayerJoin(PlayerJoinEvent $event) {
-        if(!$this->plugin->getProvider()->playerExists($event->getPlayer()->getName()))
-            $this->plugin->getProvider()->addPlayer($event->getPlayer());
+        $this->plugin->getProvider()->addPlayer($event->getPlayer());
     }
     
     public function onPlayerQuit(PlayerQuitEvent $event) {
@@ -48,7 +47,7 @@ class FPlayerListener implements Listener {
     // This could do with some cleanup
     public function onPlayerChat(PlayerChatEvent $event) {
         $fme = $this->plugin->getPlayer($event->getPlayer());
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             switch($fme->getChatMode()) {
                 case ChatMode::PUBLIC:
                     return;
@@ -60,7 +59,7 @@ class FPlayerListener implements Listener {
                     $colour = TF::LIGHT_PURPLE;
                     $title = false;
             }
-            $event->setCancelled(true);
-            $this->plugin->getServer()->broadcastMessage($colour . $title ? $fme->getNameAndTitle() : " " . $fme->getNameAndPrefix() . " " . $event->getMessage());
         }
+        $event->setFormat($colour . $title ? $fme->getNameAndTitle() : " " . $colour . $fme->getNameAndPrefix() . " " . $event->getMessage());
+    }
 }

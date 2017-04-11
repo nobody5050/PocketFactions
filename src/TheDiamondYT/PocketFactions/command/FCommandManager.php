@@ -16,7 +16,7 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\PluginCommand;
 use pocketmine\command\CommandSender;

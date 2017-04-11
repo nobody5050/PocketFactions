@@ -16,7 +16,7 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
@@ -27,6 +27,7 @@ use TheDiamondYT\PocketFactions\Faction;
 use TheDiamondYT\PocketFactions\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\event\FactionCreateEvent;
 
 class CommandCreate extends FCommand {
 
@@ -44,7 +45,7 @@ class CommandCreate extends FCommand {
             $this->msg($sender, TF::RED . $this->getUsage());
             return;
         }
-        if($fme->getFaction()->isPermanent() && $fme->getFaction() !== null) {
+        if($fme->getFaction() !== null) {
             $this->msg($sender, $this->plugin->translate("player.has-faction"));
             return;
         }
@@ -65,19 +66,24 @@ class CommandCreate extends FCommand {
             return;
         }
         
+        $sender->getServer()->getPluginManager()->callEvent($ev = new FactionCreateEvent($sender, $args[0]));
+        
+        if($ev->isCancelled()) 
+            return;
+        
         $faction = new Faction();
         $faction->create();
-        $faction->setTag($args[0]); 
+        $faction->setTag($ev->getTag()); 
         
         $fme->setRole(Role::get("Leader"));
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("commands.create.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $args[0]]));
+            $this->msg($player, $this->plugin->translate("commands.create.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $ev->getTag()]));
             
         $this->msg($sender, $this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
         
         if($this->cfg["faction"]["logFactionCreate"] === true)
-            PF::log(TF::GRAY . $sender->getName() . " created a new faction $args[0]"); // Not even gonna do translation
+            PF::log(TF::GRAY . $sender->getName() . " created a new faction " . $ev->getTag()); // Not even gonna do translation
     }
 }
