@@ -21,14 +21,16 @@ namespace TheDiamondYT\PocketFactions\entity;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
+use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
+use TheDiamondYT\PocketFactions\struct\RelationParticipator;
 
 /**
  * Represents a faction player.
  */
-class FPlayer {
+class FPlayer implements RelationParticipator {
 
     private $player;
     private $plugin;
@@ -37,7 +39,7 @@ class FPlayer {
     
     private $faction;
     private $role = Role::UNKNOWN;
-    private $chatMode = ChatMode::PUBLIC; // TODO: move these to the functions,
+    private $chatMode = ChatMode::PUBLIC; // TODO: move these to the function.
     
     private $adminBypassing = false;
     
@@ -127,12 +129,20 @@ class FPlayer {
         return $this->getPrefix() . " " . $this->getName();
     }
     
+    public function describeTo(RelationParticipator $that, bool $ucfirst = false) {
+        return Relation::describeThatToMe($this, $that, $ucfirst);
+    }
+    
+    public function getColorTo(RelationParticipator $that) {
+        return Relation::getColorToMe($that, $this);
+    }
+    
     /**
      * Sends a message to the player.
      *
      * @param string
      */
-    public function msg(string $text) {
+    public function sendMessage(string $text) {
         if($this->player !== null)
             $this->player->sendMessage(TF::YELLOW . $text);
     }
@@ -202,6 +212,10 @@ class FPlayer {
     public function leaveFaction() {
         $this->faction->removePlayer($this);
         $this->faction = null;
+    }
+    
+    public function hasFaction(): bool {
+        return $this->faction !== null;
     }
     
     /**

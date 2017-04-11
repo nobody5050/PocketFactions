@@ -66,7 +66,7 @@ class CommandDisband extends FCommand {
         $faction->disband();
 
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("commands.disband.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $faction->getTag()]));
+            $this->msg($player, $this->plugin->translate("commands.disband.success", [$fme->describeTo($player), $fme->getColorTo($player) . $faction->getTag()]));
         
         if($this->cfg["faction"]["logFactionDisband"] === true) 
             PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());

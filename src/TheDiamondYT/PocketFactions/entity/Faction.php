@@ -22,11 +22,13 @@ use pocketmine\utils\UUID;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\struct\RelationParticipator;
 
 /**
  * Represents a Faction.
  */
-class Faction {
+class Faction implements RelationParticipator {
 
     const WILDERNESS_ID = "7a3ee880-46ba-38df-844e-e073ad0713d4";
     const WARZONE_ID = "4aacbf95-ac8b-3f68-898a-372ee8a818e3";
@@ -63,11 +65,22 @@ class Faction {
         return $this->id;
     }
     
+    public function describeTo(RelationParticipator $that) {
+        return Relation::describeThatToMe($this, $that);
+    }
+    
+    public function getColorTo(RelationParticipator $that) {
+        return Relation::getColorToMe($that, $this);
+    }
+    
     /**
      * @return string
      */
-    public function getTag() {     
-        return $this->tag;
+    public function getTag(FPlayer $player = null) {     
+        if($player === null) {
+            return $this->tag;
+        }
+        return $this->getColorTo($player) . $this->tag;
     }
     
     /**

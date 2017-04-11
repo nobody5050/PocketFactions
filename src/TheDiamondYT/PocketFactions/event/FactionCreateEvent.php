@@ -17,16 +17,19 @@
  */
 namespace TheDiamondYT\PocketFactions\event;
 
-use pocketmine\event\Event;
-usd pocketmine\event\Cancellable;
+use pocketmine\event\plugin\PluginEvent;
+use pocketmine\event\Cancellable;
 use pocketmine\Player;
 
-class FactionCreateEvent extends Event implements Cancellable {
+use TheDiamondYT\PocketFactions\PF;
+
+class FactionCreateEvent extends PluginEvent implements Cancellable {
 
     private $creator;
     private $tag;
 
-    public function __construct(Player $creator, string $tag) {
+    public function __construct(PF $plugin, Player $creator, string $tag) {
+        parent::__construct($plugin);
         $this->creator = $creator;
         $this->tag = $tag;
     }

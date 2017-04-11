@@ -53,33 +53,33 @@ class CommandCreate extends FCommand {
             $this->msg($sender, $this->plugin->translate("faction.tag.exists")); 
             return;
         }
-        if($this->plugin->playerExists($args[0])) {
-            $this->msg($sender, $this->plugin->translate("faction.tag.exists-player"));
-            return;
-        }
+        //if($this->plugin->playerExists($args[0])) {
+        //    $this->msg($sender, $this->plugin->translate("faction.tag.exists-player"));
+        //    return;
+        //}
         if(!$this->alphanum($args[0])) {
             $this->msg($sender, $this->plugin->translate("faction.tag.invalid-chars"));
             return;
         }
-        if(strlen($args[0]) > $this->cfg["faction"]["tag"]["maxLength"]) {
+        if(strlen($args[0]) > $this->cfg["faction"]["maxTagLength"]) {
             $this->msg($sender, $this->plugin->translate("faction.tag.too-long")); 
             return;
         }
         
-        $sender->getServer()->getPluginManager()->callEvent($ev = new FactionCreateEvent($sender, $args[0]));
+        //$sender->getServer()->getPluginManager()->callEvent($ev = new FactionCreateEvent($this->plugin, $sender, $args[0]));
         
-        if($ev->isCancelled()) 
-            return;
+        //if($ev->isCancelled()) 
+        //    return;
         
         $faction = new Faction();
         $faction->create();
-        $faction->setTag($ev->getTag()); 
+        $faction->setTag($args[0]); 
         
         $fme->setRole(Role::get("Leader"));
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("commands.create.success", [Relation::describeToPlayer($fme, $player), Relation::getColorToPlayer($fme, $player) . $ev->getTag()]));
+            $this->msg($player, $this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)]));
             
         $this->msg($sender, $this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
         

@@ -54,7 +54,7 @@ class CommandTitle extends FCommand {
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             if($player->getFaction() === $faction)
-               // $this->msg($player, $this->plugin->translate("commands.title.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), implode(" ", $args)]));
+               // $this->msg($player, $this->plugin->translate("commands.title.success", [$fme->describeTo($player), $fme->describeTo($player), implode(" ", $args)]));
         }
     }
 }

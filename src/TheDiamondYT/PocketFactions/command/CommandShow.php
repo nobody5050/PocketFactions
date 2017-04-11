@@ -50,7 +50,7 @@ class CommandShow extends FCommand {
             }
         }    
         $long = $this->cfg["faction"]["longShowHeader"];
-        $this->msg($sender, $this->plugin->translate($long ? "commands.show.header-long" : "commands.show.header", [Relation::getColorToFaction($fme, $faction) . $faction->getTag()]));
+        $this->msg($sender, $this->plugin->translate($long ? "commands.show.header-long" : "commands.show.header", [$fme->describeTo($faction) . $faction->getTag()]));
         
         $this->add("Description", $faction->getDescription());
         $this->add("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");

@@ -18,64 +18,77 @@
  
 namespace TheDiamondYT\PocketFactions\struct;
 
-use TheDiamondYT\PocketFactions\Faction;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\Faction;
+use TheDiamondYT\PocketFactions\entity\FPlayer;
 
 use pocketmine\utils\TextFormat as TF;
 
-/**
- * TODO: some SERIOUS cleanup
- */
 class Relation {
     const NEUTRAL = 0;
-    const FACTION = 1;
-    const ALLY = 2;
-    const ENEMY = 3;
+    const ALLY = 1;
+    const ENEMY = 2;
+    const FACTION = 3;
     
-    public static function describeToPlayer($me, $him) {
-        if($me === $him) {
-            $text= "You";
+    public static function describeThatToMe(RelationParticipator $me, RelationParticipator $that, bool $ucfirst = false): string {
+        if($myFaction = self::getFaction($me) === null)
+            return "error";     
+            
+        if($thatFaction = self::getFaction($that) === null)
+            return "error";   
+         
+        if($that instanceof Faction) {   
+            if($myFaction === $thatFaction) {
+                $ret = "your faction";
+            } else {
+                $ret = $thatFaction->getTag();
+            }
+        } elseif($that instanceof FPlayer) {
+            if($that === $me) {
+                $ret = "you";
+            }
+            elseif($thatFaction === $myFaction) {
+                $ret = $that->getNameAndTitle();
+            } else {
+                $ret = $that->getNameAndTag();
+            }
         }
-        elseif($me->getFaction() === $him->getFaction()) {
-            $text = TF::GREEN . $me->getTitle() . " " . $me->getName();
-        } else {
-            $text = $me->getName();
-        }
-        return self::getColorToPlayer($me, $him) . $text . TF::YELLOW;
-    }
-   
-    public static function describeToFaction($me, $him) {
-        if($me->getFaction() === $him->getFaction()) {
-            $text = "your faction";
-        } else {
-            $text = $me->getFaction()->getTag();
-        } 
-        return self::getColorToFaction($me, $him->getFaction()) . $text . TF::YELLOW;
-    }
-    
-    public static function getColorToPlayer($me, $him) {
-        if($me->getFaction() === $him->getFaction()) {
-            $colour = TF::GREEN;
-        } elseif($him->getFaction() !== null && $me->getFaction()->isAllyWith($him->getFaction())) {
-            $colour = TF::LIGHT_PURPLE;
-        } else {
-            $colour = TF::WHITE;
-        }
-        return $colour;
+           
+        if($ucfirst === true)
+            $ret = ucfirst($ret);
+            
+        return "" . self::getColorToMe($that, $me) . $ret . TF::YELLOW;
     }
     
-    // This looks horrible lol
-    public static function getColorToFaction($mine, $that) {
-        if($that->getId() === Faction::WILDERNESS_ID) {
-            return TF::DARK_GREEN;
-        } elseif($that->getId() === Faction::WARZONE_ID) {
-            return TF::DARK_RED;
-        } elseif($mine->getFaction() === $that) {
-            return TF::GREEN;
-        } elseif($mine->getFaction() !== null && $mine->getFaction()->isAllyWith($that)) {
-            return TF::LIGHT_PURPLE;
-        } else {
-            return TF::WHITE;
+    private static function getFaction(RelationParticipator $object) {
+        if($object instanceof Faction)
+            return $object;
+            
+        if($object instanceof FPlayer) {
+            if($object->hasFaction())
+                return $object->getFaction();
+        }
+        return null;
+    }
+  
+    public static function getColorToMe(RelationParticipator $that, RelationParticipator $me): string {
+        $thatFaction = self::getFaction($that);
+        $myFaction = self::getFaction($me);
+        
+        if($thatFaction !== null) {
+            if($thatFaction->getId() === Faction::WILDERNESS_ID) {
+                return TF::DARK_GREEN;
+            }          
+            if($thatFaction->getId() === Faction::WARZONE_ID) {
+                return TF::DARK_RED;               
+            }
+            if($thatFaction->isAllyWith($myFaction) === self::ALLY) {
+                return TF::LIGHT_PURPLE;            
+            }
+            if($thatFaction === $myFaction) {
+                return TF::GREEN;
+            } else {
+                return TF::WHITE;
+            }
         }
         return $colour;
     }

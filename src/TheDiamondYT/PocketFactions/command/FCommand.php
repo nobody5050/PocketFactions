@@ -87,11 +87,7 @@ abstract class FCommand {
      * @param string 
      */
     public function msg($player, string $text) {
-        if($player instanceof FPlayer) {
-            $player->msg($text);
-        } else {
-            $player->sendMessage(TF::YELLOW . $text);
-        }
+        $player->sendMessage(TF::YELLOW . $text);
     }
     
     /**

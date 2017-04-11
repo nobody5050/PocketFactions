@@ -78,7 +78,7 @@ class YamlProvider implements Provider {
     
     public function addPlayer(Player $player) {
         $fplayer = new FPlayer($this->plugin, $player);
-        $fplayer->setFaction($this->getFaction("Wilderness"));
+        //$fplayer->setFaction($this->getFaction("Wilderness"));
         $this->fplayers[$player->getName()] = $fplayer;
         //$this->setPlayerFaction($fplayer);
     }
