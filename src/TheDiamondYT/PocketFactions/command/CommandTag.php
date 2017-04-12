@@ -21,7 +21,7 @@ namespace TheDiamondYT\PocketFactions\command;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
@@ -29,10 +29,10 @@ class CommandTag extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "tag", $plugin->translate("commands.tag.description"));
-        $this->setArgs("<tag>");
+        $this->addRequiredArgument("tag");
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
+    public function perform(IPlayer $fme, array $args) {
         //if(!$sender instanceof Player) {
         //    $this->msg($sender, $this->plugin->translate("commands.only-player"));
         //    return;

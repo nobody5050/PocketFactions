@@ -150,6 +150,13 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * 
+     */
+    public function getPlayers() {
+        
+    }
+    
+    /**
      * Add a player to the faction.
      *
      * @param FPlayer
@@ -168,6 +175,17 @@ class Faction implements RelationParticipator {
      */
     public function removePlayer(FPlayer $player) {
         unset($this->players[$player->getName()]);
+    }
+    
+    /**
+     * Send a message to everyone in the faction.
+     *
+     * @param string
+     */
+    public function sendMessage(string $text) {
+        foreach($this->getOnlinePlayers() as $player) {
+            $player->sendMessage(TF::GREEN . $text);
+        }
     }
     
     /**

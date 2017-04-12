@@ -22,6 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 
 class CommandSave extends FCommand {
 
@@ -29,8 +30,8 @@ class CommandSave extends FCommand {
         parent::__construct($plugin, "save", "Save config");
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
+    public function perform(IPlayer $fme, array $args) {
         $this->plugin->getProvider()->save();
-        $this->msg($sender, "Saved config"); // TODO: translation
+        $this->msg("Saved config"); // TODO: translation
     }
 }

@@ -24,45 +24,44 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\entity\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 use TheDiamondYT\PocketFactions\event\FactionCreateEvent;
 
 class CommandCreate extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "create", $plugin->translate("commands.create.description"));
-        $this->setArgs("<faction name>"); 
+        $this->addRequiredArgument("faction name");
+        
+        $this->senderMustBePlayer = true;
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
+    public function perform(IPlayer $fme, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
             $this->msg($sender, TF::RED . $this->getUsage());
             return;
         }
-        if($fme->getFaction() !== null) {
-            $this->msg($sender, $this->plugin->translate("player.has-faction"));
-            return;
+        if($fme->getFaction() !== null && !$fme->getFaction()->isPermanent()) {
+            $this->msg($this->plugin->translate("player.has-faction"));
+            //return;
         }
         if($this->plugin->factionExists($args[0])) {
-            $this->msg($sender, $this->plugin->translate("faction.tag.exists")); 
+            $this->msg($this->plugin->translate("faction.tag.exists")); 
             return;
         }
         //if($this->plugin->playerExists($args[0])) {
-        //    $this->msg($sender, $this->plugin->translate("faction.tag.exists-player"));
+        //    $this->msg($this->plugin->translate("faction.tag.exists-player"));
         //    return;
         //}
-        if(!$this->alphanum($args[0])) {
-            $this->msg($sender, $this->plugin->translate("faction.tag.invalid-chars"));
+        if(!TextUtil::alphanum($args[0])) {
+            $this->msg($this->plugin->translate("faction.tag.invalid-chars"));
             return;
         }
         if(strlen($args[0]) > $this->cfg["faction"]["maxTagLength"]) {
-            $this->msg($sender, $this->plugin->translate("faction.tag.too-long")); 
+            $this->msg($this->plugin->translate("faction.tag.too-long")); 
             return;
         }
         
@@ -83,9 +82,9 @@ class CommandCreate extends FCommand {
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)]));
+            $player->sendMessage(TextUtil::parse($this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)])));
             
-        $this->msg($sender, $this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
+        $this->msg($this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
         
         if($this->cfg["faction"]["logFactionCreate"] === true)
             PF::log(TF::GRAY . $sender->getName() . " created a new faction " . $ev->getTag()); // Not even gonna do translation

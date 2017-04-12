@@ -4,71 +4,70 @@
         "commands-loaded": "Loaded faction commands, took %ss (%sms)."
     },
     "player": {
-       "not-found": "That player cannot be found",
-       "no-faction": "You are not in a faction.",
-       "only-leader": "You must be leader to do this.",
-       "already-leader": "That player is already leader.",
-       "has-faction": "You must leave your current faction first."
+       "not-found": "<red>That player cannot be found",
+       "no-faction": "<i>You are not in a faction.",
+       "only-leader": "<i>You must be leader to do this.",
+       "already-leader": "<i>That player is already leader.",
+       "has-faction": "<i>You must leave your current faction first."
     },
     "faction": {
-        "permanent": "Your faction is permanent and cannot be disbanded.",
+        "permanent": "<i>Your faction is permanent and cannot be disbanded.",
         "tag": {
-            "exists": "That tag is already in use.",
-            "exists-player": "There is a player by that name online.",
-            "too-long": "That tag is too long.",
-            "too-short": "That tag is too short.",
-            "invalid-chars": "That tag contains invalid characters."
+            "exists": "<i>That tag is already in use.",
+            "exists-player": "<red>There is a player by that name online.",
+            "too-long": "<i>That tag is too long.",
+            "too-short": "<i>That tag is too short.",
+            "invalid-chars": "<i>That tag contains invalid characters."
         }
     },
     "commands": {
         "description": "The main command for PocketFactions.",
         "not-found": "The command '%s' was not found.",
-        "only-player": "You must execute this command in-game",
+        "only-player": "<red>You must execute this command in-game",
         "bypass": {
             "description": "Toggle admin bypass mode.",
-            "success": "You have §3%s §eadmin bypass mode.",
-            "fail": "You don't have permission to enable admin bypass mode."
+            "success": "<i>You have <pink>%s §eadmin bypass mode.",
+            "fail": "<i>You don't have permission to enable admin bypass mode."
         },
         "chat": {
             "description": "Change your chat mode.",
-            "fail": "Unrecognized chat mode. Please enter 'p', 'f', or 'a'."
+            "fail": "<i>Unrecognized chat mode. Please enter 'p', 'f', or 'a'."
         },
         "create": {
             "description": "Create a new faction.",
-            "success": "%s created a new faction %s.",
-            "after": "You should now %s."
+            "success": "%s <i>created a new faction %s.",
+            "after": "<i>You should now %s."
         },
         "description": {
             "description": "Change your faction description.",
-            "success": "%s changed the description for %s to: %s."
+            "success": "%s <i>changed the description for %s <i>to: %s."
         }, 
         "disband": {
             "description": "Disband your faction.",
-            "success": "%s disbanded the faction %."
+            "success": "%s <i>disbanded the faction %."
         },
         "help": {
             "description": "Show help for faction commands.",
-            "header": "§6______.[ §2Faction Help (%s/%s) §6].______"
+            "header": "§2Faction Help (%s/%s)"
         },
         "leader": {
             "description": "Promote a player to faction leader."
         },
         "reload": {
             "description": "Reload the config and faction data from disk.",
-            "success": "Reloaded config and faction data, took %ss (%sms)."
+            "success": "<i>Reloaded config and faction data, took %ss (%sms)."
         },
         "show": {
             "description": "Display information about a faction.",
-            "header-long": "§6__________.[ %s §6].__________",
-            "header": "§6_______.[ %s §6]._______"
+            "header": "%s"
         },
         "tag": {
             "description": "Change your faction tag.",
-            "success": "%s changed the tag for %s to: %s."
+            "success": "%s <i>changed the tag for %s <i>to: %s."
         },
         "version": {
             "description": "Display the version of PocketFactions you are running.",
-            "success": "You are running %s."
+            "success": "<i>You are running %s."
         }
     }
 }

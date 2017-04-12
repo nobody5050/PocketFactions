@@ -18,52 +18,37 @@
  
 namespace TheDiamondYT\PocketFactions\entity;
 
-use pocketmine\Player;
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\struct\Role;
-use TheDiamondYT\PocketFactions\struct\Relation;
-use TheDiamondYT\PocketFactions\struct\ChatMode;
 use TheDiamondYT\PocketFactions\struct\RelationParticipator;
 
 /**
- * Represents a faction player.
+ * Represents a faction player, on the console.
  */
-class FPlayer implements IPlayer, RelationParticipator {
+class FConsole implements IPlayer, RelationParticipator {
 
     private $player;
     private $plugin;
-
-    private $title = "";
     
-    private $faction;
-    private $role = Role::UNKNOWN;
-    private $chatMode = ChatMode::PUBLIC; 
-    
-    private $adminBypassing = false;
-    
-    public function __construct(PF $plugin, Player $player) {
+    public function __construct(PF $plugin) {
         $this->plugin = $plugin;
-        $this->player = $player;
-    }
-    
-    public function getPlayer(): Player {
-        return $this->player;
+        $this->player = new ConsoleCommandSender();
     }
     
     /**
      * @return string
      */
     public function getName(): string {
-        return $this->player === null ? "Unknown" : $this->player->getName();
+        return "CONSOLE";
     }
     
     /**
      * @return int
      */
     public function getChatMode(): int {
-        return $this->chatMode;
+        return 0;
     }
     
     /**
@@ -72,10 +57,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param int
      */
     public function setChatMode(int $mode) {
-        if(ChatMode::byName($mode) === "unknown")
-            throw new \Exception("Invalid chat mode '$mode'");
-            
-        $this->chatMode = $mode;
+        throw new \Exception("Cannot set chat mode for console player.");
     }
     
     /**
@@ -84,13 +66,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getPrefix(): string { 
-        if($this->role === Role::get("Leader")) {
-            return "**";
-        } elseif($this->role === Role::get("Moderator")) {
-            return "*";
-        } else {
-            return "";
-        }
+        return "";
     }
     
     /** 
@@ -99,7 +75,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param string
      */
     public function setTitle(string $title) {
-        $this->title = $title;
+        throw new \Exception("Cannot set title for console player.");
     }
   
     /**
@@ -108,7 +84,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getTitle(): string {
-        return $this->title;
+        return "";
     }
     
     /**
@@ -117,7 +93,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getNameAndTitle(): string {
-        return $this->getPrefix() . ($this->title ?? $this->getPrefix()) . " " . $this->getName();
+        return $this->getName();
     }
     
     /**
@@ -126,7 +102,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getNameAndPrefix(): string {
-        return $this->getPrefix() . " " . $this->getName();
+        return $this->getName();
     }
     
     public function describeTo(RelationParticipator $that, bool $ucfirst = false) {
@@ -134,7 +110,7 @@ class FPlayer implements IPlayer, RelationParticipator {
     }
     
     public function getColorTo(RelationParticipator $that) {
-        return Relation::getColorToMe($that, $this);
+        return TF::WHITE;
     }
     
     /**
@@ -143,8 +119,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param string
      */
     public function sendMessage(string $text) {
-        if($this->player !== null)
-            $this->player->sendMessage($text);
+        $this->player->sendMessage($text);
     }
     
     /**
@@ -153,17 +128,14 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param int 
      */
     public function setRole($role) {
-        //if(!Role::exists($role))
-        //    throw new \Exception("Invalid role '$role'");
-        
-        $this->role = $role;
+        throw new \Exception("Cannot set role for console player.");
     }
     
     /**
      * @return int
      */
     public function getRole(): int {
-        return $this->role;
+        return 0;
     }
     
     /**
@@ -172,14 +144,14 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param bool 
      */
     public function setAdminBypassing(bool $value) {
-        $this->adminBypassing = $value;
+        throw new \Exception("Cannot set admin bypass mode for console player.");
     }
     
     /**
      * @return bool
      */
     public function isAdminBypassing(): bool {
-        return $this->adminBypassing;
+        return true;
     }
     
     /**
@@ -188,7 +160,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return bool
      */
     public function isLeader(): bool {
-        return $this->role === Role::get("Leader");
+        return true;
     }
     
     /**
@@ -197,29 +169,24 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param Faction 
      */
     public function setFaction(Faction $faction, bool $update = true) { 
-        if($this->faction !== null)
-            $this->faction->removePlayer($this);
-            
-        $faction->addPlayer($this); 
-        $this->faction = $faction; 
+        throw new \Exception("Cannot set faction for console player.");
     }
     
     /**
      * Leave the current faction.
      */
     public function leaveFaction() {
-        $this->faction->removePlayer($this);
-        $this->faction = null;
+        
     }
     
     public function hasFaction(): bool {
-        return $this->faction !== null;
+        return true;
     }
     
     /**
      * @return Faction|null
      */
     public function getFaction() {     
-        return $this->faction;
+        return $this->plugin->getFaction("Wilderness");
     }
 }

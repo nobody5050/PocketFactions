@@ -22,6 +22,7 @@ use pocketmine\command\PluginCommand;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class FCommandManager extends PluginCommand {
 

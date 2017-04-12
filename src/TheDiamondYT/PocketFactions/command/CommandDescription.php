@@ -23,23 +23,21 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class CommandDescription extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "desc", $plugin->translate("commands.description.description"));
-        $this->setArgs("<description>"); 
+        $this->addRequiredArgument("description"); 
+        
+        $this->senderMustBePlayer = true;
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
+    public function perform(IPlayer $fme, array $args) {
         if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.has-faction"));
             return;
@@ -54,7 +52,7 @@ class CommandDescription extends FCommand {
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             if($player->getFaction() === $faction)
-                $this->msg($player, $this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)]));
+                $player->sendMessage(TextUtil::parse($this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)])));
         }
     }
 }

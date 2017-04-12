@@ -22,31 +22,30 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class CommandDisband extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "disband", $plugin->translate("commands.disband.description"));
+        
+        $this->senderMustBePlayer = true;
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        //if(!$sender instanceof Player) {
-        //    $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-        //    return;
-        //}
+    public function perform(IPlayer $fme, array $args) {
         if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.no-faction"));
+            $this->msg($this->plugin->translate("player.no-faction"));
             return;
         }
         if(!$fme->isLeader() && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.only-leader"));
+            $this->msg($this->plugin->translate("player.only-leader"));
             return;
         }
         if($fme->getFaction()->isPermanent()) {
-            $this->msg($sender, $this->plugin->translate("faction.permanent"));
+            $this->msg($this->plugin->translate("faction.permanent"));
             return;
         }
         
@@ -66,7 +65,7 @@ class CommandDisband extends FCommand {
         $faction->disband();
 
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $this->msg($player, $this->plugin->translate("commands.disband.success", [$fme->describeTo($player), $fme->getColorTo($player) . $faction->getTag()]));
+            $player->sendMessage(TextUtil::parse($this->plugin->translate("commands.disband.success", [$fme->describeTo($player), $fme->getColorTo($player) . $faction->getTag()])));
         
         if($this->cfg["faction"]["logFactionDisband"] === true) 
             PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());

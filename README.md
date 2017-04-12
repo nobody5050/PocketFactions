@@ -21,6 +21,7 @@ A full-featured Factions plugin for [PocketMine-MP](https://github.com/pmmp/Pock
 - /f leader <player>
 - /f show [faction name]
 - /f reload
+- /f save
 - /f version (alias: ver,v)
 
 I put a ton of work into this to make it as close to [PC Factions](https://github.com/MassiveCraft/Factions) (The old version, not the s**t new one).

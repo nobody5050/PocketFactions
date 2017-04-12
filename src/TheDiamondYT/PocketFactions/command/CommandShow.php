@@ -22,24 +22,19 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class CommandShow extends FCommand {
 
-    private $sender;
-
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "show", $plugin->translate("commands.show.description"), ["who"]);
+        $this->addOptionalArgument("faction");
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-       // if(!$sender instanceof Player) {
-       //     $this->msg($sender, $this->plugin->translate("commands.only-player"));
-       //     return;
-       // }
-        $this->sender = $sender;
+    public function perform(IPlayer $fme, array $args) {
         $faction = $fme->getFaction();
         if(!empty($args)) {
             $faction = $this->plugin->getFaction($args[0]); // check for faction
@@ -49,14 +44,13 @@ class CommandShow extends FCommand {
                     $faction = $fme->getFaction();  // just return our faction if not found
             }
         }    
-        $long = $this->cfg["faction"]["longShowHeader"];
-        $this->msg($sender, $this->plugin->translate($long ? "commands.show.header-long" : "commands.show.header", [$fme->getColorTo($faction) . $faction->getTag()]));
+        $this->msg(TextUtil::titleize($this->plugin->translate("commands.show.header", [$fme->getColorTo($faction) . $faction->getTag()])));
         
         $this->add("Description", $faction->getDescription());
         $this->add("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");
     }
     
     private function add(string $key, string $value) {
-        $this->msg($this->sender, TF::GOLD . "$key: " . TF::YELLOW . $value);
+        $this->msg(TF::GOLD . "$key: " . TF::YELLOW . $value);
     }
 }

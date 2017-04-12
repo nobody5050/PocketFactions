@@ -22,7 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 
 class CommandVersion extends FCommand {
 
@@ -30,8 +30,8 @@ class CommandVersion extends FCommand {
         parent::__construct($plugin, "version", $plugin->translate("commands.version.description"), ["ver", "v"]);
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        $this->msg($sender, $this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
-        $this->msg($sender, TF::AQUA . "By Luke (TheDiamondYT)");
+    public function perform(IPlayer $fme, array $args) {
+        $this->msg($this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
+        $this->msg(TF::AQUA . "By Luke (TheDiamondYT)");
     }
 }

@@ -19,30 +19,38 @@
 namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
-use TheDiamondYT\PocketFactions\Faction;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\FConsole;
+use TheDiamondYT\PocketFactions\entity\Faction;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 abstract class FCommand {
 
     public $plugin;
     public $cfg;
     
-    private $sender;
-    
-    private $name, $desc, $args;
+    private $name, $desc, $cmdArgs;
     private $aliases = [];
+    
+    public $sender;
+    public $fme;
+    public $args = [];
+    
+    public $senderMustBePlayer = false;
+    public $senderMustBeLeader = false;
     
     public function __construct(PF $plugin, $name, $desc, $aliases = []) {
         $this->plugin = $plugin;
-        $this->cfg = $plugin->getConfig();
         $this->name = $name;
         $this->desc = $desc;
         $this->aliases = $aliases;
+        $this->cfg = $plugin->getConfig(); 
     }
-
+    
     /**
      * @return string
      */
@@ -61,16 +69,21 @@ abstract class FCommand {
      * @return string
      */
     public function getUsage() {
-        return TF::AQUA . "/f $this->name " . TF::DARK_AQUA . $this->args;
+        return TF::AQUA . "/f $this->name " . TF::DARK_AQUA . $this->cmdArgs;
     }
     
     /**
-     * Set the command arguments. TODO: remove
-     *
      * @param string
      */
-    public function setArgs(string $args) {
-        $this->args = $args; 
+    public function addRequiredArgument(string $arg) {
+        $this->cmdArgs .= "<" . $arg . "> ";
+    }
+    
+    /**
+     * @param string
+     */
+    public function addOptionalArgument(string $arg) {
+        $this->cmdArgs .= "[" . $arg . "] ";
     }
     
     /**
@@ -83,24 +96,10 @@ abstract class FCommand {
     /**
      * Convienient method for sending a message to a player
      *
-     * @param CommandSender|Player 
      * @param string 
      */
-    public function msg($player, string $text) {
-        $player->sendMessage(TF::YELLOW . $text);
-    }
-    
-    /**
-     * Check if a string contains alphanumeric characters.
-     *
-     * @param string 
-     * @return bool
-     */
-    public function alphanum(string $text) {
-        if(function_exists("ctype_alnum")) 
-            return ctype_alnum($text);
-                  
-        return preg_match("/^[a-z0-9]+$/i", $text) > 0;
+    public function msg(string $text) {  
+        $this->sender->sendMessage(TextUtil::parse($text));
     }
     
     /**
@@ -111,5 +110,20 @@ abstract class FCommand {
         return $this->plugin->getCommandManager()->getCommand($label);
     }
     
-    public abstract function execute(CommandSender $sender, $fme, array $args);
+    public function execute(CommandSender $sender, $fme, array $args) {
+        $this->sender = $sender;
+        if($sender instanceof ConsoleCommandSender) {
+            $this->fme = new FConsole($this->plugin); 
+        } else {
+            $this->fme = $fme;
+        }
+        $this->args = $args;   
+        
+        if($this->senderMustBePlayer && $sender instanceof ConsoleCommandSender) {
+            $this->msg(TextUtil::parse($this->plugin->translate("commands.only-player")));
+            return;
+        }
+        
+        $this->perform($this->fme, $args);
+    }
 }

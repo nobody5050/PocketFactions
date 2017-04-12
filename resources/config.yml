@@ -36,6 +36,6 @@ faction:
   # The minimum length for faction tags
   minTagLength: 3
   
-  # Show a long header on /f show
-  longShowHeader: false
+  # The length of the title headers
+  headerLength: 7
 

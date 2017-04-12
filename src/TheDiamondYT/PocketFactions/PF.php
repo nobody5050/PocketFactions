@@ -46,17 +46,17 @@ class PF extends PluginBase {
     
     private $factions = [];
     
-    public static $object = null;
-   
-    public function onLoad() {
-        self::$object = $this;
-    }
+    public static $instance = null;
     
     /**
-     * @return PF
+     * @deprecated
      */
     public static function get() {
-        return self::$object;
+        return self::$instance;
+    }
+    
+    public static function getInstance() {
+        return self::$instance;
     }
    
     /**
@@ -76,26 +76,23 @@ class PF extends PluginBase {
     public static function logError($text) {
         Server::getInstance()->getLogger()->critical(self::PREFIX . TF::RED . "$text");
     }
+    
+    public function onLoad() {
+        self::$instance = $this;
+        
+        // Create config
+        $this->saveResource("config.yml");
+        $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
+
+        // Load language
+        $this->language = new Config($this->getFile() . "resources/lang/" . $this->cfg["language"] . ".json", Config::JSON);
+    }
 
 	public function onEnable() {
-	    $this->initialize(microtime(true));   
-	}
-	
-	public function onDisable() {
-	    $this->provider->save();
-	}
-	
-	private function initialize($startTime) {
-	    // Create config
-	    $this->saveResource("config.yml"); // TODO: why is getConfig() returning null? Have to use this -_-
-	    $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
-
-	    // Read language file
-	    $lang = $this->cfg["language"];
-	    $this->language = new Config($this->getFile() . "resources/lang/" . $lang . ".json", Config::JSON);
-
+	    define("START_TIME", microtime(true));
+	    
 	    // Initialize command manager and events
-	    $this->fcommandManager = new FCommandManager($this); // This takes a long time (50+ ms!)
+	    $this->fcommandManager = new FCommandManager($this); // This takes a long time!
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
 
@@ -106,8 +103,14 @@ class PF extends PluginBase {
 	    $this->provider->loadPlayers();
 	    
 	    Role::init(); // Initialize faction roles
-	 
-	    self::log($this->translate("console.data-loaded", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+	    
+	    // TODO: cleanup
+	    self::log($this->translate("console.data-loaded", [round(microtime(true) - START_TIME, 2), round(microtime(true) * 1000) - round(START_TIME * 1000)]));
+	}
+	
+	public function onDisable() {
+	    if($this->provider !== null) 
+	        $this->provider->save();
 	}
 	
 	/**
@@ -116,9 +119,10 @@ class PF extends PluginBase {
 	 */
 	private function checkFactions() {
         if(!$this->factionExists("Wilderness")) {
-            (new Faction(Faction::WILDERNESS_ID, [
+            (new Faction($id = Faction::WILDERNESS_ID, [
                 "tag" => "Wilderness",
-                "id" => Faction::WILDERNESS_ID,
+                "id" => $id,
+                "description" => "It's dangerous to go alone.",
                 "flags" => [
                      "open" => true,
                      "permanent" => true
@@ -126,9 +130,9 @@ class PF extends PluginBase {
             ]))->create(true);
         }
         if(!$this->factionExists("WarZone")) {
-            (new Faction(Faction::WARZONE_ID, [
+            (new Faction($id = Faction::WARZONE_ID, [
                 "tag" => "WarZone",
-                "id" => Faction::WARZONE_ID,
+                "id" => $id,
                 "description" => "Not the safest place to be.",
                 "flags" => [
                     "open" => false,

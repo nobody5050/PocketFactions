@@ -22,16 +22,17 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class CommandHelp extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "help", $plugin->translate("commands.help.description"), ["h", "?"]);
-        $this->setArgs("<page>");
+        $this->addRequiredArgument("page");
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
+    public function perform(IPlayer $fme, array $args) {
         if(count($args) === 0) {
             $page = 1;
         } 
@@ -49,8 +50,9 @@ class CommandHelp extends FCommand {
         ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
         $commands = array_chunk($commands, $this->cfg["factions"]["helpPageLength"] ?? 5);
         $page = (int) min(count($commands), $page);
-        $this->msg($sender, $this->plugin->translate("commands.help.header", [$page, count($commands)]));
+        
+        $this->msg(TextUtil::titleize($this->plugin->translate("commands.help.header", [$page, count($commands)])));
         foreach($commands[$page - 1] as $command)
-            $this->msg($sender, $command->getUsage() . " " . TF::YELLOW . $command->getDescription());
+            $this->msg($command->getUsage() . " " . TF::YELLOW . $command->getDescription());
     }
 }

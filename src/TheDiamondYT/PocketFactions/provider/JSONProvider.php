@@ -118,7 +118,7 @@ class JSONProvider {
     
     public function factionExists(string $faction): bool {
         foreach($this->factions as $facs) {
-            if($facs->getTag() === $faction)
+            if($facs->getTag() === $faction or $facs->getId() === $faction)
                 return true;
         }
         return false;

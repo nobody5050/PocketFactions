@@ -24,7 +24,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
@@ -32,17 +32,11 @@ class CommandBypass extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "bypass", $plugin->translate("commands.bypass.description"));
+        
+        $this->senderMustBePlayer = true;
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
-        if(!$sender->hasPermission("factions.bypass")) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.bypass.fail"));
-            return;
-        }    
+    public function perform(IPlayer $fme, array $args) {
         if($fme->isAdminBypassing()) {
             $status = "disabled";
             $value = false;
@@ -51,6 +45,6 @@ class CommandBypass extends FCommand {
             $value = true;
         }
         $fme->setAdminBypassing($value);
-        $this->msg($sender, $this->plugin->translate("commands.bypass.success", [$status]));
+        $this->msg($this->plugin->translate("commands.bypass.success", [$status]));
     }
 }

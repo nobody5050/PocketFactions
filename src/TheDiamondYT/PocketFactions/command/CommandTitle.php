@@ -23,8 +23,7 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
@@ -32,10 +31,10 @@ class CommandTitle extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "title", "Change a players title");
-       // $this->setArgs($plugin->translate("title.args")); 
+        $this->addRequiredArgument("title"); 
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
+    public function perform(IPlayer $fme, array $args) {
         if(!$sender instanceof Player) {
             $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;

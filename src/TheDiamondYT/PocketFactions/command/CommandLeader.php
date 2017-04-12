@@ -21,21 +21,20 @@ namespace TheDiamondYT\PocketFactions\command;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\FPlayer;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 
 class CommandLeader extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "leader", $plugin->translate("commands.leader.description"));
-        $this->setArgs("<player>");
+        $this->addRequiredArgument("player");
+        
+        $this->senderMustBePlayer = true;
+        $this->senderMustBeLeader = true;
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, $this->plugin->translate("commands.only-player"));
-            return;
-        }
+    public function perform(IPlayer $fme, array $args) {
         if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.has-faction"));
             return;
