@@ -71,9 +71,13 @@ class CommandCreate extends FCommand {
         //if($ev->isCancelled()) 
         //    return;
         
-        $faction = new Faction();
+        $faction = (new Faction($id = Faction::randomId(), [
+            "tag" => $args[0],
+            "id" => $id,
+            "leader" => $fme->getName(),
+            "description" => "Default faction description :("
+        ]));
         $faction->create();
-        $faction->setTag($args[0]); 
         
         $fme->setRole(Role::get("Leader"));
         $fme->setFaction($faction);

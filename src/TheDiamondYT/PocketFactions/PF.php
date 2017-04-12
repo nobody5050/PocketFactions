@@ -26,7 +26,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\provider\Provider;
-use TheDiamondYT\PocketFactions\provider\YamlProvider;
+use TheDiamondYT\PocketFactions\provider\JSONProvider;
 use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\command\FCommandManager;
 use TheDiamondYT\PocketFactions\listener\FPlayerListener;
@@ -116,17 +116,25 @@ class PF extends PluginBase {
 	 */
 	private function checkFactions() {
         if(!$this->factionExists("Wilderness")) {
-            $faction = new Faction(Faction::WILDERNESS_ID);
-            $faction->create();
-            $faction->setTag("Wilderness");
-            $faction->setPermanent(true);
+            (new Faction(Faction::WILDERNESS_ID, [
+                "tag" => "Wilderness",
+                "id" => Faction::WILDERNESS_ID,
+                "flags" => [
+                     "open" => true,
+                     "permanent" => true
+                 ]
+            ]))->create(true);
         }
         if(!$this->factionExists("WarZone")) {
-            $faction = new Faction(Faction::WARZONE_ID);
-            $faction->create();
-            $faction->setTag("WarZone");
-            $faction->setDescription("Not the safest place to be.");
-            $faction->setPermanent(true);
+            (new Faction(Faction::WARZONE_ID, [
+                "tag" => "WarZone",
+                "id" => Faction::WARZONE_ID,
+                "description" => "Not the safest place to be.",
+                "flags" => [
+                    "open" => false,
+                    "permanent" => true
+                ]
+            ]))->create(true);
         }
 	}
 	
@@ -146,21 +154,21 @@ class PF extends PluginBase {
 	                }
 	                $provider = new SQLiteProvider($this);
 	                break;
-	            case "yaml":
-	                $provider = new YamlProvider($this);
+	            case "json":
+	                $provider = new JSONProvider($this);
 	                break;
 	            default:
-	                $provider = new YamlProvider($this);
+	                $provider = new JSONProvider($this);
 	                break;
 	        }
 	    }
 	    // This check is to allow custom data providers
-	    if($provider instanceof Provider) {
+	    //if($provider instanceof Provider) {
 	        $this->provider = $provider;
-	    } else {
-	        self::logError("Data provider " . get_class($provider) . " is not an instance of Provider.");
-	        $this->getServer()->getPluginManager()->disablePlugin($this);
-	    }
+	    //} else {
+	    //    self::logError("Data provider " . get_class($provider) . " is not an instance of Provider.");
+	    //    $this->getServer()->getPluginManager()->disablePlugin($this);
+	    //}
 	}
 	
 	/**
@@ -173,7 +181,7 @@ class PF extends PluginBase {
 	/**
 	 * @return Provider
 	 */
-	public function getProvider(): Provider {
+	public function getProvider() {
 	    return $this->provider;
 	}
 	

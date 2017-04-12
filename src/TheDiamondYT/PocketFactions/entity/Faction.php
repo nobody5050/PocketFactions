@@ -33,29 +33,27 @@ class Faction implements RelationParticipator {
     const WILDERNESS_ID = "7a3ee880-46ba-38df-844e-e073ad0713d4";
     const WARZONE_ID = "4aacbf95-ac8b-3f68-898a-372ee8a818e3";
 
-    private $id;
-    private $tag;
-    private $description;
     private $leader;
     
-    private $permanent = false;
-    private $open = false;
+    private $data;
+    private $flags = [];
     
     private $players = [];
     private $allies = [];
     
     /**
      * Constructor.
-     * TODO: check if the id exists.
      *
      * @param string
+     * @param array
      */
-    public function __construct(string $uuid = null) {
-        if($uuid === null) {
-            $this->id = UUID::fromRandom()->toString(); 
-            return;
-        }
-        $this->id = $uuid;
+    public function __construct($id, array $data) {
+        $this->id = $id;
+        $this->data = $data;
+    }
+    
+    public static function randomId() {
+        return UUID::fromRandom()->toString();
     }
     
     /**
@@ -78,40 +76,36 @@ class Faction implements RelationParticipator {
      */
     public function getTag(FPlayer $player = null) {     
         if($player === null) {
-            return $this->tag;
+            return $this->data["tag"];
         }
-        return $this->getColorTo($player) . $this->tag;
+        return $this->getColorTo($player) . $this->data["tag"];
     }
     
     /**
      * Set the faction tag.
      *
      * @param string
-     * @param bool
      */
-    public function setTag(string $tag, bool $update = true) {
-        $this->tag = $tag;
-        if($update)
-            PF::get()->getProvider()->setFactionTag($this);
+    public function setTag(string $tag) {
+        $this->data["tag"] = $tag;
+        $this->update();
     }
     
     /**
      * Set the faction description.
      *
      * @param string
-     * @param bool
      */
-    public function setDescription(string $description, bool $update = true) {
-        $this->description = $description;
-        if($update)
-            PF::get()->getProvider()->setFactionDescription($this);
+    public function setDescription(string $description) {
+        $this->data["description"] = $description;
+        $this->update();
     }
     
     /**
      * @return string
      */
     public function getDescription() {
-        return $this->description ?? "Default faction description :(";
+        return $this->data["description"] ?? "";
     }
     
     /**
@@ -120,14 +114,15 @@ class Faction implements RelationParticipator {
      * @param bool
      */
     public function setPermanent(bool $value) {
-        $this->permanent = $value;
+        $this->data["permanent"] = $value;
+        $this->update();
     }
     
     /**
      * @return bool
      */
     public function isPermanent(): bool {
-        return $this->permanent;
+        return $this->data["permanent"] ?? false;
     }
     
     /**
@@ -136,14 +131,15 @@ class Faction implements RelationParticipator {
      * @param bool
      */
     public function setOpen(bool $value) {
-        $this->open = $value;
+        $this->data["open"] = $value;
+        $this->update();
     }
     
     /**
      * @return bool
      */
     public function isOpen(): bool {
-        return $this->open;
+        return $this->data["open"] ?? false;
     }
     
     /**
@@ -178,12 +174,9 @@ class Faction implements RelationParticipator {
      * Add an alliance with another faction.
      *
      * @param Faction
-     * @param bool
      */
-    public function addAlliance(Faction $faction, bool $update = true) {
-        $this->allies[$faction->getTag()] = $faction; // TODO: use faction id
-        if($update)
-            PF::get()->getProvider()->setFactionAlliance($this);
+    public function addAlliance(Faction $faction) {
+        $this->allies[$faction->getId()] = $faction; 
     }
    
    /**
@@ -192,7 +185,7 @@ class Faction implements RelationParticipator {
     * @param Faction
     */
     public function removeAlliance(Faction $faction) {
-        unset($this->allies[$faction->getTag()]);
+        unset($this->allies[$faction->getId()]);
     }
     
     /**
@@ -212,19 +205,17 @@ class Faction implements RelationParticipator {
      * Set the faction leader.
      *
      * @param FPlayer
-     * @param bool
      */
-    public function setLeader(FPlayer $player, bool $update = true) {
-        $this->leader = $player;
-        if($update)
-            PF::get()->getProvider()->setFactionLeader($this);
+    public function setLeader(FPlayer $player) {
+        $this->data["leader"] = $player->getName();
+        $this->update();
     }
     
     /** 
      * @return FPlayer
      */
     public function getLeader() {
-        return $this->leader;
+        return $this->data["leader"];
     }
     
     /**
@@ -239,14 +230,21 @@ class Faction implements RelationParticipator {
     /**
      * Creates a new faction.
      */
-    public function create() {
-        PF::get()->getProvider()->createFaction($this);
+    public function create(bool $save = false) {
+        PF::get()->getProvider()->createFaction($this, $this->data, $save);
     }
     
     /**
      * Disbands the current faction.
      */
     public function disband() {
-        PF::get()->getProvider()->disbandFaction($this);
+        PF::get()->getProvider()->disbandFaction($this->getId());
+    }
+    
+    /**
+     * Updates the current faction information.
+     */
+    public function update() {
+        PF::get()->getProvider()->updateFaction($this->data);
     }
 }

@@ -40,7 +40,7 @@ class CommandDescription extends FCommand {
             $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
             return;
         }
-        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
+        if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.has-faction"));
             return;
         }  
@@ -54,7 +54,7 @@ class CommandDescription extends FCommand {
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             if($player->getFaction() === $faction)
-                $this->msg($player, $this->plugin->translate("commands.description.success", [Relation::describeToPlayer($fme, $player), Relation::describeToFaction($fme, $player), implode(" ", $args)]));
+                $this->msg($player, $this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)]));
         }
     }
 }

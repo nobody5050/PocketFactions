@@ -26,43 +26,41 @@ use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FPlayer;
 
-class YamlProvider implements Provider {
+// TODO: reimplement provider
+class JSONProvider {
 
     private $plugin;
-    private $fdata;
-    private $pdata;
     
     private $factions = [];
     private $fplayers = [];
+    
+    private $fdata;
 
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
-        $this->fdata = new Config($plugin->getDataFolder() . "factions.yml", Config::YAML);
-        $this->pdata = new Config($plugin->getDataFolder() . "players.yml", Config::YAML);
+        @mkdir($plugin->getDataFolder() . "factions");
+        @mkdir($plugin->getDataFolder() . "players");
     }
     
     public function save() {
-        $this->fdata->save();
-        $this->pdata->save();
+       $this->fdata->save();
     }
     
     public function loadFactions() {
-        foreach($this->fdata->getAll() as $id => $facs) {
-            $faction = new Faction($id); 
-            $faction->setTag($facs["tag"], false);
-            $faction->setDescription($facs["desc"] ?? "", false);
-            //$faction->setLeader($this->getPlayer($this->plugin->getServer()->getPlayer($facs["leader"])), false); 
-            $this->createFaction($faction);
+        // TODO: fix
+        foreach(scandir($this->plugin->getDataFolder() . "factions") as $facs) {
+            $facs = json_decode($facs); 
+            $faction = new Faction($facs["id"], [
+                "tag" => $facs["tag"],
+                "id" => $facs["id"],
+                "description" => $facs["description"],
+            ]);
+            $this->factions[$faction->getId()] = $faction;
         }
     }
     
     public function loadPlayers() {
-        /*foreach($this->pdata->getAll() as $name => $player) {
-            $p = $this->plugin->getServer()->getPlayer($name);
-            $fplayer = new FPlayer($this->plugin, $p);
-            $fplayer->setFaction($this->getFaction($player["faction"]) ?? $this->getFaction("Wilderness"));
-            $this->fplayers[$name] = $fplayer;
-        }*/
+         
     }
     
     public function getOnlinePlayers() {
@@ -78,9 +76,7 @@ class YamlProvider implements Provider {
     
     public function addPlayer(Player $player) {
         $fplayer = new FPlayer($this->plugin, $player);
-        //$fplayer->setFaction($this->getFaction("Wilderness"));
         $this->fplayers[$player->getName()] = $fplayer;
-        //$this->setPlayerFaction($fplayer);
     }
     
     public function removePlayer(Player $player) {
@@ -97,29 +93,27 @@ class YamlProvider implements Provider {
         }
     }
 
-    public function createFaction(Faction $faction) {
+    public function createFaction(Faction $faction, array $data, bool $save = false) {
+        $this->fdata = new Config($this->getFile($faction->getId()), Config::JSON);
+        $this->fdata->setAll($data);
+        
+        $configSave = $this->plugin->getConfig()["faction"]["saveOnCreate"];
+        if($save === true or $configSave === true) 
+            $this->fdata->save();
+            
         $this->factions[$faction->getId()] = $faction; 
     }
     
-    public function disbandFaction(Faction $faction) {
-        unset($this->factions[$faction->getId()]);
-        $this->fdata->remove($faction->getId());
+    public function disbandFaction(string $id) {
+        if(!file_exists($file = $this->getFile($id, ".json"))) 
+            return;
+                
+        unlink($file);
+        unset($this->factions[$id]);
     }
     
-    public function setFactionTag(Faction $faction) {
-        $this->fdata->setNested($faction->getId() . ".tag", $faction->getTag());
-    }
-    
-    public function setFactionDescription(Faction $faction) {
-        $this->fdata->setNested($faction->getId() . ".desc", $faction->getDescription());
-    }
-    
-    public function setFactionLeader(Faction $faction) {
-        $this->fdata->setNested($faction->getId() . ".leader", $faction->getLeader()->getName());
-    }
-    
-    public function setPlayerFaction(FPlayer $player) {
-        $this->pdata->setNested($player->getName() . ".faction", $player->getFaction()->getTag());
+    public function updateFaction(array $data) {
+        $this->fdata->setAll($data);
     }
     
     public function factionExists(string $faction): bool {
@@ -136,5 +130,9 @@ class YamlProvider implements Provider {
                 return true;
         }*/
         return false;
+    }
+    
+    private function getFile($id){
+        return $this->plugin->getDataFolder() . "factions/" . $id . ".json";
     }
 }
