@@ -50,7 +50,7 @@ class TextUtil {
  
     /**
      * Replaces colour codes.
-     * DONT LOOK AT THIS! The use of str_replace may harm you.
+     * DONT LOOK AT THIS! The over use of str_replace may harm you.
      *
      * @param string
      * @return string

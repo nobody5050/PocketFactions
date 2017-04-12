@@ -30,19 +30,15 @@ class CommandTag extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "tag", $plugin->translate("commands.tag.description"));
         $this->addRequiredArgument("tag");
+        
+        $this->senderMustBePlayer = true;
+        $this->senderMustHaveFaction = true;
+        $this->senderMustBeLeader = true;
     }
 
     public function perform(IPlayer $fme, array $args) {
-        //if(!$sender instanceof Player) {
-        //    $this->msg($sender, $this->plugin->translate("commands.only-player"));
-        //    return;
-        //}
         if($fme->getFaction() === null) {
             $this->msg($sender, $this->plugin->translate("player.no-faction"));
-            return;
-        }
-        if(!$fme->isLeader()) {
-            $this->msg($sender, $this->plugin->translate("player.only-leader"));
             return;
         }
         if(empty($args)) {
@@ -61,7 +57,7 @@ class CommandTag extends FCommand {
         $fme->getFaction()->setTag($args[0]);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player)
-            $this->msg($sender, $this->plugin->translate("commands.tag.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), $args[0]]));
+            $player->sendMessage($this->plugin->translate("commands.tag.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), $args[0]]));
     }
 }
 

@@ -38,14 +38,19 @@ class PF extends PluginBase {
 
     const PREFIX = "§b[§dPocketFactions§b] ";
 
+    /* @var Provider */
     private $provider;
+    
+    /* @var Config */
     private $language;
+    
+    /* @var array */
     private $cfg;
     
+    /* @var FCommandManager */
     private $fcommandManager;
     
-    private $factions = [];
-    
+    /* @var PF */
     public static $instance = null;
     
     /**
@@ -175,7 +180,9 @@ class PF extends PluginBase {
 	    //}
 	}
 	
-	/**
+	/** 
+	 * Returns the faction command manager.
+	 *
 	 * @return FCommandManager
 	 */
 	public function getCommandManager(): FCommandManager {
@@ -183,6 +190,8 @@ class PF extends PluginBase {
 	}
 	
 	/**
+	 * Returns the data provider for the plugin.
+	 *
 	 * @return Provider
 	 */
 	public function getProvider() {
@@ -190,6 +199,8 @@ class PF extends PluginBase {
 	}
 	
 	/**
+	 * Returns the config.
+	 *
 	 * @return array
 	 */
 	public function getConfig(): array {
@@ -217,6 +228,8 @@ class PF extends PluginBase {
 	} 
 	
 	/**
+	 * Returns true if the specified faction exists.
+	 *
 	 * @param string
 	 * @return bool 
 	 */
@@ -225,6 +238,8 @@ class PF extends PluginBase {
 	}
 	
 	/** 
+	 * Returns true if the specified player exists.
+	 *
 	 * @param string
 	 * @return bool
 	 */

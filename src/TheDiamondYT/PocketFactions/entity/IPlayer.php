@@ -27,6 +27,8 @@ use TheDiamondYT\PocketFactions\struct\RelationParticipator;
 interface IPlayer {
     
     /**
+     * Returns the players name.
+     *
      * @return string
      */
     public function getName(): string;

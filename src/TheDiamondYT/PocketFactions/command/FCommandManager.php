@@ -26,8 +26,10 @@ use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class FCommandManager extends PluginCommand {
 
+    /* @var PF */
     private $plugin;
     
+    /* @var array */
     private $subCommands = [];
     private $aliasSubCommands = [];
 
@@ -54,6 +56,13 @@ class FCommandManager extends PluginCommand {
         $this->registerCommand(new CommandVersion($this->plugin));
     }
    
+    /**
+     * Handles executing of the faction command, and executes any subcommands.
+     *
+     * @param CommandSender
+     * @param string
+     * @param array
+     */
     public function execute(CommandSender $sender, $label, array $args) {
         if(count($args) > 0) {
             $subcommand = strtolower(array_shift($args));
@@ -86,6 +95,8 @@ class FCommandManager extends PluginCommand {
     }
     
     /**
+     * Returns the specified faction command.
+     *
      * @return FCommand
      */
     public function getCommand(string $label) {
@@ -93,6 +104,8 @@ class FCommandManager extends PluginCommand {
     }
     
     /**
+     * Returns all registered faction commands.
+     *
      * @return FCommand[]
      */
     public function getCommands() {

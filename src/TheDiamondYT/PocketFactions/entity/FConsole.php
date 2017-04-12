@@ -29,7 +29,10 @@ use TheDiamondYT\PocketFactions\struct\RelationParticipator;
  */
 class FConsole implements IPlayer, RelationParticipator {
 
+    /* @var ConsoleCommandSender */
     private $player;
+    
+    /* @var PF */
     private $plugin;
     
     public function __construct(PF $plugin) {

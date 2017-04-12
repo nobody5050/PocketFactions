@@ -23,29 +23,20 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\Faction;
-use TheDiamondYT\PocketFactions\FPlayer;
-use TheDiamondYT\PocketFactions\struct\ChatMode;
-use TheDiamondYT\PocketFactions\struct\Role;
-use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\entity\IPlayer;
 
 class CommandLeave extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "leave", $plugin->translate("commands.leave.description"));
+              
+        $this->senderMustBePlayer = true;
+        $this->senderMustHaveFaction = true;
     }
 
-    public function execute(CommandSender $sender, $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
-        if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.no-faction"));
-            return;
-        }  
+    public function perform(IPlayer $fme, array $args) {
         /*if(!$fme->getFaction()->isPermanent() && $fme->isLeader()) {
-            $this->msg($sender, /*$this->plugin->translate("player.give-leader"));
+            $this->msg($sender, $this->plugin->translate("player.give-leader"));
             return;
         }*/
         $fme->leaveFaction();

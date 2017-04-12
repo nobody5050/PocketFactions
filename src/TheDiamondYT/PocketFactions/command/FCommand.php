@@ -30,18 +30,27 @@ use TheDiamondYT\PocketFactions\util\TextUtil;
 
 abstract class FCommand {
 
+    /* @var PF */
     public $plugin;
+    /* @var array */
     public $cfg;
     
+    /* @var string */
     private $name, $desc, $cmdArgs;
+    /* @var array */
     private $aliases = [];
     
+    /* @var CommandSender */
     public $sender;
+    /* @var IPlayer */
     public $fme;
+    /* @var array */
     public $args = [];
     
+    /* @var bool */
     public $senderMustBePlayer = false;
     public $senderMustBeLeader = false;
+    public $senderMustHaveFaction = false;
     
     public function __construct(PF $plugin, $name, $desc, $aliases = []) {
         $this->plugin = $plugin;
@@ -52,6 +61,8 @@ abstract class FCommand {
     }
     
     /**
+     * Returns the command name.
+     *
      * @return string
      */
     public function getName() {
@@ -59,6 +70,8 @@ abstract class FCommand {
     }
     
     /** 
+     * Returns the command description.
+     *
      * @return string
      */
     public function getDescription() { 
@@ -66,6 +79,8 @@ abstract class FCommand {
     }
    
     /**
+     * Returns the command name and arguments.
+     *
      * @return string
      */
     public function getUsage() {
@@ -73,6 +88,8 @@ abstract class FCommand {
     }
     
     /**
+     * Add a required argument for the command.
+     *
      * @param string
      */
     public function addRequiredArgument(string $arg) {
@@ -80,6 +97,8 @@ abstract class FCommand {
     }
     
     /**
+     * Add an optional argument for the command.
+     *
      * @param string
      */
     public function addOptionalArgument(string $arg) {
@@ -87,14 +106,16 @@ abstract class FCommand {
     }
     
     /**
-     * @return array
+     * Returns the command aliases.
+     *
+     * @return array 
      */
     public function getAliases() {
         return $this->aliases;
     }
     
     /**
-     * Convienient method for sending a message to a player
+     * Convienient method for sending a message to a player.
      *
      * @param string 
      */
@@ -103,6 +124,8 @@ abstract class FCommand {
     }
     
     /**
+     * Convienient method to get a faction command.
+     *
      * @param string
      * @return FCommand|null
      */
@@ -110,6 +133,15 @@ abstract class FCommand {
         return $this->plugin->getCommandManager()->getCommand($label);
     }
     
+    /**
+     * Sets up variables and does command checks, then performs the command.
+     *
+     * @param CommandSender 
+     * @param IPlayer    
+     * @param array   
+     *
+     * @see FCommandManager
+     */
     public function execute(CommandSender $sender, $fme, array $args) {
         $this->sender = $sender;
         if($sender instanceof ConsoleCommandSender) {
@@ -119,8 +151,16 @@ abstract class FCommand {
         }
         $this->args = $args;   
         
-        if($this->senderMustBePlayer && $sender instanceof ConsoleCommandSender) {
-            $this->msg(TextUtil::parse($this->plugin->translate("commands.only-player")));
+        if($this->senderMustBePlayer === true && $sender instanceof ConsoleCommandSender) {
+            $this->msg($this->plugin->translate("commands.only-player"));
+            return;
+        }
+        if($this->senderMustHaveFaction === true && !$this->fme->hasFaction()) {
+            $this->msg($this->plugin->translate("player.no-faction"));
+            return;
+        }
+        if($this->senderMustBeLeader === true && !$fme->isLeader()) {
+            $this->msg($this->plugin->translate("commands.only-leader"));
             return;
         }
         

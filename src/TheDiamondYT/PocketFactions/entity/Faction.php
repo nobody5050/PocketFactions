@@ -33,11 +33,14 @@ class Faction implements RelationParticipator {
     const WILDERNESS_ID = "7a3ee880-46ba-38df-844e-e073ad0713d4";
     const WARZONE_ID = "4aacbf95-ac8b-3f68-898a-372ee8a818e3";
 
+    /* @var FPlayer */
     private $leader;
     
+    /* @var array */
     private $data;
+ 
+    /* @var array */
     private $flags = [];
-    
     private $players = [];
     private $allies = [];
     
@@ -52,11 +55,18 @@ class Faction implements RelationParticipator {
         $this->data = $data;
     }
     
+    /**
+     * Generates a random faction id.
+     *
+     * @return string
+     */
     public static function randomId() {
         return UUID::fromRandom()->toString();
     }
     
     /**
+     * Returns the id for the current faction.
+     *
      * @return string
      */
     public function getId() {
@@ -72,6 +82,9 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * Returns the current faction tag, or the tag for 
+     * another players faction.
+     *
      * @return string
      */
     public function getTag(FPlayer $player = null) {     
@@ -82,7 +95,7 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * Set the faction tag.
+     * Set the tag for the current faction.
      *
      * @param string
      */
@@ -92,7 +105,7 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * Set the faction description.
+     * Set the description for the current faction.
      *
      * @param string
      */
@@ -102,6 +115,8 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * Returns the description for the current faction.
+     *
      * @return string
      */
     public function getDescription() {
@@ -119,6 +134,8 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * Returns true if the current faction is permanent.
+     *
      * @return bool
      */
     public function isPermanent(): bool {
@@ -136,6 +153,8 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * Returns true if the current faction is open.
+     *
      * @return bool
      */
     public function isOpen(): bool {
@@ -143,6 +162,8 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * Returns all players online in the current faction.
+     *
      * @return FPlayer[]
      */
     public function getOnlinePlayers() {
@@ -150,14 +171,14 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * 
+     * Returns every player in the current faction. Online, or not.
      */
     public function getPlayers() {
         
     }
     
     /**
-     * Add a player to the faction.
+     * Add a player to the current faction.
      *
      * @param FPlayer
      */
@@ -169,7 +190,7 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * Remove a player from the faction.
+     * Remove a player from the current faction.
      *
      * @param FPlayer
      */
@@ -178,13 +199,13 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * Send a message to everyone in the faction.
+     * Send a message to everyone in the current faction.
      *
      * @param string
      */
     public function sendMessage(string $text) {
         foreach($this->getOnlinePlayers() as $player) {
-            $player->sendMessage(TF::GREEN . $text);
+            $player->sendMessage($text);
         }
     }
     
@@ -220,7 +241,7 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * Set the faction leader.
+     * Set the leader for the current factiom.
      *
      * @param FPlayer
      */
@@ -230,6 +251,8 @@ class Faction implements RelationParticipator {
     }
     
     /** 
+     * Returns the leader of the current faction.
+     *
      * @return FPlayer
      */
     public function getLeader() {
@@ -237,7 +260,7 @@ class Faction implements RelationParticipator {
     }
     
     /**
-     * Returns true if the current factions the wilderness.
+     * Returns true if the current faction is wilderness.
      *
      * @return bool
      */

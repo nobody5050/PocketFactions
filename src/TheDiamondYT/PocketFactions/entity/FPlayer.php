@@ -26,21 +26,30 @@ use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
 use TheDiamondYT\PocketFactions\struct\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
  * Represents a faction player.
  */
 class FPlayer implements IPlayer, RelationParticipator {
 
+    /* @var Player */
     private $player;
+    
+    /* @var PF */
     private $plugin;
 
+    /* @var string */
     private $title = "";
     
+    /* @var Faction */
     private $faction;
+    
+    /* @var int */  
     private $role = Role::UNKNOWN;
     private $chatMode = ChatMode::PUBLIC; 
-    
+ 
+    /* @var bool */
     private $adminBypassing = false;
     
     public function __construct(PF $plugin, Player $player) {
@@ -48,15 +57,25 @@ class FPlayer implements IPlayer, RelationParticipator {
         $this->player = $player;
     }
     
+    /**
+     * Returns the player.
+     *
+     * @return Player
+     */
     public function getPlayer(): Player {
         return $this->player;
     }
     
     /**
+     * Returns the players name.
+     *
      * @return string
      */
     public function getName(): string {
-        return $this->player === null ? "Unknown" : $this->player->getName();
+        if($this->player !== null)
+            return $this->player->getName();
+            
+        return "Unknown";
     }
     
     /**
@@ -144,7 +163,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      */
     public function sendMessage(string $text) {
         if($this->player !== null)
-            $this->player->sendMessage($text);
+            $this->player->sendMessage(TextUtil::parse($text));
     }
     
     /**
@@ -220,6 +239,6 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return Faction|null
      */
     public function getFaction() {     
-        return $this->faction;
+        return $this->faction ?? PF::getInstance()->getFaction("Wilderness");
     }
 }
