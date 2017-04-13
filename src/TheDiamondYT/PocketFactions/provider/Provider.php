@@ -19,29 +19,38 @@
 namespace TheDiamondYT\PocketFactions\provider;
 
 use pocketmine\Player;
+use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat as TF;
 
+use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
+use TheDiamondYT\PocketFactions\entity\FPlayer;
 
 interface Provider {
+
+    public function save();
+    
     public function loadFactions();
     
     public function loadPlayers();
+    
+    public function getOnlinePlayers();
     
     public function getPlayer($player);
     
     public function addPlayer(Player $player);
     
-    public function getFaction(string $faction);
+    public function removePlayer(Player $player);
     
-    public function createFaction(Faction $faction); 
+    public function getFaction(string $tag);
+
+    public function createFaction(Faction $faction, array $data, bool $save = false);
     
-    public function disbandFaction(Faction $faction);
+    public function disbandFaction(string $id);
     
-    public function setFactionTag(Faction $faction);
+    public function updateFaction(array $data);
     
-    public function setFactionDescription(Faction $faction);
+    public function factionExists(string $faction): bool;
     
-    public function setFactionLeader(Faction $faction);
-     
-    public function factionExists(string $faction);
+    public function playerExists(string $name): bool;
 }

@@ -18,71 +18,94 @@
  
 namespace TheDiamondYT\PocketFactions\provider;
 
+use pocketmine\Player;
+use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat as TF;
+
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
+use TheDiamondYT\PocketFactions\entity\FPlayer;
 
 class SQLiteProvider implements Provider {
 
     private $plugin;
-    private $db;
     
     private $factions = [];
     private $fplayers = [];
+    
+    private $db;
 
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
-        $this->db = new \SQLite3($plugin->getDataFolder() . "Factions.db");
     }
-
-    public function load() {
-        $startTime = round(microtime(true) * 1000);
-        $this->loadFactions();
-        $this->loadPlayers();
-        $endTime = round(microtime(true) * 1000) - $startTime;
-        $this->plugin->getLogger()->info(sprintf("Loaded faction and player data, took %sms.", [$endTime]));
+    
+    public function save() {
+       
     }
     
     public function loadFactions() {
-    
+       
     }
     
     public function loadPlayers() {
-    
+         
     }
     
-    public function getPlayer(Player $player) {
+    public function getOnlinePlayers() {
+        return $this->fplayers;
+    }
     
+    public function getPlayer($player) {
+        if($player instanceof Player) 
+            return $this->fplayers[$player->getName()];
+            
+        return $this->fplayers[$player];
     }
     
     public function addPlayer(Player $player) {
-    
+        $fplayer = new FPlayer($this->plugin, $player);
+        $this->fplayers[$player->getName()] = $fplayer;
     }
     
-    public function getFaction(string $faction) {
-    
+    public function removePlayer(Player $player) {
+        unset($this->fplayers[$player->getName()]);
     }
     
-    public function createFaction(Faction $faction) {
+    public function getFaction(string $tag) {
+        if(!$this->factionExists($tag)) 
+            return null;
         
+        foreach($this->factions as $facs) {
+            if($facs->getTag() === $tag)
+                return $this->factions[$facs->getId()];
+        }
+    }
+
+    public function createFaction(Faction $faction, array $data, bool $save = false) {  
+        $this->factions[$faction->getId()] = $faction; 
     }
     
-    public function disbandFaction(Faction $faction) {
-    
+    public function disbandFaction(string $id) {
+        unset($this->factions[$id]);
     }
     
-    public function setFactionTag(Faction $faction) {
-    
+    public function updateFaction(array $data) {
+
     }
     
-    public function setFactionDescription(Faction $faction) {
-    
+    public function factionExists(string $faction): bool {
+        foreach($this->factions as $facs) {
+            if($facs->getTag() === $faction or $facs->getId() === $faction)
+                return true;
+        }
+        return false;
     }
     
-    public function setFactionLeader(Faction $faction) {
-    
-    }
-   
-    public function factionExists(string $faction) {
-        
+    public function playerExists(string $name): bool {
+        /*foreach($this->fplayers as $player) {
+            if($player->getName() === $name) 
+                return true;
+        }*/
+        return false;
     }
 }

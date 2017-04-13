@@ -153,11 +153,11 @@ class PF extends PluginBase {
 	 * @param Provider
 	 */
 	public function setProvider($provider = null) {
-	    if($provider === null) {
+	    if(!$provider) {
 	        switch($this->cfg["provider"]) { 
 	            case "sqlite":
 	                if(!extension_loaded("sqlite3")) {
-	                    self::log("Unable to find the SQLite3 exstension. Setting data provider to yaml.");
+	                    self::log("Unable to find the SQLite3 exstension. Setting data provider to json.");
 	                    $this->provider = new YamlProvider($this);
 	                    return;
 	                }
@@ -172,12 +172,12 @@ class PF extends PluginBase {
 	        }
 	    }
 	    // This check is to allow custom data providers
-	    //if($provider instanceof Provider) {
+	    if($provider instanceof Provider) {
 	        $this->provider = $provider;
-	    //} else {
-	    //    self::logError("Data provider " . get_class($provider) . " is not an instance of Provider.");
-	    //    $this->getServer()->getPluginManager()->disablePlugin($this);
-	    //}
+	    } else {
+	        self::logError("Data provider " . get_class($provider) . " is not an instance of Provider.");
+	        $this->getServer()->getPluginManager()->disablePlugin($this);
+	    }
 	}
 	
 	/** 
@@ -194,7 +194,7 @@ class PF extends PluginBase {
 	 *
 	 * @return Provider
 	 */
-	public function getProvider() {
+	public function getProvider(): Provider {
 	    return $this->provider;
 	}
 	

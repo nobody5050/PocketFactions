@@ -26,8 +26,7 @@ use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FPlayer;
 
-// TODO: reimplement provider
-class JSONProvider {
+class JSONProvider implements Provider {
 
     private $plugin;
     
@@ -47,8 +46,8 @@ class JSONProvider {
     }
     
     public function loadFactions() {
-        // TODO: fix
-        foreach(scandir($this->plugin->getDataFolder() . "factions") as $facs) {
+        $dir = new \FileSystemIterator($this->plugin->getDataFolder() . "factions");
+        foreach($dir as $facs) {
             $facs = json_decode($facs); 
             $faction = new Faction($facs["id"], [
                 "tag" => $facs["tag"],
