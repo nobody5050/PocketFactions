@@ -119,7 +119,7 @@ abstract class FCommand {
      *
      * @param string 
      */
-    public function msg(string $text) {  
+    public function msg(string $text) {                   
         $this->sender->sendMessage(TextUtil::parse($text));
     }
     

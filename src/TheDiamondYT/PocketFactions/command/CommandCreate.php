@@ -44,9 +44,9 @@ class CommandCreate extends FCommand {
             $this->msg($sender, TF::RED . $this->getUsage());
             return;
         }
-        if($fme->getFaction() !== null && !$fme->getFaction()->isPermanent()) {
+        if($fme->hasFaction() && !$fme->getFaction()->isPermanent()) {
             $this->msg($this->plugin->translate("player.has-faction"));
-            //return;
+            return;
         }
         if($this->plugin->factionExists($args[0])) {
             $this->msg($this->plugin->translate("faction.tag.exists")); 
@@ -82,7 +82,7 @@ class CommandCreate extends FCommand {
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
-            $player->sendMessage(TextUtil::parse($this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)])));
+            $player->sendMessage($this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)]));
             
         $this->msg($this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
         

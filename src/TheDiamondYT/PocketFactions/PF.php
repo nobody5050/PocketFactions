@@ -33,6 +33,7 @@ use TheDiamondYT\PocketFactions\listener\FPlayerListener;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class PF extends PluginBase {
 
@@ -257,9 +258,9 @@ class PF extends PluginBase {
 	public function translate(string $text, array $params = []) {
 	    $lang = $this->cfg["language"];  
 	    if($this->language->getNested($text)) {
-	        if(!empty($params))
+	        if(!empty($params)) 
 	            return vsprintf($this->language->getNested($text), $params);
-	            
+	      
 	        return $this->language->getNested($text);
 	    }
 	}

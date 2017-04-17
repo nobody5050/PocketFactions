@@ -23,6 +23,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
  * Represents a faction player, on the console.
@@ -122,7 +123,7 @@ class FConsole implements IPlayer, RelationParticipator {
      * @param string
      */
     public function sendMessage(string $text) {
-        $this->player->sendMessage($text);
+        $this->player->sendMessage(TextUtil::parse($text));
     }
     
     /**

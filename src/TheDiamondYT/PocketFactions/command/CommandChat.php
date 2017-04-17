@@ -68,10 +68,10 @@ class CommandChat extends FCommand {
                 $text = "Alliance only chat mode.";
                 break;
             default:
-                $this->msg($sender, $this->plugin->translate("chat.fail"));
+                $this->msg($this->plugin->translate("chat.fail"));
                 return;
         }
         $fme->setChatMode($mode);
-        $this->msg($sender, $text);
+        $this->msg($text);
     }
 }

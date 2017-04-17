@@ -43,17 +43,17 @@ class CommandShow extends FCommand {
                 if($p === null) {
                     $faction = $fme->getFaction();  // just return our faction if not found
                 } else {
-                    $faction = $p->getFaction();
+                    $faction = $p->getFaction(); // or return the players faction
                 }
             }
         }    
         $this->msg(TextUtil::titleize($this->plugin->translate("commands.show.header", [$fme->getColorTo($faction) . $faction->getTag()])));
         
-        $this->add("Description", $faction->getDescription());
-        $this->add("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");
+        $this->addLine("Description", $faction->getDescription());
+        $this->addLine("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");
     }
     
-    private function add(string $key, string $value) {
+    private function addLine(string $key, string $value) {
         $this->msg(TF::GOLD . "$key: " . TF::YELLOW . $value);
     }
 }

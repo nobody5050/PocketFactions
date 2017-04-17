@@ -69,7 +69,7 @@ class JSONProvider implements Provider {
     public function getPlayer($player) {
         if($player instanceof Player) 
             return $this->fplayers[$player->getName()];
-            
+        
         return $this->fplayers[$player];
     }
     

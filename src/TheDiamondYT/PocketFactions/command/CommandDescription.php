@@ -35,13 +35,10 @@ class CommandDescription extends FCommand {
         $this->addRequiredArgument("description"); 
         
         $this->senderMustBePlayer = true;
+        $this->senderMustHaveFaction = true;
     }
 
     public function perform(IPlayer $fme, array $args) {
-        if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.has-faction"));
-            return;
-        }  
         if(empty($args)) {
             $this->msg($sender, $this->getUsage());
             return;
@@ -49,10 +46,6 @@ class CommandDescription extends FCommand {
         
         $faction = $fme->getFaction();
         $faction->setDescription(implode(" ", $args));
-        
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            if($player->getFaction() === $faction)
-                $player->sendMessage(TextUtil::parse($this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)])));
-        }
+        $faction->sendMessage(TextUtil::parse($this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)])));
     }
 }

@@ -32,6 +32,7 @@ class CommandVersion extends FCommand {
 
     public function perform(IPlayer $fme, array $args) {
         $this->msg($this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
-        $this->msg(TF::AQUA . "By Luke (TheDiamondYT)");
+        $this->msg(TF::GOLD . "https://github.com/TheDiamondYT1/PocketFactions");
+        $this->msg(TF::DARK_PURPLE . "By Luke (TheDiamondYT)");
     }
 }
