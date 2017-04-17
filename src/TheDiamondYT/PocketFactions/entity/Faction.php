@@ -272,20 +272,20 @@ class Faction implements RelationParticipator {
      * Creates a new faction.
      */
     public function create(bool $save = false) {
-        PF::get()->getProvider()->createFaction($this, $this->data, $save);
+        PF::getInstance()->getProvider()->createFaction($this, $this->data, $save);
     }
     
     /**
      * Disbands the current faction.
      */
     public function disband() {
-        PF::get()->getProvider()->disbandFaction($this->getId());
+        PF::getInstance()->getProvider()->disbandFaction($this->getId());
     }
     
     /**
      * Updates the current faction information.
      */
     public function update() {
-        PF::get()->getProvider()->updateFaction($this->data);
+        PF::getInstance()->getProvider()->updateFaction($this->data);
     }
 }

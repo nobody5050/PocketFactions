@@ -37,10 +37,6 @@ class CommandTag extends FCommand {
     }
 
     public function perform(IPlayer $fme, array $args) {
-        if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.no-faction"));
-            return;
-        }
         if(empty($args)) {
             $this->msg($sender, $this->getUsage());
             return;

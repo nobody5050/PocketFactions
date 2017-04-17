@@ -28,6 +28,8 @@ class CommandSave extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "save", "Save config");
+        
+        $this->senderMustBeOperator = true;
     }
 
     public function perform(IPlayer $fme, array $args) {

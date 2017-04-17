@@ -32,17 +32,12 @@ class CommandTitle extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "title", "Change a players title");
         $this->addRequiredArgument("title"); 
+        
+        $this->senderMustBePlayer = true;
+        $this->senderMustHaveFaction = true;
     }
 
     public function perform(IPlayer $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
-        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
-            $this->msg($sender, $this->plugin->translate("player.no-faction"));
-            return;
-        }  
         if(empty($args)) {
             $this->msg($sender, $this->getUsage());
             return;

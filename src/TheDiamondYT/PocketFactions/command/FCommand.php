@@ -29,7 +29,6 @@ use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
 abstract class FCommand {
-
     /* @var PF */
     public $plugin;
     /* @var array */
@@ -49,6 +48,7 @@ abstract class FCommand {
     
     /* @var bool */
     public $senderMustBePlayer = false;
+    public $senderMustBeOperator = false;
     public $senderMustBeLeader = false;
     public $senderMustHaveFaction = false;
     
@@ -154,6 +154,9 @@ abstract class FCommand {
         if($this->senderMustBePlayer === true && $sender instanceof ConsoleCommandSender) {
             $this->msg($this->plugin->translate("commands.only-player"));
             return;
+        }
+        if($this->senderMustBeOperator === true && !$sender->isOp()) {
+            // TODO
         }
         if($this->senderMustHaveFaction === true && !$this->fme->hasFaction()) {
             $this->msg($this->plugin->translate("player.no-faction"));
