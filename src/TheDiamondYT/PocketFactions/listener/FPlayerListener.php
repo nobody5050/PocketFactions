@@ -26,6 +26,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
 
 class FPlayerListener implements Listener {
@@ -37,14 +38,17 @@ class FPlayerListener implements Listener {
     }
     
     public function onPlayerJoin(PlayerJoinEvent $event) {
-        $this->plugin->getProvider()->addPlayer($event->getPlayer());
+        if(!$this->plugin->playerExists($event->getPlayer())) {
+            $this->plugin->getProvider()->addNewPlayer($event->getPlayer());
+        } else {
+            $this->plugin->getProvider()->addPlayer($event->getPlayer());
+        }
     }
     
     public function onPlayerQuit(PlayerQuitEvent $event) {
         $this->plugin->getProvider()->removePlayer($event->getPlayer());
     }
     
-    // This could do with some cleanup
     public function onPlayerChat(PlayerChatEvent $event) {
         $fme = $this->plugin->getPlayer($event->getPlayer());
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {

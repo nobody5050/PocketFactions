@@ -143,7 +143,7 @@ abstract class FCommand {
      * @see FCommandManager
      */
     public function execute(CommandSender $sender, $fme, array $args) {
-        $this->sender = $sender;
+        $this->sender = $sender; 
         if($sender instanceof ConsoleCommandSender) {
             $this->fme = new FConsole($this->plugin); 
         } else {

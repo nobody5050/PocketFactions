@@ -73,8 +73,8 @@ class Faction implements RelationParticipator {
         return $this->id;
     }
     
-    public function describeTo(RelationParticipator $that) {
-        return Relation::describeThatToMe($this, $that);
+    public function describeTo(RelationParticipator $that, bool $ucfirst = false) {
+        return Relation::describeThatToMe($this, $that, $ucfirst);
     }
     
     public function getColorTo(RelationParticipator $that) {

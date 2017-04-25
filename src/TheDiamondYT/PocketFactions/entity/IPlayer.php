@@ -96,7 +96,7 @@ interface IPlayer {
      *
      * @param int 
      */
-    public function setRole($role);
+    public function setRole(int $role);
     
     /**
      * @return int

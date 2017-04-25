@@ -31,7 +31,7 @@ class SQLiteProvider implements Provider {
     private $plugin;
     
     private $factions = [];
-    private $fplayers = [];
+    private $players = [];
     
     private $db;
 
@@ -52,23 +52,26 @@ class SQLiteProvider implements Provider {
     }
     
     public function getOnlinePlayers() {
-        return $this->fplayers;
+        return $this->players;
     }
     
     public function getPlayer($player) {
-        if($player instanceof Player) 
-            return $this->fplayers[$player->getName()];
+        if($this->playerExists($player)) 
+            return $this->players[$player];
             
-        return $this->fplayers[$player];
+        return null;
     }
     
     public function addPlayer(Player $player) {
         $fplayer = new FPlayer($this->plugin, $player);
-        $this->fplayers[$player->getName()] = $fplayer;
+        
+        $this->players[$player->getName()] = $fplayer;
+        $this->players[$player] = $fplayer;
     }
     
     public function removePlayer(Player $player) {
-        unset($this->fplayers[$player->getName()]);
+        unset($this->players[$player->getName()]);
+        unset($this->players[$player]);
     }
     
     public function getFaction(string $tag) {
@@ -101,7 +104,7 @@ class SQLiteProvider implements Provider {
         return false;
     }
     
-    public function playerExists(string $name): bool {
+    public function playerExists($player): bool {
         /*foreach($this->fplayers as $player) {
             if($player->getName() === $name) 
                 return true;

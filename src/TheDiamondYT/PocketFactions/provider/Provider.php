@@ -38,6 +38,8 @@ interface Provider {
     
     public function getPlayer($player);
     
+    public function addNewPlayer(Player $player);
+    
     public function addPlayer(Player $player);
     
     public function removePlayer(Player $player);
@@ -52,5 +54,5 @@ interface Provider {
     
     public function factionExists(string $faction): bool;
     
-    public function playerExists(string $name): bool;
+    public function playerExists($player): bool;
 }

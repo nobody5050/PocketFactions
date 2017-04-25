@@ -38,23 +38,23 @@ class FPlayer implements IPlayer, RelationParticipator {
     
     /* @var PF */
     private $plugin;
-
-    /* @var string */
-    private $title = "";
+    
+    /* @var array */
+    private $data;
     
     /* @var Faction */
     private $faction;
     
     /* @var int */  
-    private $role = Role::UNKNOWN;
     private $chatMode = ChatMode::PUBLIC; 
  
     /* @var bool */
     private $adminBypassing = false;
     
-    public function __construct(PF $plugin, Player $player) {
+    public function __construct(PF $plugin, Player $player, array $data) {
         $this->plugin = $plugin;
         $this->player = $player;
+        $this->data = $data;
     }
     
     /**
@@ -72,10 +72,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getName(): string {
-        if($this->player !== null)
-            return $this->player->getName();
-            
-        return "Unknown";
+        return $this->data["name"];
     }
     
     /**
@@ -103,9 +100,9 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getPrefix(): string { 
-        if($this->role === Role::get("Leader")) {
+        if($this->getRole() === Role::get("Leader")) {
             return "**";
-        } elseif($this->role === Role::get("Moderator")) {
+        } elseif($this->getRole() === Role::get("Moderator")) {
             return "*";
         } else {
             return "";
@@ -118,7 +115,8 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param string
      */
     public function setTitle(string $title) {
-        $this->title = $title;
+        $this->data["faction"]["title"] = $title;
+        $this->update();
     }
   
     /**
@@ -127,7 +125,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getTitle(): string {
-        return $this->title;
+        return $this->data["faction"]["title"];
     }
     
     /**
@@ -136,7 +134,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getNameAndTitle(): string {
-        return $this->getPrefix() . ($this->title ?? $this->getPrefix()) . " " . $this->getName();
+        return $this->getPrefix() . ($this->getTitle() === "" ?? $this->getPrefix()) . " " . $this->getName();
     }
     
     /**
@@ -171,18 +169,19 @@ class FPlayer implements IPlayer, RelationParticipator {
      *
      * @param int 
      */
-    public function setRole($role) {
+    public function setRole(int $role) {
         //if(!Role::exists($role))
         //    throw new \Exception("Invalid role '$role'");
         
-        $this->role = $role;
+        $this->data["faction"]["role"] = $role;
+        $this->update();
     }
     
     /**
      * @return int
      */
     public function getRole(): int {
-        return $this->role;
+        return $this->data["faction"]["role"];
     }
     
     /**
@@ -207,7 +206,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return bool
      */
     public function isLeader(): bool {
-        return $this->role === Role::get("Leader");
+        return $this->getRole() === Role::get("Leader");
     }
     
     /**
@@ -220,7 +219,9 @@ class FPlayer implements IPlayer, RelationParticipator {
             $this->faction->removePlayer($this);
             
         $faction->addPlayer($this); 
-        $this->faction = $faction; 
+        $this->faction = $faction;    
+        $this->data["faction"]["id"] = $faction->getId();
+        $this->update();
     }
     
     /**
@@ -240,5 +241,9 @@ class FPlayer implements IPlayer, RelationParticipator {
      */
     public function getFaction() {     
         return $this->faction ?? PF::getInstance()->getFaction("Wilderness");
+    }
+    
+    public function update() {
+        PF::getInstance()->getProvider()->updatePlayer($this->data);
     }
 }

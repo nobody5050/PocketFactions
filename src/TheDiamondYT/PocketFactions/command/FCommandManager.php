@@ -74,10 +74,10 @@ class FCommandManager extends PluginCommand {
                 $sender->sendMessage($this->plugin->translate("commands.not-found", [$subcommand]));
                 return true;
             }
-            $command->execute($sender, $this->plugin->getPlayer($sender), $args);
+            $command->execute($sender, $this->plugin->getPlayer($sender->getName()), $args);
         } else {
-            // TODO: better solution
-            $this->getCommand("help")->execute($sender, $this->plugin->getPlayer($sender), $args);
+            // TODO: better solution 
+            $this->getCommand("help")->execute($sender, $this->plugin->getPlayer($sender->getName()), $args);
         }
     }
     

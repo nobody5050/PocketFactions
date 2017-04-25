@@ -241,10 +241,10 @@ class PF extends PluginBase {
 	/** 
 	 * Returns true if the specified player exists.
 	 *
-	 * @param string
+	 * @param Player|string
 	 * @return bool
 	 */
-	public function playerExists(string $player) {
+	public function playerExists($player) {
 	    return $this->provider->playerExists($player);
 	}
 	

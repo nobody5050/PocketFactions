@@ -131,7 +131,7 @@ class FConsole implements IPlayer, RelationParticipator {
      *
      * @param int 
      */
-    public function setRole($role) {
+    public function setRole(int $role) {
         throw new \Exception("Cannot set role for console player.");
     }
     

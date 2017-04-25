@@ -40,7 +40,7 @@ class CommandDescription extends FCommand {
 
     public function perform(IPlayer $fme, array $args) {
         if(empty($args)) {
-            $this->msg($sender, $this->getUsage());
+            $this->msg($this->getUsage());
             return;
         }
         

@@ -23,6 +23,9 @@ provider: json
 
 # Faction preferences
 faction:
+  # Save faction to file when created
+  saveOnCreate: true
+  
   # Log faction create or disband to the console
   logFactionCreate: false
   logFactionDisband: false
