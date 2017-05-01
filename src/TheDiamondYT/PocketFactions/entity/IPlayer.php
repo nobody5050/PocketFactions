@@ -22,7 +22,7 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\struct\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\RelationParticipator;
 
 interface IPlayer {
     
@@ -127,16 +127,23 @@ interface IPlayer {
      *
      * @param Faction 
      */
-    public function setFaction(Faction $faction, bool $update = true);
+    public function setFaction(Faction $faction);
     
     /**
      * Leave the current faction.
      */
     public function leaveFaction();
     
+    /**
+     * Returns true if the player is in a faction.
+     *
+     * @return bool
+     */
     public function hasFaction(): bool;
     
     /**
+     * Returns the players current faction.
+     *
      * @return Faction|null
      */
     public function getFaction();

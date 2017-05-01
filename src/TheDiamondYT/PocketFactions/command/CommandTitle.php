@@ -41,7 +41,7 @@ class CommandTitle extends FCommand {
         if(empty($args)) {
             $this->msg($sender, $this->getUsage());
             return;
-        }    
+        }   
         $faction = $fme->getFaction();
         $faction->setDescription(implode(" ", $args));
         $faction->sendMessage($this->plugin->translate("commands.title.success", [$fme->describeTo($player), $fme->describeTo($player), implode(" ", $args)]));

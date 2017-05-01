@@ -31,7 +31,7 @@ class Role {
     }
     
     /**
-     * Creates a new role.
+     * Creates a new faction role.
      *
      * @param int
      * @param string
@@ -57,13 +57,17 @@ class Role {
     /**
      * Returns true if a role exists.
      *
-     * @param string
+     * @param string|int
      * @return bool
      */
-    public static function exists(string $name): bool {
+    public static function exists($role): bool {
         foreach(self::$roles as $id => $role) {
-            if(strtolower($role) === strtolower($name))
+            if(is_int($role) && $id === $role) {
                 return true;
+            } 
+            elseif(strtolower($role) === strtolower($name)) {
+                return true;
+            }
         }
         return false;
     }

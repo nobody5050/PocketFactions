@@ -57,11 +57,14 @@ class PF extends PluginBase {
     /**
      * @deprecated
      */
-    public static function get() {
+    public static function get(): PF {
         return self::$instance;
     }
     
-    public static function getInstance() {
+    /**
+     * @return PF
+     */
+    public static function getInstance(): PF {
         return self::$instance;
     }
    
@@ -95,8 +98,10 @@ class PF extends PluginBase {
     }
 
 	public function onEnable() {
-	    define("START_TIME", microtime(true));
-	    
+	    if(!defined("START_TIME")) {
+	        define("START_TIME", microtime(true));
+	    }
+
 	    // Initialize command manager and events
 	    $this->fcommandManager = new FCommandManager($this); // This takes a long time!
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
@@ -110,14 +115,17 @@ class PF extends PluginBase {
 	    
 	    Role::init(); // Initialize faction roles
 	    
-	    // TODO: cleanup
-	    self::log($this->translate("console.data-loaded", [round(microtime(true) - START_TIME, 2), round(microtime(true) * 1000) - round(START_TIME * 1000)]));
+	    self::log($this->translate("console.data-loaded", [
+	        round(microtime(true) - START_TIME, 2), 
+	        round(microtime(true) * 1000) - round(START_TIME * 1000)
+	    ]));
 	}
 	
 	public function onDisable() {
 	    if($this->provider !== null) 
 	        $this->provider->save();
 	}
+	
 	
 	/**
 	 * Checks if the default factions are created. 
@@ -200,7 +208,7 @@ class PF extends PluginBase {
 	}
 	
 	/**
-	 * Returns the config.
+	 * Returns the config as an array.
 	 *
 	 * @return array
 	 */

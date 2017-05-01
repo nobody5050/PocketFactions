@@ -41,7 +41,7 @@ class CommandCreate extends FCommand {
 
     public function perform(IPlayer $fme, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
-            $this->msg($sender, TF::RED . $this->getUsage());
+            $this->msg(TF::RED . $this->getUsage());
             return;
         }
         if($fme->hasFaction() && !$fme->getFaction()->isPermanent()) {
@@ -52,10 +52,10 @@ class CommandCreate extends FCommand {
             $this->msg($this->plugin->translate("faction.tag.exists")); 
             return;
         }
-        //if($this->plugin->playerExists($args[0])) {
-        //    $this->msg($this->plugin->translate("faction.tag.exists-player"));
-        //    return;
-        //}
+        if($this->plugin->playerExists($args[0])) {
+            $this->msg($this->plugin->translate("faction.tag.exists-player"));
+            return;
+        }
         if(!TextUtil::alphanum($args[0])) {
             $this->msg($this->plugin->translate("faction.tag.invalid-chars"));
             return;

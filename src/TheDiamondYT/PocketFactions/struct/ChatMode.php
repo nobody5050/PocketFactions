@@ -23,6 +23,28 @@ class ChatMode {
     const FACTION = 1;
     const ALLY = 2;
     
+    private static $roles = [];
+    
+    public static function init() {
+        self::addMode(0, "Public");
+        self::addMode(1, "Faction");
+        self::addMode(2, "Ally");
+    }
+    
+    /**
+     * Creates a new faction chat mode.
+     *
+     * @param int
+     * @param string 
+     */
+    public static function addMode(int $id, string $name) {
+        self::$chatModes[$id] = $name;
+    }
+    
+    public static function get(string $name) {
+        
+    }
+    
     /**
      * Returns a faction chat mode as a string
      *

@@ -22,7 +22,8 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\struct\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\RelationUtil;
+use TheDiamondYT\PocketFactions\util\RelationParticipator;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
@@ -61,7 +62,7 @@ class FConsole implements IPlayer, RelationParticipator {
      * @param int
      */
     public function setChatMode(int $mode) {
-        throw new \Exception("Cannot set chat mode for console player.");
+        throw new \LogicException("Cannot set chat mode for console player.");
     }
     
     /**
@@ -79,7 +80,7 @@ class FConsole implements IPlayer, RelationParticipator {
      * @param string
      */
     public function setTitle(string $title) {
-        throw new \Exception("Cannot set title for console player.");
+        throw new \LogicException("Cannot set title for console player.");
     }
   
     /**
@@ -110,7 +111,7 @@ class FConsole implements IPlayer, RelationParticipator {
     }
     
     public function describeTo(RelationParticipator $that, bool $ucfirst = false) {
-        return Relation::describeThatToMe($this, $that, $ucfirst);
+        return RelationUtil::describeThatToMe($this, $that, $ucfirst);
     }
     
     public function getColorTo(RelationParticipator $that) {
@@ -132,7 +133,7 @@ class FConsole implements IPlayer, RelationParticipator {
      * @param int 
      */
     public function setRole(int $role) {
-        throw new \Exception("Cannot set role for console player.");
+        throw new \LogicException("Cannot set role for console player.");
     }
     
     /**
@@ -148,7 +149,7 @@ class FConsole implements IPlayer, RelationParticipator {
      * @param bool 
      */
     public function setAdminBypassing(bool $value) {
-        throw new \Exception("Cannot set admin bypass mode for console player.");
+        throw new \LogicException("Cannot set admin bypass mode for console player.");
     }
     
     /**
@@ -172,8 +173,8 @@ class FConsole implements IPlayer, RelationParticipator {
      *
      * @param Faction 
      */
-    public function setFaction(Faction $faction, bool $update = true) { 
-        throw new \Exception("Cannot set faction for console player.");
+    public function setFaction(Faction $faction) { 
+        throw new \LogicException("Cannot set faction for console player.");
     }
     
     /**
@@ -183,6 +184,11 @@ class FConsole implements IPlayer, RelationParticipator {
         
     }
     
+    /**
+     * Returns true if the player is in a faction.
+     *
+     * @return bool
+     */
     public function hasFaction(): bool {
         return true;
     }

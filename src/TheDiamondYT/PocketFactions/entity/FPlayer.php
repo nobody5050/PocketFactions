@@ -23,9 +23,9 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\Role;
-use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
-use TheDiamondYT\PocketFactions\struct\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\RelationUtil;
+use TheDiamondYT\PocketFactions\util\RelationParticipator;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
@@ -147,11 +147,11 @@ class FPlayer implements IPlayer, RelationParticipator {
     }
     
     public function describeTo(RelationParticipator $that, bool $ucfirst = false) {
-        return Relation::describeThatToMe($this, $that, $ucfirst);
+        return RelationUtil::describeThatToMe($this, $that, $ucfirst);
     }
     
     public function getColorTo(RelationParticipator $that) {
-        return Relation::getColorToMe($that, $this);
+        return RelationUtil::getColorToMe($that, $this);
     }
     
     /**
@@ -171,7 +171,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      */
     public function setRole(int $role) {
         //if(!Role::exists($role))
-        //    throw new \Exception("Invalid role '$role'");
+        //    throw new \Exception("Tried to set role for {$this->getName()} to $role, but role doesnt exist.");
         
         $this->data["faction"]["role"] = $role;
         $this->update();
@@ -210,13 +210,13 @@ class FPlayer implements IPlayer, RelationParticipator {
     }
     
     /**
-     * Sets the players faction.
+     * Sets the players faction;
      *
      * @param Faction 
      */
-    public function setFaction(Faction $faction, bool $update = true) { 
+    public function setFaction(Faction $faction) { 
         if($this->faction !== null)
-            $this->faction->removePlayer($this);
+            $this->leaveFaction();
             
         $faction->addPlayer($this); 
         $this->faction = $faction;    
@@ -232,6 +232,11 @@ class FPlayer implements IPlayer, RelationParticipator {
         $this->faction = null;
     }
     
+    /**
+     * Returns true if the player is in a faction.
+     *
+     * @return bool
+     */
     public function hasFaction(): bool {
         return $this->faction !== null;
     }

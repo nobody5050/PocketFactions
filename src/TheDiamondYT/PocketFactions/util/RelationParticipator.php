@@ -1,6 +1,6 @@
 <?php
 
-namespace TheDiamondYT\PocketFactions\struct;
+namespace TheDiamondYT\PocketFactions\util;
 
 interface RelationParticipator {
     public function describeTo(RelationParticipator $that);

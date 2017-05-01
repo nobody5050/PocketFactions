@@ -44,8 +44,11 @@ class JSONProvider implements Provider {
     }
     
     public function save() {
-       $this->fdata->save();
-       $this->pdata->save();
+       if($this->fdata !== null)
+           $this->fdata->save();
+           
+       if($this->pdata !== null)
+           $this->pdata->save();
     }
     
     public function loadFactions() {

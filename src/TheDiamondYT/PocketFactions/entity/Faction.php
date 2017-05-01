@@ -22,8 +22,9 @@ use pocketmine\utils\UUID;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\struct\Role;
-use TheDiamondYT\PocketFactions\struct\Relation;
-use TheDiamondYT\PocketFactions\struct\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\RelationUtil;
+use TheDiamondYT\PocketFactions\util\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
  * Represents a Faction.
@@ -40,7 +41,6 @@ class Faction implements RelationParticipator {
     private $data;
  
     /* @var array */
-    private $flags = [];
     private $players = [];
     private $allies = [];
     
@@ -74,11 +74,11 @@ class Faction implements RelationParticipator {
     }
     
     public function describeTo(RelationParticipator $that, bool $ucfirst = false) {
-        return Relation::describeThatToMe($this, $that, $ucfirst);
+        return RelationUtil::describeThatToMe($this, $that, $ucfirst);
     }
     
     public function getColorTo(RelationParticipator $that) {
-        return Relation::getColorToMe($that, $this);
+        return RelationUtil::getColorToMe($that, $this);
     }
     
     /**
@@ -88,9 +88,9 @@ class Faction implements RelationParticipator {
      * @return string
      */
     public function getTag(FPlayer $player = null) {     
-        if($player === null) {
+        if($player === null) 
             return $this->data["tag"];
-        }
+        
         return $this->getColorTo($player) . $this->data["tag"];
     }
     
@@ -124,12 +124,30 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * Returns the creation time of the faction.
+     *
+     * @return string
+     */
+    public function getCreationTime(): string {
+        return TextUtil::timeize($this->getRawCreationTime());
+    }
+   
+    /**
+     * Returns the creation time of the faction as an integer.
+     *
+     * @return int
+     */
+    public function getRawCreationTime(): int {
+        return $this->data["createdAt"];
+    }
+    
+    /**
      * Set whether or not the faction is permanent.
      *
      * @param bool
      */
     public function setPermanent(bool $value) {
-        $this->data["permanent"] = $value;
+        $this->data["flags"]["permanent"] = $value;
         $this->update();
     }
     
@@ -139,7 +157,7 @@ class Faction implements RelationParticipator {
      * @return bool
      */
     public function isPermanent(): bool {
-        return $this->data["permanent"] ?? false;
+        return $this->data["flags"]["permanent"] ?? false;
     }
     
     /**
@@ -148,7 +166,7 @@ class Faction implements RelationParticipator {
      * @param bool
      */
     public function setOpen(bool $value) {
-        $this->data["open"] = $value;
+        $this->data["flags"]["open"] = $value;
         $this->update();
     }
     
@@ -158,7 +176,7 @@ class Faction implements RelationParticipator {
      * @return bool
      */
     public function isOpen(): bool {
-        return $this->data["open"] ?? false;
+        return $this->data["flags"]["open"] ?? false;
     }
     
     /**
@@ -273,6 +291,7 @@ class Faction implements RelationParticipator {
      */
     public function create(bool $save = false) {
         PF::getInstance()->getProvider()->createFaction($this, $this->data, $save);
+        $this->data["createdAt"] = time();
     }
     
     /**

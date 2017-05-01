@@ -36,6 +36,34 @@ class TextUtil {
     }
     
     /**
+     * Returns a time as a string.
+     * Credit: BlockHorizons/FactionsPE 
+     *
+     * @param int 
+     * @return string
+     */
+    public static function timeize(int $time): string {
+        $periods = ["second", "minute", "hour", "day", "week", "month", "year", "decade"];
+        $lengths = ["60", "60", "24", "7", "4.35", "12", "10"];
+        
+        $tense = "from now";
+        $difference = time() - $time;
+        
+        if($time <= 0) 
+            $tense = "ago";
+        
+        for($i = 0; $difference >= $length[$i] && $i < count($lengths) - 1; $i++) 
+            $difference /= $lengths[$i];
+        
+        $difference = round($difference);
+        
+        if($difference !== 1) 
+            $periods[$i] .= "s";
+        
+        return $difference . $periods[$i] . $tense;
+    }
+    
+    /**
      * Check if a string contains alphanumeric characters.
      *
      * @param string 
@@ -50,32 +78,21 @@ class TextUtil {
  
     /**
      * Replaces colour codes.
-     * DONT LOOK AT THIS! The over use of str_replace may harm you.
      *
      * @param string
      * @return string
      */
     public static function parse(string $text): string {
-		// Colours
-        $text = str_replace("<black>", TF::BLACK, $text);
-		$text = str_replace("<darkblue>", TF::DARK_BLUE, $text);
-		$text = str_replace("<darkgreen>", TF::DARK_GREEN, $text);
-		$text = str_replace("<cyan>", TF::DARK_AQUA, $text);
-		$text = str_replace("<darkred>", TF::DARK_RED, $text);
-		$text = str_replace("<purple>", TF::DARK_PURPLE, $text);
-		$text = str_replace("<gold>", TF::GOLD, $text);
-		$text = str_replace("<gray>", TF::GRAY, $text);
-		$text = str_replace("<darkgray>", TF::DARK_GRAY, $text);
-		$text = str_replace("<blue>", TF::BLUE, $text);
-		$text = str_replace("<green>", TF::GREEN, $text);
-		$text = str_replace("<aqua>", TF::AQUA, $text);
-		$text = str_replace("<red>", TF::RED, $text);
-		$text = str_replace("<pink>", TF::LIGHT_PURPLE, $text);
-		$text = str_replace("<yellow>", TF::YELLOW, $text);
-		$text = str_replace("<white>", TF::WHITE, $text);
-		
-		// Extra
-		$text = str_replace("<i>", TF::YELLOW, $text);
+        $colours = [
+            "<i>" => TF::YELLOW, //info
+            "<info>" => TF::YELLOW,
+            "<e>" => TF::RED, //error
+            "<error>"=> TF::RED,
+        ];
+        	
+		foreach($colours as $code => $colour) {
+		    $text = str_replace($code, $colour, $text);
+		}
         return $text;
     }
 }

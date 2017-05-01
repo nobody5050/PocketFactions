@@ -4,7 +4,7 @@
         "commands-loaded": "Loaded faction commands, took %ss (%sms)."
     },
     "player": {
-       "not-found": "<red>That player cannot be found",
+       "not-found": "<e>That player cannot be found",
        "no-faction": "<i>You are not in a faction.",
        "only-leader": "<i>You must be leader to do this.",
        "already-leader": "<i>That player is already leader.",
@@ -14,7 +14,7 @@
         "permanent": "<i>Your faction is permanent and cannot be disbanded.",
         "tag": {
             "exists": "<i>That tag is already in use.",
-            "exists-player": "<red>There is a player by that name online.",
+            "exists-player": "<e>There is a player by that name online.",
             "too-long": "<i>That tag is too long.",
             "too-short": "<i>That tag is too short.",
             "invalid-chars": "<i>That tag contains invalid characters."
@@ -23,10 +23,10 @@
     "commands": {
         "description": "The main command for PocketFactions.",
         "not-found": "The command '%s' was not found.",
-        "only-player": "<red>You must execute this command in-game",
+        "only-player": "<e>You must execute this command in-game",
         "bypass": {
             "description": "Toggle admin bypass mode.",
-            "success": "<i>You have <pink>%s §eadmin bypass mode.",
+            "success": "<i>You have %s §eadmin bypass mode.",
             "fail": "<i>You don't have permission to enable admin bypass mode."
         },
         "chat": {

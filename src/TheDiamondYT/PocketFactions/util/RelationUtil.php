@@ -16,14 +16,14 @@
  * All rights reserved.                         
  */
  
-namespace TheDiamondYT\PocketFactions\struct;
+namespace TheDiamondYT\PocketFactions\util;
 
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FPlayer;
 
 use pocketmine\utils\TextFormat as TF;
 
-class Relation {
+class RelationUtil {
     const NEUTRAL = 0;
     const ALLY = 1;
     const ENEMY = 2;
@@ -59,7 +59,7 @@ class Relation {
         return "" . self::getColorToMe($that, $me) . $ret . TF::YELLOW;
     }
     
-    private static function getFaction(RelationParticipator $object) {
+    public static function getFaction(RelationParticipator $object) {
         if($object instanceof Faction)
             return $object;
             

@@ -46,6 +46,6 @@ class CommandDescription extends FCommand {
         
         $faction = $fme->getFaction();
         $faction->setDescription(implode(" ", $args));
-        $faction->sendMessage(TextUtil::parse($this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)])));
+        //$faction->sendMessage($this->plugin->translate("commands.description.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), implode(" ", $args)]));
     }
 }
