@@ -14,8 +14,8 @@
 # All rights reserved.                     
        
 # Language used by the plugin
-# - eng
-language: eng
+# - en
+language: en
       
 # Data provider that will be used for storing faction data
 # - json
