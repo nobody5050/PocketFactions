@@ -29,21 +29,16 @@ class CommandLeader extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "leader", $plugin->translate("commands.leader.description"));
         $this->addRequiredArgument("player");
-        
-        $this->senderMustBePlayer = true;
-        $this->senderMustBeLeader = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player",
+            "leader"
+        ];
     }
 
-    public function perform(IPlayer $fme, array $args) {
-        if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.has-faction"));
-            return;
-        }
-        if(!$fme->isLeader()) {
-            $this->msg($sender, $this->plugin->translate("player.only-leader"));
-            return;
-        }
-        
+    public function perform(IPlayer $fme, array $args) {     
         $target = $this->plugin->getPlayer($this->plugin->getServer()->getPlayer($args[0]));
         
         if($target === null) {
@@ -54,6 +49,7 @@ class CommandLeader extends FCommand {
             $this->msg($sender, $this->plugin->translate("player.already-leader"));
             return;
         }
+        
         $fme->getFaction()->setLeader($target);
         $this->msg($target, "You were promoted to faction leader"); // TODO: translation and better message
     }

@@ -31,12 +31,16 @@ class CommandDisband extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "disband", $plugin->translate("commands.disband.description"));
-        
-        $this->senderMustBePlayer = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player" // dont include faction requirement, as it only applies to admin bypass mode
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {
-        if($fme->getFaction() === null && !$fme->isAdminBypassing()) {
+        if(!$fme->hasFaction() && !$fme->isAdminBypassing()) {
             $this->msg($this->plugin->translate("player.no-faction"));
             return;
         }

@@ -29,9 +29,13 @@ class CommandLeave extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "leave", $plugin->translate("commands.leave.description"));
-              
-        $this->senderMustBePlayer = true;
-        $this->senderMustHaveFaction = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player",
+            "faction"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {

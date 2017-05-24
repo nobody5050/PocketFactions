@@ -134,6 +134,13 @@ abstract class FCommand {
     }
     
     /**
+     * Returns the command requirements.
+     *
+     * @return array
+     */
+    public abstract function getRequirements(): array;
+    
+    /**
      * Sets up variables and does command checks, then performs the command.
      *
      * @param CommandSender 
@@ -144,25 +151,26 @@ abstract class FCommand {
      */
     public function execute(CommandSender $sender, $fme, array $args) {
         $this->sender = $sender; 
+        $this->args = $args;
+        
         if($sender instanceof ConsoleCommandSender) {
             $this->fme = new FConsole($this->plugin); 
         } else {
             $this->fme = $fme;
         }
-        $this->args = $args;   
-        
-        if($this->senderMustBePlayer === true && $sender instanceof ConsoleCommandSender) {
+
+        if(in_array("player", $this->getRequirements()) && $this->fme instanceof FConsole) {
             $this->msg($this->plugin->translate("commands.only-player"));
             return;
         }
-        if($this->senderMustBeOperator === true && !$sender->isOp()) {
+        if(in_array("operator", $this->getRequirements()) && !$sender->isOp()) {
             // TODO
         }
-        if($this->senderMustHaveFaction === true && !$this->fme->hasFaction()) {
+        if(in_array("faction", $this->getRequirements()) && !$this->fme->hasFaction()) {
             $this->msg($this->plugin->translate("player.no-faction"));
             return;
         }
-        if($this->senderMustBeLeader === true && !$fme->isLeader()) {
+        if(in_array("leader", $this->getRequirements()) && !$fme->isLeader()) {
             $this->msg($this->plugin->translate("commands.only-leader"));
             return;
         }

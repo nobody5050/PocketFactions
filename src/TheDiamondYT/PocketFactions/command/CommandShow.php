@@ -33,6 +33,10 @@ class CommandShow extends FCommand {
         parent::__construct($plugin, "show", $plugin->translate("commands.show.description"), ["who"]);
         $this->addOptionalArgument("faction");
     }
+    
+    public function getRequirements(): array {
+        return [];
+    }
 
     public function perform(IPlayer $fme, array $args) {
         $faction = $fme->getFaction();

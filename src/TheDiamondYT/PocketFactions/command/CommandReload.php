@@ -27,8 +27,12 @@ class CommandReload extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "reload", $plugin->translate("commamds.reload.description"));
-        
-        $this->senderMustBeOperator = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "operator"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {

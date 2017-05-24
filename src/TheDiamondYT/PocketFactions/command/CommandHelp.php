@@ -31,6 +31,10 @@ class CommandHelp extends FCommand {
         parent::__construct($plugin, "help", $plugin->translate("commands.help.description"), ["h", "?"]);
         $this->addRequiredArgument("page");
     }
+    
+    public function getRequirements(): array {
+        return [];
+    }
 
     public function perform(IPlayer $fme, array $args) {
         if(count($args) === 0) {

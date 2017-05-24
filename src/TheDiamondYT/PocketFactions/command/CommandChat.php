@@ -33,21 +33,17 @@ class CommandChat extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "chat", $plugin->translate("commands.chat.description"), ["c"]);
         $this->addRequiredArgument("mode"); 
-        
-        $this->senderMustBePlayer = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {
-        if(!$sender instanceof Player) {
-            $this->msg($sender, TF::RED . $this->plugin->translate("commands.only-player"));
-            return;
-        }
-        if($fme->getFaction() === null) {
-            $this->msg($sender, $this->plugin->translate("player.no-faction"));
-            return;
-        }  
         if(empty($args)) {
-            $this->msg($sender, $this->getUsage());
+            $this->msg($this->getUsage());
             return;
         }
         

@@ -33,9 +33,13 @@ class CommandDescription extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "desc", $plugin->translate("commands.description.description"));
         $this->addRequiredArgument("description"); 
-        
-        $this->senderMustBePlayer = true;
-        $this->senderMustHaveFaction = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player", 
+            "faction"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {

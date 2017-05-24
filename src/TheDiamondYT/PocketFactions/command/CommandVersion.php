@@ -29,6 +29,10 @@ class CommandVersion extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "version", $plugin->translate("commands.version.description"), ["ver", "v"]);
     }
+    
+    public function getRequirements(): array {
+        return [];
+    }
 
     public function perform(IPlayer $fme, array $args) {
         $this->msg($this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));

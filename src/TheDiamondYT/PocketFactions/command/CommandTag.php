@@ -30,10 +30,14 @@ class CommandTag extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "tag", $plugin->translate("commands.tag.description"));
         $this->addRequiredArgument("tag");
-        
-        $this->senderMustBePlayer = true;
-        $this->senderMustHaveFaction = true;
-        $this->senderMustBeLeader = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player",
+            "faction",
+            "leader"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {

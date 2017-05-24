@@ -32,9 +32,13 @@ class CommandTitle extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "title", "Change a players title");
         $this->addRequiredArgument("title"); 
-        
-        $this->senderMustBePlayer = true;
-        $this->senderMustHaveFaction = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player",
+            "faction"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {

@@ -35,13 +35,17 @@ class CommandCreate extends FCommand {
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "create", $plugin->translate("commands.create.description"));
         $this->addRequiredArgument("faction name");
-        
-        $this->senderMustBePlayer = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
-            $this->msg(TF::RED . $this->getUsage());
+            //$this->msg(TF::RED . $this->getUsage());
             return;
         }
         if($fme->hasFaction() && !$fme->getFaction()->isPermanent()) {
