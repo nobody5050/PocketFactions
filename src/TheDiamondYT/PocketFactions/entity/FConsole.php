@@ -29,7 +29,7 @@ use TheDiamondYT\PocketFactions\util\TextUtil;
 /**
  * Represents a faction player, on the console.
  */
-class FConsole implements IPlayer, RelationParticipator {
+class FConsole implements IMember, RelationParticipator {
 
     /* @var ConsoleCommandSender */
     private $player;

@@ -23,7 +23,7 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\entity\FConsole;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\util\TextUtil;
@@ -45,12 +45,6 @@ abstract class FCommand {
     public $fme;
     /* @var array */
     public $args = [];
-    
-    /* @var bool */
-    public $senderMustBePlayer = false;
-    public $senderMustBeOperator = false;
-    public $senderMustBeLeader = false;
-    public $senderMustHaveFaction = false;
     
     public function __construct(PF $plugin, $name, $desc, $aliases = []) {
         $this->plugin = $plugin;

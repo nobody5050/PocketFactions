@@ -24,7 +24,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 use TheDiamondYT\PocketFactions\util\RoleUtil;
@@ -43,7 +43,7 @@ class CommandCreate extends FCommand {
         ];
     }
 
-    public function perform(IPlayer $fme, array $args) {
+    public function perform(IMember $fme, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
             //$this->msg(TF::RED . $this->getUsage());
             return;

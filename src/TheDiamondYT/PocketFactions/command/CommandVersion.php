@@ -22,7 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 
 class CommandVersion extends FCommand {
 
@@ -34,7 +34,7 @@ class CommandVersion extends FCommand {
         return [];
     }
 
-    public function perform(IPlayer $fme, array $args) {
+    public function perform(IMember $fme, array $args) {
         $this->msg($this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
         $this->msg(TF::GOLD . "https://github.com/TheDiamondYT1/PocketFactions");
         $this->msg(TF::DARK_PURPLE . "By Luke (TheDiamondYT)");

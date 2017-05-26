@@ -24,7 +24,7 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\util\RelationParticipator;
 
-interface IPlayer {
+interface IMember {
     
     /**
      * Returns the players name.

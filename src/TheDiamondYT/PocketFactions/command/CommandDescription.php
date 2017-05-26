@@ -23,7 +23,7 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
@@ -41,7 +41,7 @@ class CommandDescription extends FCommand {
         ];
     }
 
-    public function perform(IPlayer $fme, array $args) {
+    public function perform(IMember $fme, array $args) {
         if(empty($args)) {
             $this->msg($this->getUsage());
             return;

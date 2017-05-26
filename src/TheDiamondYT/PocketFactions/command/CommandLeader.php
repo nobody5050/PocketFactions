@@ -21,7 +21,7 @@ namespace TheDiamondYT\PocketFactions\command;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\util\RoleUtil;
 
 class CommandLeader extends FCommand {
@@ -38,7 +38,7 @@ class CommandLeader extends FCommand {
         ];
     }
 
-    public function perform(IPlayer $fme, array $args) {     
+    public function perform(IMember $fme, array $args) {     
         $target = $this->plugin->getPlayer($this->plugin->getServer()->getPlayer($args[0]));
         
         if($target === null) {

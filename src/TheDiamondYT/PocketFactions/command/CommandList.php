@@ -22,7 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
@@ -37,7 +37,7 @@ class CommandList extends FCommand {
         return [];
     }
 
-    public function perform(IPlayer $fme, array $args) {
+    public function perform(IMember $fme, array $args) {
         $faction = $fme->getFaction();
         $factionless = [];
         $factions = [];

@@ -24,7 +24,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\Faction;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\util\RoleUtil;
 
@@ -41,7 +41,7 @@ class CommandBypass extends FCommand {
         ];
     }
 
-    public function perform(IPlayer $fme, array $args) {
+    public function perform(IMember $fme, array $args) {
         if($fme->isAdminBypassing()) {
             $status = "disabled";
             $value = false;

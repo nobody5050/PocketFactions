@@ -21,7 +21,7 @@ namespace TheDiamondYT\PocketFactions\command;
 use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\entity\IPlayer;
+use TheDiamondYT\PocketFactions\entity\IMember;
 
 class CommandReload extends FCommand {
 
@@ -35,7 +35,7 @@ class CommandReload extends FCommand {
         ];
     }
 
-    public function perform(IPlayer $fme, array $args) {
+    public function perform(IMember $fme, array $args) {
         $startTime = microtime(true);
         $this->plugin->reloadConfig();
         $this->plugin->getProvider()->loadFactions();

@@ -31,7 +31,7 @@ use TheDiamondYT\PocketFactions\util\TextUtil;
 /**
  * Represents a faction player.
  */
-class FPlayer implements IPlayer, RelationParticipator {
+class FPlayer implements IMember, RelationParticipator {
 
     /* @var Player */
     private $player;
