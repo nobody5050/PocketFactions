@@ -51,7 +51,9 @@ class FPlayer implements IPlayer, RelationParticipator {
     /* @var bool */
     private $adminBypassing = false;
     
-    public function __construct(PF $plugin, Player $player, array $data) {
+    private $online = false;
+    
+    public function __construct(PF $plugin, \pocketmine\IPlayer $player, array $data) {
         $this->plugin = $plugin;
         $this->player = $player;
         $this->data = $data;
@@ -62,7 +64,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      *
      * @return Player
      */
-    public function getPlayer(): Player {
+    public function getPlayer(): IPlayer {
         return $this->player;
     }
     
@@ -73,6 +75,20 @@ class FPlayer implements IPlayer, RelationParticipator {
      */
     public function getName(): string {
         return $this->data["name"];
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isOnline(): bool {
+        return $this->online;
+    }
+    
+    /**
+     * @param bool $value
+     */
+    public function setOnline(bool $value) {
+        $this->online = $value;
     }
     
     /**
@@ -160,8 +176,9 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param string
      */
     public function sendMessage(string $text) {
-        if($this->player !== null)
+        if($this->player !== null) {
             $this->player->sendMessage(TextUtil::parse($text));
+        }
     }
     
     /**
@@ -215,9 +232,9 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param Faction 
      */
     public function setFaction(Faction $faction) { 
-        if($this->faction !== null)
+        if($this->faction !== null) {
             $this->leaveFaction();
-            
+        }    
         $faction->addPlayer($this); 
         $this->faction = $faction;    
         $this->data["faction"]["id"] = $faction->getId();
@@ -242,7 +259,7 @@ class FPlayer implements IPlayer, RelationParticipator {
     }
     
     /**
-     * @return Faction|null
+     * @return Faction
      */
     public function getFaction() {     
         return $this->faction ?? PF::getInstance()->getFaction("Wilderness");

@@ -27,6 +27,9 @@ use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
 
+/**
+ * TODO - CLEANUP
+ */
 class JSONProvider implements Provider {
 
     private $plugin;
@@ -34,33 +37,31 @@ class JSONProvider implements Provider {
     private $factions = [];
     private $players = [];
     
-    private $fdata;
-    private $pdata;
+    private $factionData;
+    private $playerData;
 
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
+        
         @mkdir($plugin->getDataFolder() . "factions");
         @mkdir($plugin->getDataFolder() . "players");
     }
     
     public function save() {
-       if($this->fdata !== null)
-           $this->fdata->save();
-           
-       if($this->pdata !== null)
-           $this->pdata->save();
+       if($this->factionData !== null) {
+           $this->factionData->save();
+       }    
+       if($this->playerData !== null) {
+           $this->playerData->save();
+       }
     }
     
     public function loadFactions() {
         $directory = $this->plugin->getDataFolder() . "factions/";
         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $factions) {
-            $factions = json_decode($factions); 
-            $faction = new Faction($factions["id"], [
-                "tag" => $factions["tag"],
-                "id" => $factions["id"],
-                "description" => $factions["description"],
-            ]);
-            $this->factions[$faction->getId()] = $faction;
+            $factions = json_decode($factions);
+            //$faction = new Faction($factions["id"], $factions);
+            //$this->factions[$faction->getId()] = $faction;
         }
     }
     
@@ -68,27 +69,42 @@ class JSONProvider implements Provider {
          $directory = $this->plugin->getDataFolder() . "players/";
          foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $players) {
              $players = json_decode($players);
-             // TODO
+             /*$player = new FPlayer($this->plugin, 
+                 $this->plugin->getServer()->getOfflinePlayer($players["name"]), 
+                 $players
+             );
+             $this->players[$player->getName()] = $player;*/
          }
     }
     
     public function getOnlinePlayers() {
+        $players = [];
+        foreach($this->players as $player) {
+            if($player->isOnline()) {
+                $players[$player->getName()] = $player;
+            }
+        }
+        return $players;
+    }
+    
+    public function getPlayers() {
         return $this->players;
     }
     
     public function getPlayer($player) {
-       if(!$this->playerExists($player))
+       if(!$this->playerExists($player)) {
            return null;
-           
+       }    
        foreach($this->players as $p) {
-           if($player === $p->getName()) 
+           if($player === $p->getName()) {
                return $this->players[$p->getName()];
+           }
        }
     }
     
     public function addNewPlayer(Player $player, bool $save = true) {
-        $this->pdata = new Config($this->getPlayerFile($player->getUniqueId()), Config::JSON);
-        $this->pdata->setAll($data = [
+        $this->playerData = new Config($this->getPlayerFile($player->getUniqueId()), Config::JSON);
+        $this->playerData->setAll([
             "name" => $player->getName(),
             "displayName" => $player->getDisplayName(),
             "faction" => [
@@ -97,18 +113,22 @@ class JSONProvider implements Provider {
                 "title" => ""
             ]
         ]);
-        if($save)
-            $this->pdata->save();
-            
+        if($save) {
+            $this->playerData->save();
+        }    
         $this->addPlayer($player);
     }
     
     public function updatePlayer(array $data) {
-        $this->pdata->setAll($data);
+        $this->playerData->setAll($data);
     }
     
     public function addPlayer(Player $player) {
-        $fplayer = new FPlayer($this->plugin, $player, (new Config($this->getPlayerFile($player->getUniqueId()), Config::JSON))->getAll());
+        $fplayer = new FPlayer($this->plugin, 
+            $player, 
+            (new Config($this->getPlayerFile($player->getUniqueId()), 
+            Config::JSON
+        ))->getAll());
         
         $this->players[$player->getName()] = $fplayer;
     }
@@ -118,50 +138,53 @@ class JSONProvider implements Provider {
     }
     
     public function getFaction(string $tag) {
-        if(!$this->factionExists($tag)) 
+        if(!$this->factionExists($tag)) {
             return null;
-        
+        }
         foreach($this->factions as $facs) {
-            if($facs->getTag() === $tag)
+            if($facs->getTag() === $tag) {
                 return $this->factions[$facs->getId()];
+            }
         }
     }
 
     public function createFaction(Faction $faction, array $data, bool $save = false) {
-        $this->fdata = new Config($this->getFile($faction->getId()), Config::JSON);
-        $this->fdata->setAll($data);
-        
+        $this->factionData = new Config($this->getFile($faction->getId()), Config::JSON);
+        $this->factionData->setAll($data);
+              
         $configSave = $this->plugin->getConfig()["faction"]["saveOnCreate"];
-        if($save === true or $configSave === true) 
-            $this->fdata->save();
-            
+        if($save === true or $configSave === true) {
+            $this->factionData->save();
+        }    
         $this->factions[$faction->getId()] = $faction; 
     }
     
     public function disbandFaction(string $id) {
-        if(!file_exists($file = $this->getFile($id))) 
+        if(!file_exists($file = $this->getFile($id))) {
             return;
-                
+        }        
         unlink($file);
         unset($this->factions[$id]);
     }
     
     public function updateFaction(array $data) {
-        $this->fdata->setAll($data);
+        $this->factionData->setAll($data);
     }
     
     public function factionExists(string $faction): bool {
         foreach($this->factions as $facs) {
-            if($facs->getTag() === $faction or $facs->getId() === $faction)
+            if($facs->getTag() === $faction or $facs->getId() === $faction) {
                 return true;
+            }
         }
         return false;
     }
     
     public function playerExists($player): bool {
         foreach($this->players as $p) {
-            if($player === $p->getName())
+            if($player === $p->getName()) {
                 return true;
+            }
         }
         return false;
     }

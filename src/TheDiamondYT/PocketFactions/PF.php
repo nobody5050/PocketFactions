@@ -122,8 +122,9 @@ class PF extends PluginBase {
 	}
 	
 	public function onDisable() {
-	    if($this->provider !== null) 
+	    if($this->provider !== null) {
 	        $this->provider->save();
+	    }
 	}
 	
 	
@@ -264,7 +265,6 @@ class PF extends PluginBase {
 	 * @return string
 	 */
 	public function translate(string $text, array $params = []) {
-	    $lang = $this->cfg["language"];  
 	    if($this->language->getNested($text)) {
 	        if(!empty($params)) 
 	            return vsprintf($this->language->getNested($text), $params);

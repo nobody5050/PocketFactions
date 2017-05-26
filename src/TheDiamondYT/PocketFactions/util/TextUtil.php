@@ -46,13 +46,9 @@ class TextUtil {
         $periods = ["second", "minute", "hour", "day", "week", "month", "year", "decade"];
         $lengths = ["60", "60", "24", "7", "4.35", "12", "10"];
         
-        $tense = "from now";
         $difference = time() - $time;
         
-        if($time <= 0) 
-            $tense = "ago";
-        
-        for($i = 0; $difference >= $length[$i] && $i < count($lengths) - 1; $i++) 
+        for($i = 0; $difference >= $lengths[$i] && $i < count($lengths) - 1; $i++) 
             $difference /= $lengths[$i];
         
         $difference = round($difference);
@@ -60,7 +56,7 @@ class TextUtil {
         if($difference !== 1) 
             $periods[$i] .= "s";
         
-        return $difference . $periods[$i] . $tense;
+        return TF::DARK_AQUA . $difference . TF::LIGHT_PURPLE . " " . $periods[$i] . TF::AQUA . " ago";
     }
     
     /**

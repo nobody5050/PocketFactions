@@ -31,8 +31,8 @@ use TheDiamondYT\PocketFactions\util\TextUtil;
  */
 class Faction implements RelationParticipator {
 
-    const WILDERNESS_ID = "7a3ee880-46ba-38df-844e-e073ad0713d4";
-    const WARZONE_ID = "4aacbf95-ac8b-3f68-898a-372ee8a818e3";
+    const WILDERNESS_ID = "wilderness";
+    const WARZONE_ID = "warzone";
 
     /* @var FPlayer */
     private $leader;
@@ -45,7 +45,7 @@ class Faction implements RelationParticipator {
     private $allies = [];
     
     /**
-     * Constructor.
+     * Constructs a new Faction.
      *
      * @param string
      * @param array
@@ -88,9 +88,9 @@ class Faction implements RelationParticipator {
      * @return string
      */
     public function getTag(FPlayer $player = null) {     
-        if($player === null) 
+        if($player === null) {
             return $this->data["tag"];
-        
+        }
         return $this->getColorTo($player) . $this->data["tag"];
     }
     
@@ -185,14 +185,26 @@ class Faction implements RelationParticipator {
      * @return FPlayer[]
      */
     public function getOnlinePlayers() {
-        return $this->players;
+        $players = [];
+        foreach(PF::getInstance()->getProvider()->getOnlinePlayers() as $player) {
+            if($player->getFaction() === $this && $player->isOnline()) {
+                $players[$player->getName()] = $player;
+            }
+        }
+        return $players;
     }
     
     /**
      * Returns every player in the current faction. Online, or not.
      */
     public function getPlayers() {
-        
+        $players = [];
+        foreach(PF::getInstance()->getProvider()->getPlayers() as $player) {
+            if($player->getFaction() === $this) {
+                $players[$player->getName()] = $player;
+            }
+        }
+        return $players;
     }
     
     /**
@@ -201,9 +213,9 @@ class Faction implements RelationParticipator {
      * @param FPlayer
      */
     public function addPlayer(FPlayer $player) {
-        if($player->isLeader())
+        if($player->isLeader()) {
             $this->setLeader($player);
-            
+        }    
         $this->players[$player->getName()] = $player;
     }
     
@@ -248,13 +260,13 @@ class Faction implements RelationParticipator {
     /**
      * Returns true if in an alliance with the specified faction.
      *
-     * @param Faction
+     * @param  Faction
      * @return bool
      */
     public function isAllyWith(Faction $faction): bool {
-        if(in_array($faction, $this->allies))
+        if(in_array($faction, $this->allies)) {
             return true;
-        
+        }
         return false;
     }
     
@@ -287,11 +299,20 @@ class Faction implements RelationParticipator {
     }
     
     /**
+     * @return bool
+     */
+    public function isWarZone(): bool {
+        return $this->getId() === self::WARZONE_ID;
+    }
+    
+    /**
      * Creates a new faction.
+     *
+     * @param bool $save
      */
     public function create(bool $save = false) {
-        PF::getInstance()->getProvider()->createFaction($this, $this->data, $save);
         $this->data["createdAt"] = time();
+        PF::getInstance()->getProvider()->createFaction($this, $this->data, $save);
     }
     
     /**

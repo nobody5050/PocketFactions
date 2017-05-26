@@ -38,11 +38,14 @@ class FPlayerListener implements Listener {
     }
     
     public function onPlayerJoin(PlayerJoinEvent $event) {
-        if(!$this->plugin->playerExists($event->getPlayer())) {
-            $this->plugin->getProvider()->addNewPlayer($event->getPlayer());
+        $player = $event->getPlayer();
+        $provider = $this->plugin->getProvider();
+        if(!$provider->playerExists($player)) {
+            $provider->addNewPlayer($player);
         } else {
-            $this->plugin->getProvider()->addPlayer($event->getPlayer());
+            $provider->addPlayer($player);
         }
+        $provider->getPlayer($player->getName())->setOnline(true);
     }
     
     public function onPlayerQuit(PlayerQuitEvent $event) {
