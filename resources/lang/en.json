@@ -61,6 +61,10 @@
             "description": "Display information about a faction.",
             "header": "%s"
         },
+        "list": {
+            "description": "List all factions on the server.",
+            "header": "Faction list"
+        },
         "tag": {
             "description": "Change your faction tag.",
             "success": "%s <i>changed the tag for %s <i>to: %s."

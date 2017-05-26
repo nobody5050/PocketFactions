@@ -147,6 +147,10 @@ class JSONProvider implements Provider {
             }
         }
     }
+    
+    public function getFactions() {
+        return $this->factions;
+    }
 
     public function createFaction(Faction $faction, array $data, bool $save = false) {
         $this->factionData = new Config($this->getFile($faction->getId()), Config::JSON);
