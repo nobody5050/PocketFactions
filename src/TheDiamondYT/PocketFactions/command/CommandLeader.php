@@ -22,7 +22,7 @@ use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IPlayer;
-use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 
 class CommandLeader extends FCommand {
 
@@ -45,7 +45,7 @@ class CommandLeader extends FCommand {
             $this->msg($sender, $this->plugin->translate("player.not-found"));
             return;
         }
-        if($target->getRole() === Role::LEADER) {
+        if($target->getRole() === RoleUtil::get("Leader")) {
             $this->msg($sender, $this->plugin->translate("player.already-leader"));
             return;
         }

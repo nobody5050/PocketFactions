@@ -21,9 +21,9 @@ namespace TheDiamondYT\PocketFactions\entity;
 use pocketmine\utils\UUID;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\util\RelationUtil;
 use TheDiamondYT\PocketFactions\util\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**

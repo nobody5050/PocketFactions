@@ -25,9 +25,9 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\IPlayer;
-use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\util\TextUtil;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 use TheDiamondYT\PocketFactions\event\FactionCreateEvent;
 
 class CommandCreate extends FCommand {
@@ -82,12 +82,12 @@ class CommandCreate extends FCommand {
         ]));
         $faction->create();
         
-        $fme->setRole(Role::get("Leader"));
+        $fme->setRole(RoleUtil::get("Leader"));
         $fme->setFaction($faction);
         
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             $player->sendMessage($this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)]));
-            
+        }    
         $this->msg($this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
         
         if($this->cfg["faction"]["logFactionCreate"] === true)

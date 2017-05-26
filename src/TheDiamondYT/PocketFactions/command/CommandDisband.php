@@ -23,7 +23,6 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IPlayer;
-use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
@@ -63,13 +62,15 @@ class CommandDisband extends FCommand {
             }
         }
         
-        foreach($faction->getOnlinePlayers() as $player)
+        foreach($faction->getPlayers() as $player) {
             $player->setFaction($this->plugin->getFaction("Wilderness"));
+        }
         
         $faction->disband();
 
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) 
+        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
             $player->sendMessage($this->plugin->translate("commands.disband.success", [$fme->describeTo($player), $fme->getColorTo($player) . $faction->getTag()]));
+        }
         
         if($this->cfg["faction"]["logFactionDisband"] === true) 
             PF::log(TF::GRAY . $sender->getName() . " disbanded the faction " . $faction->getName());

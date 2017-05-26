@@ -22,10 +22,10 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
-use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
 use TheDiamondYT\PocketFactions\util\RelationUtil;
 use TheDiamondYT\PocketFactions\util\RelationParticipator;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
@@ -53,6 +53,7 @@ class FPlayer implements IPlayer, RelationParticipator {
     
     private $online = false;
     
+    // TODO: change IPlayer to IFPlayer
     public function __construct(PF $plugin, \pocketmine\IPlayer $player, array $data) {
         $this->plugin = $plugin;
         $this->player = $player;
@@ -116,9 +117,9 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return string
      */
     public function getPrefix(): string { 
-        if($this->getRole() === Role::get("Leader")) {
+        if($this->getRole() === RoleUtil::get("Leader")) {
             return "**";
-        } elseif($this->getRole() === Role::get("Moderator")) {
+        } elseif($this->getRole() === RoleUtil::get("Moderator")) {
             return "*";
         } else {
             return "";
@@ -187,7 +188,7 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @param int 
      */
     public function setRole(int $role) {
-        //if(!Role::exists($role))
+        //if(!RoleUtil::exists($role))
         //    throw new \Exception("Tried to set role for {$this->getName()} to $role, but role doesnt exist.");
         
         $this->data["faction"]["role"] = $role;
@@ -223,22 +224,24 @@ class FPlayer implements IPlayer, RelationParticipator {
      * @return bool
      */
     public function isLeader(): bool {
-        return $this->getRole() === Role::get("Leader");
+        return $this->getRole() === RoleUtil::get("Leader");
     }
     
     /**
-     * Sets the players faction;
+     * Sets the players faction.
      *
      * @param Faction 
      */
     public function setFaction(Faction $faction) { 
         if($this->faction !== null) {
             $this->leaveFaction();
-        }    
-        $faction->addPlayer($this); 
-        $this->faction = $faction;    
-        $this->data["faction"]["id"] = $faction->getId();
-        $this->update();
+        }
+        if(!$faction->isPermanent()) {    
+            $faction->addPlayer($this); 
+            $this->faction = $faction;    
+            $this->data["faction"]["id"] = $faction->getId();
+            $this->update();
+        }
     }
     
     /**

@@ -25,8 +25,8 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IPlayer;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
-use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 
 class CommandChat extends FCommand {
 

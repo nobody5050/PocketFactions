@@ -31,8 +31,7 @@ use TheDiamondYT\PocketFactions\provider\SQLiteProvider;
 use TheDiamondYT\PocketFactions\command\FCommandManager;
 use TheDiamondYT\PocketFactions\listener\FPlayerListener;
 use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\struct\Relation;
-use TheDiamondYT\PocketFactions\struct\Role;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
 class PF extends PluginBase {
@@ -113,7 +112,7 @@ class PF extends PluginBase {
 	    $this->checkFactions();
 	    $this->provider->loadPlayers();
 	    
-	    Role::init(); // Initialize faction roles
+	    RoleUtil::init(); // Initialize faction roles
 	    
 	    self::log($this->translate("console.data-loaded", [
 	        round(microtime(true) - START_TIME, 2), 

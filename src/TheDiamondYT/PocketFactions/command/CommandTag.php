@@ -22,7 +22,6 @@ use pocketmine\command\CommandSender;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IPlayer;
-use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\Relation;
 
 class CommandTag extends FCommand {
