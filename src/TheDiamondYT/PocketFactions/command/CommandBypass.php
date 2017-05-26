@@ -32,8 +32,13 @@ class CommandBypass extends FCommand {
 
     public function __construct(PF $plugin) {
         parent::__construct($plugin, "bypass", $plugin->translate("commands.bypass.description"));
-        
-        $this->senderMustBePlayer = true;
+    }
+    
+    public function getRequirements(): array {
+        return [
+            "player",
+            "operator"
+        ];
     }
 
     public function perform(IPlayer $fme, array $args) {

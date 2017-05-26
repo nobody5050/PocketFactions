@@ -266,9 +266,9 @@ class PF extends PluginBase {
 	 */
 	public function translate(string $text, array $params = []) {
 	    if($this->language->getNested($text)) {
-	        if(!empty($params)) 
+	        if(!empty($params)) {
 	            return vsprintf($this->language->getNested($text), $params);
-	      
+	        }
 	        return $this->language->getNested($text);
 	    }
 	}
