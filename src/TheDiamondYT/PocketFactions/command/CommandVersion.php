@@ -24,6 +24,16 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IMember;
 
+/**
+ * How to easily edit this plugin, and give yourself credit while
+ * still keeping credit for me.
+ *
+ *   1. Edit the `plugin.yml` and add `authors: ["YourName"]`
+ *   2. Edit the `plugin.yml` and change `website` to your GitHub repo
+ *   3. Done!
+ *
+ * Now you have credit for modifications, and i retain credit for the original plugin.
+ */
 class CommandVersion extends FCommand {
 
     public function __construct(PF $plugin) {
@@ -36,7 +46,18 @@ class CommandVersion extends FCommand {
 
     public function perform(IMember $fme, array $args) {
         $this->msg($this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
-        $this->msg(TF::GOLD . "https://github.com/TheDiamondYT1/PocketFactions");
-        $this->msg(TF::DARK_PURPLE . "By Luke (TheDiamondYT)");
+        $this->msg(TF::GOLD . $this->plugin->getDescription()->getWebsite());
+        $this->msg(TF::LIGHT_PURPLE . "By Luke (TheDiamondYT)"); 
+            
+        if(count($authors = $this->plugin->getDescription()->getAuthors()) > 1) {
+            $list = "";
+            foreach($authors as $author) {
+                if($author !== "TheDiamondYT") {
+                    $list .= "$author ";
+                }
+            }
+            $this->msg("");
+            $this->msg($this->plugin->translate("commands.version.modified", [$list]));
+        }
     }
 }

@@ -42,7 +42,7 @@ class JSONProvider implements Provider {
 
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
-        
+                
         @mkdir($plugin->getDataFolder() . "factions");
         @mkdir($plugin->getDataFolder() . "players");
     }
@@ -76,6 +76,7 @@ class JSONProvider implements Provider {
                      $this->plugin->getServer()->getOfflinePlayer($players["name"]), 
                      $players
                  );
+                 //$player->setFaction($this->getFactionById($players["faction"]["id"]));
                  $this->players[$player->getName()] = $player;
              }
          }
@@ -148,6 +149,15 @@ class JSONProvider implements Provider {
         foreach($this->factions as $facs) {
             if($facs->getTag() === $tag) {
                 return $this->factions[$facs->getId()];
+            }
+        }
+    }
+    
+    // TODO: make better 
+    public function getFactionById(string $id) {
+        foreach($this->factions as $facs) {
+            if($facs->getId() === $id) {
+                return $this->factions[$id];
             }
         }
     }

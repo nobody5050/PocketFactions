@@ -8,7 +8,8 @@
        "no-faction": "<i>You are not in a faction.",
        "only-leader": "<i>You must be leader to do this.",
        "already-leader": "<i>That player is already leader.",
-       "has-faction": "<i>You must leave your current faction first."
+       "has-faction": "<i>You must leave your current faction first.",
+       "not-in-faction": "<i>%s is not a member of your faction."
     },
     "faction": {
         "permanent": "<i>Your faction is permanent and cannot be disbanded.",
@@ -26,7 +27,7 @@
         "only-player": "<e>You must execute this command in-game",
         "bypass": {
             "description": "Toggle admin bypass mode.",
-            "success": "<i>You have %s <i>admin bypass mode.",
+            "success": "<i>You have <h>%s <i>admin bypass mode.",
             "fail": "<e>You don't have permission to enable admin bypass mode."
         },
         "chat": {
@@ -55,7 +56,8 @@
             "success": "%s <i>changed the faction to <h>%s"
         },
         "leader": {
-            "description": "Promote a player to faction leader."
+            "description": "Promote a player to faction leader.",
+            "success": "%s gave %s the leadership of your faction."
         },
         "reload": {
             "description": "Reload the config and faction data from disk.",
@@ -79,7 +81,8 @@
         },
         "version": {
             "description": "Display the version of PocketFactions you are running.",
-            "success": "<i>You are running %s."
+            "success": "<i>You are running %s.",
+            "modified": "<i>Modified by %s."
         }
     }
 }

@@ -42,15 +42,25 @@ class CommandLeader extends FCommand {
         $target = $this->plugin->getPlayer($this->plugin->getServer()->getPlayer($args[0]));
         
         if($target === null) {
-            $this->msg($sender, $this->plugin->translate("player.not-found"));
+            $this->msg($this->plugin->translate("player.not-found"));
+            return;
+        }
+        if($target->getFaction() !== $fme->getFaction()) {
+            $this->msg($this->plugin->translate("player.not-in-faction"));
             return;
         }
         if($target->getRole() === RoleUtil::get("Leader")) {
-            $this->msg($sender, $this->plugin->translate("player.already-leader"));
+            $this->msg($this->plugin->translate("player.already-leader"));
             return;
         }
-        
+                
         $fme->getFaction()->setLeader($target);
-        $this->msg($target, "You were promoted to faction leader"); // TODO: translation and better message
+        
+        foreach($fme->getFaction()->getOnlinePlayers() as $player) {
+            $player->sendMessage($this->plugin->translate("commands.leader.success", [
+                $fme->describeTo($player, true),
+                $target->describeTo($player)
+            ])); 
+        }
     }
 }

@@ -42,14 +42,9 @@ class CommandBypass extends FCommand {
     }
 
     public function perform(IMember $fme, array $args) {
-        if($fme->isAdminBypassing()) {
-            $status = "disabled";
-            $value = false;
-        } else {
-            $status = "enabled";
-            $value = true;
-        }
-        $fme->setAdminBypassing($value);
-        $this->msg($this->plugin->translate("commands.bypass.success", [$status]));
+        $bypassing = $fme->isAdminBypassing() ? "disabled" : "enabled";
+
+        $fme->setAdminBypassing(!$fme->isAdminBypassing());
+        $this->msg($this->plugin->translate("commands.bypass.success", [$bypassing]));
     }
 }

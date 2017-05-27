@@ -46,7 +46,6 @@ class CommandTitle extends FCommand {
             return;
         }
         
-        $target   
         $fme->setTitle(implode(" ", array_slice($args)));
         $fme->getFaction()->sendMessage($this->plugin->translate("commands.title.success", [
             $fme->describeTo($player),
