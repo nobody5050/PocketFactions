@@ -19,38 +19,35 @@
 namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
-use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IMember;
-use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
 
-class CommandTitle extends FCommand {
+class CommandOpen extends FCommand {
 
     public function __construct(PF $plugin) {
-        parent::__construct($plugin, "title", "Change a players title");
-        $this->addRequiredArgument("title"); 
+        parent::__construct($plugin, "open", $plugin->translate("commands.open.description"));
     }
     
     public function getRequirements(): array {
         return [
             "player",
-            "faction"
+            "leader"
         ];
     }
 
-    public function perform(IMember $fme, array $args) {
-        if(empty($args)) {
-            $this->msg($this->getUsage());
-            return;
-        }
+    public function perform(IMember $fme, array $args) {        
+        $faction = $fme->getFaction();
+        $open = $faction->isOpen() ? "closed" : "open";
         
-        $target   
-        $fme->setTitle(implode(" ", array_slice($args)));
-        $fme->getFaction()->sendMessage($this->plugin->translate("commands.title.success", [
-            $fme->describeTo($player),
-            $fme->describeTo($player)
-        ]));
+        $faction->setOpen(!$faction->isOpen());
+        
+        foreach($faction->getOnlinePlayers() as $player) {
+            $player->sendMessage($this->plugin->translate("commands.open.success", [
+                $fme->describeTo($player, true),
+                $open
+            ]));
+        }
     }
 }

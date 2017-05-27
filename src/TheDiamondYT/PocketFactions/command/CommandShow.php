@@ -52,9 +52,9 @@ class CommandShow extends FCommand {
         }    
         $this->msg(TextUtil::titleize($this->plugin->translate("commands.show.header", [$fme->getColorTo($faction) . $faction->getTag()])));
         
-        $this->addLine("Created", $faction->getCreationTime());
         $this->addLine("Description", $faction->getDescription());
-        $this->addLine("Joining", $faction->isOpen() ? "no invitation needed" : "invitation is required");
+        $this->addLine("Created", $faction->getCreationTime());
+        $this->addLine("Open", $faction->isOpen() ? TF::GREEN . "Yes" . "<i>, no invitation needed" : TF::RED . "No" . "<i>, invitation is required");
         
         if(!empty($onlinePlayers = $faction->getOnlinePlayers())) {
             $members = ""; // TODO: tidy up

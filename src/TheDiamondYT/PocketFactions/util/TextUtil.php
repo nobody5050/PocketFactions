@@ -48,15 +48,16 @@ class TextUtil {
         
         $difference = time() - $time;
         
-        for($i = 0; $difference >= $lengths[$i] && $i < count($lengths) - 1; $i++) 
+        for($i = 0; $difference >= $lengths[$i] && $i < count($lengths) - 1; $i++) {
             $difference /= $lengths[$i];
+        }
         
         $difference = round($difference);
         
-        if($difference !== 1) 
+        if($difference !== 1) {
             $periods[$i] .= "s";
-        
-        return TF::DARK_AQUA . $difference . TF::LIGHT_PURPLE . " " . $periods[$i] . TF::AQUA . " ago";
+        }
+        return TF::LIGHT_PURPLE . $difference . TF::AQUA . " " . $periods[$i] . " ago";
     }
     
     /**
@@ -66,9 +67,9 @@ class TextUtil {
      * @return bool
      */
     public static function alphanum(string $text) {
-        if(function_exists("ctype_alnum")) 
+        if(function_exists("ctype_alnum")) {
             return ctype_alnum($text);
-                  
+        }          
         return preg_match("/^[a-z0-9]+$/i", $text) > 0;
     }
  
@@ -83,7 +84,9 @@ class TextUtil {
             "<i>" => TF::YELLOW, //info
             "<info>" => TF::YELLOW,
             "<e>" => TF::RED, //error
-            "<error>"=> TF::RED,
+            "<error>" => TF::RED,
+            "<h>" => TF::LIGHT_PURPLE, //highlight
+            "<highlight" => TF::LIGHT_PURPLE
         ];
         	
 		foreach($colours as $code => $colour) {

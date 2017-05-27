@@ -26,8 +26,8 @@
         "only-player": "<e>You must execute this command in-game",
         "bypass": {
             "description": "Toggle admin bypass mode.",
-            "success": "<i>You have %s §eadmin bypass mode.",
-            "fail": "<i>You don't have permission to enable admin bypass mode."
+            "success": "<i>You have %s <i>admin bypass mode.",
+            "fail": "<e>You don't have permission to enable admin bypass mode."
         },
         "chat": {
             "description": "Change your chat mode.",
@@ -50,6 +50,10 @@
             "description": "Show help for faction commands.",
             "header": "§2Faction Help (%s/%s)"
         },
+        "open": {
+            "description": "Change faction joining state",
+            "success": "%s <i>changed the faction to <h>%s"
+        },
         "leader": {
             "description": "Promote a player to faction leader."
         },
@@ -63,11 +67,15 @@
         },
         "list": {
             "description": "List all factions on the server.",
-            "header": "Faction list"
+            "header": "§2Faction List"
         },
         "tag": {
             "description": "Change your faction tag.",
             "success": "%s <i>changed the tag for %s <i>to: %s."
+        },
+        "title": {
+            "description": "Change a players title.",
+            "success": "%s <i>changed a title: %s."
         },
         "version": {
             "description": "Display the version of PocketFactions you are running.",

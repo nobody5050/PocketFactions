@@ -30,12 +30,12 @@ class RelationUtil {
     const FACTION = 3;
     
     public static function describeThatToMe(RelationParticipator $me, RelationParticipator $that, bool $ucfirst = false): string {
-        if($myFaction = self::getFaction($me) === null)
+        if($myFaction = self::getFaction($me) === null) {
             return "error";     
-            
-        if($thatFaction = self::getFaction($that) === null)
+        }    
+        if($thatFaction = self::getFaction($that) === null) {
             return "error";   
-         
+        } 
         if($that instanceof Faction) {   
             if($myFaction === $thatFaction) {
                 $ret = "your faction";
@@ -53,19 +53,20 @@ class RelationUtil {
             }
         }
            
-        if($ucfirst === true)
+        if($ucfirst === true) {
             $ret = ucfirst($ret);
-            
-        return "" . self::getColorToMe($that, $me) . $ret . TF::YELLOW;
+        }    
+        return " " . self::getColorToMe($that, $me) . $ret . TF::YELLOW;
     }
     
     public static function getFaction(RelationParticipator $object) {
-        if($object instanceof Faction)
+        if($object instanceof Faction) {
             return $object;
-            
+        }    
         if($object instanceof FPlayer) {
-            if($object->hasFaction())
+            if($object->hasFaction()) {
                 return $object->getFaction();
+            }
         }
         return null;
     }
@@ -90,6 +91,6 @@ class RelationUtil {
                 return TF::WHITE;
             }
         }
-        return $colour;
+        return TF::WHITE;
     }
 }
