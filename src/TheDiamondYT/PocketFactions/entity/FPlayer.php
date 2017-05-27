@@ -154,6 +154,7 @@ class FPlayer implements IMember, RelationParticipator {
         return $this->getPrefix() . ($this->getTitle() === "" ?? $this->getPrefix()) . " " . $this->getName();
     }
     
+    
     /**
      * Return the players prefix and name.
      *
@@ -169,6 +170,13 @@ class FPlayer implements IMember, RelationParticipator {
     
     public function getColorTo(RelationParticipator $that) {
         return RelationUtil::getColorToMe($that, $this);
+    }
+    
+    public function hasPermission(string $key): bool {
+        if($this->getPlayer()->hasPermission("pocketfactions.$key")) {
+            return true;
+        }
+        return false;
     }
     
     /**

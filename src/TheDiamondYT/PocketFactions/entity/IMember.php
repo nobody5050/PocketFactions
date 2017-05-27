@@ -84,6 +84,8 @@ interface IMember {
     
     public function getColorTo(RelationParticipator $that);
     
+    public function hasPermission(string $key): bool;
+    
     /**
      * Sends a message to the player.
      *

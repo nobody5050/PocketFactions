@@ -118,6 +118,10 @@ class FConsole implements IMember, RelationParticipator {
         return TF::WHITE;
     }
     
+    public function hasPermission(string $key): bool {
+        return true;
+    }
+    
     /**
      * Sends a message to the player.
      *

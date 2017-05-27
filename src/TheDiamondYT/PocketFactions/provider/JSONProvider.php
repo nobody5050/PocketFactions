@@ -57,23 +57,27 @@ class JSONProvider implements Provider {
     }
     
     public function loadFactions() {
-        $directory = $this->plugin->getDataFolder() . "factions/";
-        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $factions) {
-            $factions = json_decode($factions);
-            //$faction = new Faction($factions["id"], $factions);
-            //$this->factions[$faction->getId()] = $faction;
+        $directory = $this->plugin->getDataFolder() . "factions/"; 
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $file => $factions) {
+            if(pathinfo($file)["extension"] === "json") {
+                $factions = json_decode(file_get_contents($factions), true);        
+                $faction = new Faction($factions["id"], $factions);
+                $this->factions[$faction->getId()] = $faction; 
+            }
         }
     }
     
     public function loadPlayers() {
          $directory = $this->plugin->getDataFolder() . "players/";
-         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $players) {
-             $players = json_decode($players);
-             /*$player = new FPlayer($this->plugin, 
-                 $this->plugin->getServer()->getOfflinePlayer($players["name"]), 
-                 $players
-             );
-             $this->players[$player->getName()] = $player;*/
+         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $file => $players) {
+             if(pathinfo($file)["extension"] === "json") {
+                 $players = json_decode(file_get_contents($players), true);
+                 $player = new FPlayer($this->plugin, 
+                     $this->plugin->getServer()->getOfflinePlayer($players["name"]), 
+                     $players
+                 );
+                 $this->players[$player->getName()] = $player;
+             }
          }
     }
     

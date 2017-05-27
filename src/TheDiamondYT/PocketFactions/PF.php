@@ -73,7 +73,7 @@ class PF extends PluginBase {
      * @param string
      */
     public static function log($text) {
-        Server::getInstance()->getLogger()->info(self::PREFIX . TF::YELLOW . "$text");
+        Server::getInstance()->getLogger()->info(self::PREFIX . TF::YELLOW . $text);
     }
     
     /**
@@ -82,7 +82,7 @@ class PF extends PluginBase {
      * @param string
      */
     public static function logError($text) {
-        Server::getInstance()->getLogger()->critical(self::PREFIX . TF::RED . "$text");
+        Server::getInstance()->getLogger()->critical(self::PREFIX . TF::RED . $text);
     }
     
     public function onLoad() {
@@ -227,6 +227,15 @@ class PF extends PluginBase {
 	}
 	
 	/**
+	 * Returns all loaded factions.
+	 *
+	 * @return Faction[]
+	 */
+	public function getFactions() {
+	    return $this->provider->getFactions();
+	}
+	
+	/**
 	 * Returns an faction player.
 	 *
 	 * @param Player|string
@@ -262,6 +271,8 @@ class PF extends PluginBase {
 	 * @param string 
 	 * @param array 
 	 * @return string
+	 *
+	 * @internal
 	 */
 	public function translate(string $text, array $params = []) {
 	    if($this->language->getNested($text)) {
