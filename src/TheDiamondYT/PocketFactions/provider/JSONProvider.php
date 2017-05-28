@@ -23,6 +23,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Role;
@@ -170,8 +171,7 @@ class JSONProvider implements Provider {
         $this->factionData = new Config($this->getFile($faction->getId()), Config::JSON);
         $this->factionData->setAll($data);
               
-        $configSave = $this->plugin->getConfig()["faction"]["saveOnCreate"];
-        if($save === true or $configSave === true) {
+        if($save === true or Configuration::saveFactionOnCreate()) {
             $this->factionData->save();
         }    
         $this->factions[$faction->getId()] = $faction; 

@@ -44,9 +44,6 @@ class PF extends PluginBase {
     /* @var Config */
     private $language;
     
-    /* @var array */
-    private $cfg;
-    
     /* @var FCommandManager */
     private $fcommandManager;
     
@@ -90,10 +87,10 @@ class PF extends PluginBase {
         
         // Create config
         $this->saveResource("config.yml");
-        $this->cfg = yaml_parse_file($this->getDataFolder() . "config.yml");
+        Configuration::init(yaml_parse_file($this->getDataFolder() . "config.yml"));
 
         // Load language
-        $this->language = new Config($this->getFile() . "resources/lang/" . $this->cfg["language"] . ".json", Config::JSON);
+        $this->language = new Config($this->getFile() . "resources/lang/" . Configuration::getLanguage() . ".json", Config::JSON);
     }
 
 	public function onEnable() {
@@ -163,7 +160,7 @@ class PF extends PluginBase {
 	 */
 	public function setProvider($provider = null) {
 	    if(!$provider) {
-	        switch($this->cfg["provider"]) { 
+	        switch(Configuration::getProvider()) { 
 	            case "sqlite":
 	                if(!extension_loaded("sqlite3")) {
 	                    self::log("Unable to find the SQLite3 exstension. Setting data provider to json.");
@@ -208,12 +205,10 @@ class PF extends PluginBase {
 	}
 	
 	/**
-	 * Returns the config as an array.
-	 *
-	 * @return array
+	 * @deprecated
 	 */
 	public function getConfig(): array {
-	    return $this->cfg;
+	    return [];
 	}
 
     /**

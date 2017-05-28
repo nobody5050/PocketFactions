@@ -23,6 +23,7 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\struct\Relation;
@@ -64,7 +65,7 @@ class CommandCreate extends FCommand {
             $this->msg($this->plugin->translate("faction.tag.invalid-chars"));
             return;
         }
-        if(strlen($args[0]) > $this->cfg["faction"]["maxTagLength"]) {
+        if(strlen($args[0]) > Configuration::getMaxTagLength()) {
             $this->msg($this->plugin->translate("faction.tag.too-long")); 
             return;
         }
@@ -86,11 +87,11 @@ class CommandCreate extends FCommand {
         $fme->setFaction($faction);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            $player->sendMessage($this->plugin->translate("commands.create.success", [$fme->describeTo($player, true), $fme->getColorTo($player) . $faction->getTag($player)]));
+            $player->sendMessage($this->plugin->translate("commands.create.success", [
+                $fme->describeTo($player, true), 
+                $fme->getColorTo($player) . $faction->getTag($player)
+            ]));
         }    
         $this->msg($this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
-        
-        if($this->cfg["faction"]["logFactionCreate"] === true)
-            PF::log(TF::GRAY . $sender->getName() . " created a new faction " . $ev->getTag()); // Not even gonna do translation
     }
 }

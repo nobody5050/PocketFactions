@@ -22,6 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\util\TextUtil;
 
@@ -52,7 +53,7 @@ class CommandHelp extends FCommand {
             $commands[$command->getName()] = $command;
         
         ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
-        $commands = array_chunk($commands, $this->cfg["factions"]["helpPageLength"] ?? 5);
+        $commands = array_chunk($commands, Configuration::getHelpPageLength());
         $page = (int) min(count($commands), $page);
         
         $this->msg(TextUtil::titleize($this->plugin->translate("commands.help.header", [$page, count($commands)])));

@@ -21,6 +21,7 @@ namespace TheDiamondYT\PocketFactions\util;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Configuration;
 
 class TextUtil {
 
@@ -31,7 +32,7 @@ class TextUtil {
      * @return string
      */
     public static function titleize(string $text): string {
-        $length = PF::getInstance()->getConfig()["faction"]["headerLength"] ?? 7;
+        $length = Configuration::getHeaderLength();
         return TF::GOLD . str_repeat("_", $length) . ".[ " . TF::WHITE . $text . TF::RESET . TF::GOLD . " ]." . str_repeat("_", $length);
     }
     
