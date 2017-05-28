@@ -41,7 +41,7 @@ but retain credit for me.
 
 1. Edit the [plugin.yml](plugin.yml) and add `authors: ["YourName"]`  
 2. Edit the [plugin.yml](plugin.yml) and change `website` to your GitHub repo  
-3. Done!  
+3. Done! Your names and website will automatically be displayed in `/f version`  
 
 Of course `YourName` is your name.
   
