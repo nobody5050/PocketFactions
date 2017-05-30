@@ -43,7 +43,7 @@ class FEntityListener implements Listener {
                 return;
             }
                               
-            $fme = $this->plugin->getPlayer($entity;
+            $fme = $this->plugin->getPlayer($entity);
             $fhim = $this->plugin->getPlayer($damager); 
             
             if($fme->getFaction() === $fhim->getFaction() && Configuration::isSameFactionPvPAllowed()) {             
