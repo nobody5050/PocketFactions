@@ -51,7 +51,7 @@ class Configuration {
      *
      * @return bool
      */
-    public static function saveFactonOnCreate(): bool {
+    public static function saveFactionOnCreate(): bool {
         return self::$factionData["saveOnCreate"] ?? true;
     }
     
