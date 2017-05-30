@@ -24,10 +24,10 @@ class RoleUtil {
     private static $roles = [];
     
     public static function init() {
-        self::addRole(0, "Member");
-        self::addRole(1, "Moderator");
-        self::addRole(2, "Administrator");
-        self::addRole(3, "Leader");
+        self::addRole(100, "Member");
+        self::addRole(200, "Moderator");
+        self::addRole(300, "Administrator");
+        self::addRole(400, "Leader");
     }
     
     /**
@@ -44,30 +44,63 @@ class RoleUtil {
      * Returns a role from a name.
      *
      * @param string
-     * @return int|null
+     * @return int
      */
-    public static function get(string $name) {
+    public static function get(string $name): int {
         foreach(self::$roles as $id => $role) {
-            if(strtolower($role) === strtolower($name))
+            if(strtolower($role) === strtolower($name)) {
                 return $id;
+            }
         }
-        return null;
+        return self::UNKNOWN;
+    }
+
+    /**
+     * Returns a role name from id.
+     *
+     * @param int $roleId
+     * @return string 
+     */
+    public static function getName(int $roleId): string {
+        foreach(self::$roles as $id => $role) {
+            if($roleId == $id) {
+                return $role;
+            }
+        } 
+        return "Unknown";
+    }
+
+    /**
+     * @param int $roleId
+     * @return int
+     */
+    public static function getNext(int $roleId): int {
+        foreach(self::$roles as $id => $role) {
+            // TODO
+        }
+        return $roleId;
+    }
+
+    /**
+     * Returns the highest registered role.
+     *
+     * @return int
+     */
+    public static function getHighestRole(): int {
+        return max(array_keys($this->roles));
     }
     
     /**
      * Returns true if a role exists.
      *
-     * @param string|int
+     * @param int
      * @return bool
      */
-    public static function exists($role): bool {
+    public static function exists($roleId): bool {
         foreach(self::$roles as $id => $role) {
-            if(is_int($role) && $id === $role) {
+            if($roleId === $role) {
                 return true;
             } 
-            elseif(strtolower($role) === strtolower($name)) {
-                return true;
-            }
         }
         return false;
     }

@@ -50,6 +50,7 @@ class FCommandManager extends PluginCommand {
         $this->registerCommand(new CommandDisband($this->plugin));
         $this->registerCommand(new CommandHelp($this->plugin));
         $this->registerCommand(new CommandLeader($this->plugin));
+        $this->registerCommand(new CommandPromote($this->plugin));
         $this->registerCommand(new CommandShow($this->plugin));
         $this->registerCommand(new CommandOpen($this->plugin));
         $this->registerCommand(new CommandList($this->plugin));

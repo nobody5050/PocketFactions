@@ -59,6 +59,11 @@
             "description": "Promote a player to faction leader.",
             "success": "%s gave %s the leadership of your faction."
         },
+        "promote": {
+            "description": "Promote a player to the next faction role.",
+            "highest-role": "%s <i>is already the highest role.",
+            "success": "5s <i>promoted %s <i>to <h>%s."
+        },
         "reload": {
             "description": "Reload the config and faction data from disk.",
             "success": "<i>Reloaded config and faction data, took %ss (%sms)."
