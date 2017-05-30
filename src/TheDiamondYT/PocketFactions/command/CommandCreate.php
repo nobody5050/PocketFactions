@@ -46,7 +46,7 @@ class CommandCreate extends FCommand {
 
     public function perform(IMember $fme, array $args) {
         if(count($args) >= 2 or count($args) === 0) {
-            //$this->msg(TF::RED . $this->getUsage());
+            $this->msg(TF::RED . $this->getUsage());
             return;
         }
         if($fme->hasFaction() && !$fme->getFaction()->isPermanent()) {
@@ -69,8 +69,13 @@ class CommandCreate extends FCommand {
             $this->msg($this->plugin->translate("faction.tag.too-long")); 
             return;
         }
+        if(strlen($args[0]) < Configuration::getMinTagLength()) {
+            $this->msg($this->plugin->translate("faction.tag.too-short"));
+            return;
+        }
         
-        //$sender->getServer()->getPluginManager()->callEvent($ev = new FactionCreateEvent($this->plugin, $sender, $args[0]));
+        //$ev = new FactionCreateEvent($this->plugin, $fme, $args[0]);
+        //$ev->call();
         
         //if($ev->isCancelled()) 
         //    return;
