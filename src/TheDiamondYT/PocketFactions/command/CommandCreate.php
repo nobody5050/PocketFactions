@@ -97,6 +97,7 @@ class CommandCreate extends FCommand {
                 $fme->getColorTo($player) . $faction->getTag($player)
             ]));
         }    
+
         $this->msg($this->plugin->translate("commands.create.after", [($this->getCommand("desc"))->getUsage()]));
     }
 }

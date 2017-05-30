@@ -88,4 +88,11 @@ class Configuration {
     public static function getHeaderLength(): int {
         return self::$factionData["headerLength"] ?? 7;
     }
+
+    /**
+     * @return bool
+     */
+    public static function isSameFactionPvPAllowed(): bool {
+        return self::$factionData["sameFactionPvP"] ?? true;
+    }
 }

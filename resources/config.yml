@@ -37,4 +37,7 @@ faction:
   
   # The length of the title headers
   headerLength: 7
+  
+  # Are members of the same faction allowed to hurt one another?
+  sameFactionPvP: true
 

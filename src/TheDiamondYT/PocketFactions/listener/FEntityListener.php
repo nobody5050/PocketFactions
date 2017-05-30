@@ -24,6 +24,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Configuration;
 
 class FEntityListener implements Listener {
 
@@ -35,14 +36,19 @@ class FEntityListener implements Listener {
     
     public function onEntityDamage(EntityDamageEvent $event) {
         if($event instanceof EntityDamageByEntityEvent) {
-            if(!$event->getEntity() instanceof Player or !$event->getDamager() instanceof Player)
+            $entity = $event->getEntity();
+            $damager = $event->getDamager();
+
+            if(!$entity instanceof Player or !$damager instanceof Player) {
                 return;
+            }
                               
-            $fme = $this->plugin->getPlayer($event->getEntity());
-            $fhim = $this->plugin->getPlayer($event->getDamager()); 
+            $fme = $this->plugin->getPlayer($entity;
+            $fhim = $this->plugin->getPlayer($damager); 
             
-            if($fme->getFaction() === $fhim->getFaction())              
+            if($fme->getFaction() === $fhim->getFaction() && Configuration::isSameFactionPvPAllowed()) {             
                 $event->setCancelled(true);
+            }
         }
     }
     

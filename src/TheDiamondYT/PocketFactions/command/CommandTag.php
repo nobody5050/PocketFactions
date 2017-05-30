@@ -56,7 +56,11 @@ class CommandTag extends FCommand {
         $fme->getFaction()->setTag($args[0]);
         
         foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            $player->sendMessage($this->plugin->translate("commands.tag.success", [$fme->describeTo($player, true), $fme->describeTo($player->getFaction()), $args[0]]));
+            $player->sendMessage($this->plugin->translate("commands.tag.success", [
+                $fme->describeTo($player, true),
+                $fme->describeTo($player->getFaction()),
+                $args[0]
+            ]));
         }
     }
 }

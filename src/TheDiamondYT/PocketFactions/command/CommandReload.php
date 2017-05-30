@@ -41,6 +41,9 @@ class CommandReload extends FCommand {
         $this->plugin->getProvider()->loadFactions();
         $this->plugin->getProvider()->loadPlayers();
         $this->plugin->getProvider()->save();
-        $this->msg($this->plugin->translate("commands.reload.success", [round(microtime(true) - $startTime, 2), round(microtime(true) * 1000) - round($startTime * 1000)]));
+        $this->msg($this->plugin->translate("commands.reload.success", [
+            round(microtime(true) - $startTime, 2), 
+            round(microtime(true) * 1000) - round($startTime * 1000)
+        ]));
     }
 }
