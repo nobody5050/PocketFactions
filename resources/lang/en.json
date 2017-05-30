@@ -62,7 +62,7 @@
         "promote": {
             "description": "Promote a player to the next faction role.",
             "highest-role": "%s <i>is already the highest role.",
-            "success": "5s <i>promoted %s <i>to <h>%s."
+            "success": "%s <i>promoted %s <i>to <h>%s."
         },
         "reload": {
             "description": "Reload the config and faction data from disk.",
