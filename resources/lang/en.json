@@ -86,7 +86,10 @@
         },
         "version": {
             "description": "Display the version of PocketFactions you are running.",
-            "success": "<i>You are running %s.",
+            "header": "§2Plugin Information",
+            "name": "<h>Name: §b%s",
+            "version": "<h>Version: §b%s",
+            "website": "<h>Website: §b%s",
             "modified": "<i>Modified by %s."
         }
     }

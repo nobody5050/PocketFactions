@@ -23,6 +23,7 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IMember;
+use TheDiamondYT\PocketFactions\util\TextUtil;
 
 /**
  * How to easily edit this plugin, and give yourself credit while
@@ -45,10 +46,12 @@ class CommandVersion extends FCommand {
     }
 
     public function perform(IMember $fme, array $args) {
-        $this->msg($this->plugin->translate("commands.version.success", [$this->plugin->getDescription()->getFullName()]));
-        $this->msg(TF::GOLD . $this->plugin->getDescription()->getWebsite());
-        $this->msg(TF::LIGHT_PURPLE . "By Luke (TheDiamondYT)"); 
-            
+        $this->msg(TextUtil::titleize($this->plugin->translate("commands.version.header")));
+        $this->msg($this->plugin->translate("commands.version.name", [$this->plugin->getDescription()->getName()]));
+        $this->msg($this->plugin->translate("commands.version.version", [$this->plugin->getDescription()->getVersion()]));
+        $this->msg($this->plugin->translate("commands.version.website", [$this->plugin->getDescription()->getWebsite()]));
+        $this->msg("<h>Author: " . TF::AQUA . "TheDiamondYT");
+
         if(count($authors = $this->plugin->getDescription()->getAuthors()) > 1) {
             $list = "";
             foreach($authors as $author) {
