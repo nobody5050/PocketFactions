@@ -61,7 +61,7 @@ class Configuration {
      * @return int
      */
     public static function getHelpPageLength(): int {
-        return self::$factionData["helpPageLength"] ?? 5;
+        return self::$data["helpPageLength"] ?? 5;
     }
     
     /**
@@ -70,7 +70,7 @@ class Configuration {
      * @return int
      */
     public static function getMaxTagLength(): int {
-        return self::$factionData["maxTagLength"] ?? 10;
+        return self::$factionData["tag"]["max-length"] ?? 10;
     }
     
     /**
@@ -79,20 +79,27 @@ class Configuration {
      * @return int
      */
     public static function getMinTagLength(): int {
-        return self::$factionData["minTagLength"] ?? 3;
+        return self::$factionData["tag"]["min-length"] ?? 3;
     }
     
     /**
      * @return int
      */
     public static function getHeaderLength(): int {
-        return self::$factionData["headerLength"] ?? 7;
+        return self::$data["headerLength"] ?? 7;
     }
 
     /**
      * @return bool
      */
     public static function isSameFactionPvPAllowed(): bool {
-        return self::$factionData["sameFactionPvP"] ?? true;
+        return self::$factionData["pvp"]["same-faction"] ?? true;
+    }
+    
+    /**
+     * @return string
+     */
+    public static function getFactionChatFormat(): string {
+        return self::$factionData["chat-format"]["faction"];
     }
 }

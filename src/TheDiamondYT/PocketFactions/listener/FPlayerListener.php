@@ -25,9 +25,11 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\entity\FPlayer;
 use TheDiamondYT\PocketFactions\struct\Relation;
 use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
+use TheDiamondYT\PocketFactions\Configuration;
 
 class FPlayerListener implements Listener {
 
@@ -40,6 +42,7 @@ class FPlayerListener implements Listener {
     public function onPlayerJoin(PlayerJoinEvent $event) {
         $player = $event->getPlayer();
         $provider = $this->plugin->getProvider();
+        
         if(!$provider->playerExists($player)) {
             $provider->addNewPlayer($player);
         } else {
@@ -53,20 +56,24 @@ class FPlayerListener implements Listener {
     }
     
     public function onPlayerChat(PlayerChatEvent $event) {
-        $fme = $this->plugin->getPlayer($event->getPlayer());
-        foreach($this->plugin->getProvider()->getOnlinePlayers() as $player) {
-            switch($fme->getChatMode()) {
-                case ChatMode::PUBLIC:
-                    return;
-                case ChatMode::FACTION:
-                    $colour = TF::GREEN;
-                    $title = true;
-                    break;
-                case ChatMode::ALLY:
-                    $colour = TF::LIGHT_PURPLE;
-                    $title = false;
-            }
+        $player = $event->getPlayer();
+        $fme = $this->plugin->getPlayer($player->getName());
+        $faction = $fme->getFaction();
+        
+        switch($fme->getChatMode()) {
+            case ChatMode::FACTION:
+                $message = vsprintf(Configuration::getFactionChatFormat(), [
+                    $this->getName($fme),
+                    $event->getMessage()
+                ]);
+                
+                $faction->sendMessage($message);        
+                $event->setCancelled(true);
+                break;
         }
-        $event->setFormat($colour . $title ? $fme->getNameAndTitle() : " " . $colour . $fme->getNameAndPrefix() . " " . $event->getMessage());
+    }
+    
+    private function getName(FPlayer $player): string {
+        return $player->getPrefix() . $player->getName();
     }
 }

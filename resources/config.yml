@@ -21,23 +21,29 @@ language: en
 # - json
 provider: json
 
+# The length of /f help
+helpPageLength: 5
+
+# The length of the title headers
+headerLength: 7
+
 # Faction preferences
 faction:
   # Save faction to file when created
   saveOnCreate: true
   
-  # The length of /f help
-  helpPageLength: 5
+  tag:
+    # The maximum length for faction tags
+    max-length: 10
+    # The minimum length for faction tags
+    min-length: 3
   
-  # The maximum length for faction tags
-  maxTagLength: 10
+  pvp:
+    # Are members of the same faction allowed to hurt one another?
+    same-faction: true
+    
+  chat-format:
+    faction: "§a%s: §f%s"
   
-  # The minimum length for faction tags
-  minTagLength: 3
   
-  # The length of the title headers
-  headerLength: 7
-  
-  # Are members of the same faction allowed to hurt one another?
-  sameFactionPvP: true
 

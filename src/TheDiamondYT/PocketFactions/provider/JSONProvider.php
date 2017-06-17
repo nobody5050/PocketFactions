@@ -103,7 +103,7 @@ class JSONProvider implements Provider {
        }    
        foreach($this->players as $p) {
            if($player === $p->getName()) {
-               return $this->players[$p->getName()];
+               return $p;
            }
        }
     }

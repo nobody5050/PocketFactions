@@ -156,17 +156,12 @@ class PF extends PluginBase {
 	/**
 	 * Sets the data provider for the plugin.
 	 *
-	 * @param Provider
+	 * @param Provider $provider
 	 */
 	public function setProvider($provider = null) {
 	    if(!$provider) {
 	        switch(Configuration::getProvider()) { 
 	            case "sqlite":
-	                if(!extension_loaded("sqlite3")) {
-	                    self::log("Unable to find the SQLite3 exstension. Setting data provider to json.");
-	                    $this->provider = new YamlProvider($this);
-	                    return;
-	                }
 	                $provider = new SQLiteProvider($this);
 	                break;
 	            case "json":

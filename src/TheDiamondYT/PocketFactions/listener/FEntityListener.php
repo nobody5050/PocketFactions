@@ -46,6 +46,7 @@ class FEntityListener implements Listener {
             $fme = $this->plugin->getPlayer($entity);
             $fhim = $this->plugin->getPlayer($damager); 
             
+            // Same Faction PvP
             if($fme->getFaction() === $fhim->getFaction() && Configuration::isSameFactionPvPAllowed()) {             
                 $event->setCancelled(true);
             }
