@@ -33,6 +33,7 @@ use TheDiamondYT\PocketFactions\listener\FPlayerListener;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\util\RoleUtil;
 use TheDiamondYT\PocketFactions\util\TextUtil;
+use TheDiamondYT\PocketFactions\subscription\SubscriptionManager;
 
 class PF extends PluginBase {
 
@@ -46,6 +47,8 @@ class PF extends PluginBase {
     
     /* @var FCommandManager */
     private $fcommandManager;
+    
+    private $subscriptonManager;
     
     /* @var PF */
     public static $instance = null;
@@ -102,6 +105,8 @@ class PF extends PluginBase {
 	    $this->fcommandManager = new FCommandManager($this); // This takes a long time!
 	    $this->getServer()->getCommandMap()->register(FCommandManager::class, $this->fcommandManager);
 	    $this->getServer()->getPluginManager()->registerEvents(new FPlayerListener($this), $this);
+	    
+	    $this->subscriptionManager = new SubscriptionManager($this);
 
         // Load faction data (this is in a specific order)
 	    $this->setProvider(); 
@@ -188,6 +193,13 @@ class PF extends PluginBase {
 	 */
 	public function getCommandManager(): FCommandManager {
 	    return $this->fcommandManager;
+	}
+	
+	/**
+	 * @return SubscriptionManager
+	 */
+	public function getSubscriptionManager(): SubscriptionManager {
+	    return $this->subscriptionManager;
 	}
 	
 	/**

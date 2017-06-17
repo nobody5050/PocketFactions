@@ -86,6 +86,10 @@
             "description": "Change a players title.",
             "success": "%s <i>changed a title: %s."
         },
+        "subscribe": {
+            "description": "Subscribe to a channel.",
+            "not-found": "<i>Invalid channel."
+        },
         "version": {
             "description": "Display the version of PocketFactions you are running.",
             "header": "§2Plugin Information",

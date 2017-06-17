@@ -117,6 +117,10 @@ class JSONProvider implements Provider {
                 "id" => Faction::WILDERNESS_ID,
                 "role" => Role::get("Member"),
                 "title" => ""
+            ],
+            "subscriptions" => [
+                "faction_chat",
+                "ally_chat"
             ]
         ]);
         if($save) {

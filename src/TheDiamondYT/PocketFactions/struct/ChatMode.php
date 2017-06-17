@@ -28,7 +28,7 @@ class ChatMode {
     public static function init() {
         self::addMode(0, "Public");
         self::addMode(1, "Faction");
-        self::addMode(2, "Ally");
+        self::addMode(2, "Alliance");
     }
     
     /**

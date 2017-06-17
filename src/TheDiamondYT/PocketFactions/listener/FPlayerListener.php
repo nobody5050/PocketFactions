@@ -31,9 +31,13 @@ use TheDiamondYT\PocketFactions\struct\Role;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
 use TheDiamondYT\PocketFactions\Configuration;
 
+
+use TheDiamondYT\PocketFactions\subscription\chat\AllianceChat;
+use TheDiamondYT\PocketFactions\subscription\chat\FactionChat;
+
 class FPlayerListener implements Listener {
 
-    private $plugin;
+    private $plugin, $sub;
     
     public function __construct(PF $plugin) {
         $this->plugin = $plugin;
@@ -59,7 +63,7 @@ class FPlayerListener implements Listener {
         $player = $event->getPlayer();
         $fme = $this->plugin->getPlayer($player->getName());
         $faction = $fme->getFaction();
-        
+
         switch($fme->getChatMode()) {
             case ChatMode::FACTION:
                 $message = vsprintf(Configuration::getFactionChatFormat(), [
@@ -67,7 +71,11 @@ class FPlayerListener implements Listener {
                     $event->getMessage()
                 ]);
                 
-                $faction->sendMessage($message);        
+                foreach($faction->getOnlinePlayers() as $player) {
+                    if($player->isSubscribed(FactionChat::class)) {
+                        $player->sendMessage($message);
+                    }
+                }
                 $event->setCancelled(true);
                 break;
             case ChatMode::ALLY:
@@ -75,9 +83,13 @@ class FPlayerListener implements Listener {
                     $faction->getTag(),
                     $this->getName($fme),
                     $event->getMessage()
-                ]);
+                ]);          
                 
-                $faction->sendMessage($message);
+                foreach($faction->getOnlinePlayers() as $player) {
+                    if($player->isSubscribed(AllianceChat::class)) {
+                        $player->sendMessage($message);
+                    }
+                }
                 $event->setCancelled(true);
                 break;
         }

@@ -235,6 +235,21 @@ class FPlayer implements IMember, RelationParticipator {
         return $this->getRole() === RoleUtil::get("Leader");
     }
     
+    public function getSubscriptions(): array {
+        return $this->data["subscriptions"];
+    }
+    
+    public function subscribe(string $sub, $callback = null) {
+        $sub = new $sub;   
+        $this->plugin->getSubscriptionManager()->subscribe($this, $sub, $callback);
+        $this->data["subscriptions"][] = $sub->getName();
+    }
+    
+    public function isSubscribed(string $sub): bool {
+        $sub = new $sub;  
+        return isset($this->data["subscriptions"][$sub->getName()]);
+    }
+    
     /**
      * Sets the players faction.
      *
