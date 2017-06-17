@@ -70,9 +70,25 @@ class FPlayerListener implements Listener {
                 $faction->sendMessage($message);        
                 $event->setCancelled(true);
                 break;
+            case ChatMode::ALLY:
+                $message = vsprintf(Configuration::getAllyChatFormat(), [
+                    $faction->getTag(),
+                    $this->getName($fme),
+                    $event->getMessage()
+                ]);
+                
+                $faction->sendMessage($message);
+                $event->setCancelled(true);
+                break;
         }
     }
     
+    /**
+     * Returns the players name with their role prefix.
+     *
+     * @param  FPlayer $player
+     * @return string
+     */
     private function getName(FPlayer $player): string {
         return $player->getPrefix() . $player->getName();
     }

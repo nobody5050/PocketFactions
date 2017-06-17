@@ -26,6 +26,7 @@ use TheDiamondYT\PocketFactions\PF;
 use TheDiamondYT\PocketFactions\entity\IMember;
 use TheDiamondYT\PocketFactions\struct\ChatMode;
 use TheDiamondYT\PocketFactions\struct\Relation;
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\util\RoleUtil;
 
 class CommandChat extends FCommand {
@@ -50,24 +51,30 @@ class CommandChat extends FCommand {
         switch($args[0]) {
             case "p":
             case "public":
-                $mode = ChatMode::PUBLIC;
-                $text = "Public chat mode.";
+                $fme->setChatMode(ChatMode::PUBLIC);
+                $this->msg("Public chat mode.");
                 break;
             case "f":
             case "faction":
-                $mode = ChatMode::FACTION;
-                $text = "Faction only chat mode.";
+                if(!Configuration::isFactionChatEnabled()) {
+                    $this->msg($this->plugin->translate("commands.chat.faction-disabled"));
+                    return;
+                }
+                $fme->setChatMode(ChatMode::FACTION);
+                $this->msg("Faction only chat mode.");
                 break;
             case "a":
             case "ally":
-                $mode = ChatMode::ALLY;
-                $text = "Alliance only chat mode.";
+                if(!Configuration::isAllyChatEnabled()) {
+                    $this->msg($this->plugin->translate("commands.chat.ally-disabled"));
+                    return;
+                }
+                $fme->setChatMode(ChatMode::ALLY);
+                $this->msg("Alliance only chat mode.");
                 break;
             default:
-                $this->msg($this->plugin->translate("chat.fail"));
+                $this->msg($this->plugin->translate("commands.chat.fail"));
                 return;
         }
-        $fme->setChatMode($mode);
-        $this->msg($text);
     }
 }

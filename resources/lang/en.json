@@ -32,7 +32,9 @@
         },
         "chat": {
             "description": "Change your chat mode.",
-            "fail": "<i>Unrecognized chat mode. Please enter 'p', 'f', or 'a'."
+            "fail": "<i>Unrecognized chat mode. Please enter 'p', 'f', or 'a'.",
+            "faction-disabled": "<i>Faction chat mode is disabled on this server.",
+            "ally-disabled": "<i>Alliance chat mode is disabled on this server."
         },
         "create": {
             "description": "Create a new faction.",

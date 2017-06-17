@@ -43,7 +43,13 @@ faction:
     same-faction: true
     
   chat-format:
-    faction: "§a%s: §f%s"
+    faction: 
+      enable: true
+      format: "§a%s: §f%s"
+      
+    ally:
+      enable: true
+      format: "§d%s %s: §f%s"
   
   
 

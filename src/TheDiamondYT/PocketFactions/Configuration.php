@@ -97,9 +97,30 @@ class Configuration {
     }
     
     /**
+     * @return bool
+     */
+    public static function isFactionChatEnabled(): bool {
+        return self::$factionData["chat-format"]["faction"]["enable"] ?? true;
+    }
+    
+    /**
      * @return string
      */
     public static function getFactionChatFormat(): string {
-        return self::$factionData["chat-format"]["faction"];
+        return self::$factionData["chat-format"]["faction"]["format"];
+    }
+    
+    /**
+     * @return bool
+     */
+    public static function isAllyChatEnabled(): bool {
+        return self::$factionData["chat-format"]["ally"]["enable"] ?? true;
+    }
+    
+    /**
+     * @return string
+     */
+    public static function getAllyChatFormat(): string {
+        return self::$factionData["chat-format"]["ally"]["format"];
     }
 }
