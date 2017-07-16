@@ -12,38 +12,11 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.     
  *
- * PocketFactions v1.0.1 by Luke (TheDiamondYT)
- * All rights reserved.           
+ * PocketFactions by Luke (TheDiamondYT)
+ * All rights reserved.
  */
-namespace TheDiamondYT\PocketFactions\event;
+namespace TheDiamondYT\PocketFactions\relation;
 
-use pocketmine\event\Cancellable;
-use pocketmine\event\plugin\PluginEvent;
-use pocketmine\Player;
-use TheDiamondYT\PocketFactions\PF;
+interface RelationParticipator {
 
-class FactionCreateEvent extends PluginEvent implements Cancellable {
-
-	private $creator;
-	private $tag;
-
-	public function __construct(PF $plugin, Player $creator, string $tag) {
-		parent::__construct($plugin);
-		$this->creator = $creator;
-		$this->tag = $tag;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTag(): string {
-		return $this->tag;
-	}
-
-	/**
-	 * @param string
-	 */
-	public function setTag(string $tag) {
-		$this->tag = $tag;
-	}
 }

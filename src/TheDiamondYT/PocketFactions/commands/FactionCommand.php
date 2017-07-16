@@ -15,28 +15,37 @@
  * PocketFactions by Luke (TheDiamondYT)
  * All rights reserved.
  */
-namespace TheDiamondYT\PocketFactions\provider;
+namespace TheDiamondYT\PocketFactions\commands;
 
 use TheDiamondYT\PocketFactions\Loader;
-use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\entity\FactionMember;
 
-class JSONProvider extends BaseProvider {
-
-	public function __construct(Loader $loader) {
+abstract class FactionCommand {
+	/** @var string */
+	private $name;
+	
+	/** @var Loader */
+	private $loader;
+	
+	public function __construct(Loader $loader, string $name) {
 		$this->loader = $loader;
-		@mkdir($loader->getDataFolder() . "players/");
-		@mkdir($loader->getDataFolder() . "factions/");
+		$this->name = $name;
+	} 
+	
+	public function getName(): string {
+		return $this->name;
 	}
-
-	public function load() {
-		$dataPath = $this->getLoader()->getDataFolder();
-		foreach(glob($dataPath . "factions/*.json") as $file) {
-			$data = json_decode(file_get_contents($file), true);
-			$this->factions[$data["id"]] = new Faction($data["id"], $data);
-		}
-		foreach(glob($dataPath . "players/*.json") as $file) {
-			$data = json_decode(file_get_contents($file), true);
-		}
+	
+	// TODO: better solution
+	public abstract function getArguments(): string;
+	
+	public function getUsage(): string {
+		return $this->getLoader()->translate("templates.command-usage", [
+			$this->getName(),
+			$this->getArguments()
+		]);
+	}
+	
+	protected function getLoader(): Loader {
+		return $this->loader;
 	}
 }

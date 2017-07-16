@@ -1,0 +1,24 @@
+---
+# This file is full of colour codes to make the messages look pretty ;)
+# Sorry if it's not the readable, learn the Minecraft colour codes!
+
+console:
+    # 1: seconds
+    # 2: milliseconds
+    data-loaded: '§eLoaded language and faction data, took §6%ss §d(§6%sms§d)§e!'
+
+templates:
+    # 1: command name
+    # 2: command args
+    command-usage: '§b%s/f %s §3%s'
+
+commands:
+    # 1: command name
+    not-found: '§bStrange argument §3"§e%s§3"§b. §6Did you type it wrong?'
+
+    create:
+      # 1: faction name
+      success: '%s §ecreated a new faction %s.'
+      # 1: /f desc usage
+      after: '§eYou should now %s.'
+...

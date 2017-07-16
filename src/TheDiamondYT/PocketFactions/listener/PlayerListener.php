@@ -12,29 +12,32 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.     
  *
- * PocketFactions v1.0.1 by Luke (TheDiamondYT)
- * All rights reserved.                         
+ * PocketFactions by Luke (TheDiamondYT)
+ * All rights reserved.
  */
+namespace TheDiamondYT\PocketFactions\listener;
 
-namespace TheDiamondYT\PocketFactions\command;
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerJoinEvent;
 
-use TheDiamondYT\PocketFactions\entity\IMember;
-use TheDiamondYT\PocketFactions\PF;
+use TheDiamondYT\PocketFactions\Loader;
 
-class CommandSave extends FCommand {
-
-	public function __construct(PF $plugin) {
-		parent::__construct($plugin, "save", "Save config");
+class PlayerListener implements Listener {
+	/** @var Loader */
+	private $loader;
+	
+	public function __construct(Loader $loader) {
+		$this->loader = $loader;
 	}
-
-	public function getRequirements(): array {
-		return [
-			"operator"
-		];
+	
+	public function onJoin(PlayerJoinEvent $ev) {d
+		$player = $ev->getPlayer();
+		if(!$this->getLoader()->playerExists($player)) {
+			$this->getLoader()->getProvider()->addPlayer($player);
+		}
 	}
-
-	public function perform(IMember $fme, array $args) {
-		$this->plugin->getProvider()->save();
-		$this->msg("Saved config"); // TODO: translation
+	
+	public function getLoader(): Loader {
+		return $this->loader;
 	}
 }

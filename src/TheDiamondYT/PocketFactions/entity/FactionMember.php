@@ -15,28 +15,38 @@
  * PocketFactions by Luke (TheDiamondYT)
  * All rights reserved.
  */
-namespace TheDiamondYT\PocketFactions\provider;
+namespace TheDiamondYT\PocketFactions\entity;
 
-use TheDiamondYT\PocketFactions\Loader;
-use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\entity\FactionMember;
+use pocketmine\IPlayer;
 
-class JSONProvider extends BaseProvider {
-
-	public function __construct(Loader $loader) {
-		$this->loader = $loader;
-		@mkdir($loader->getDataFolder() . "players/");
-		@mkdir($loader->getDataFolder() . "factions/");
+class FactionMember implements IMember {
+	/** @var array */
+	private $data;
+	
+	/** @var IPlayer */
+	private $player;
+	
+	public function __construct(IPlayer $player, array $data) {
+		$this->player = $player;
+		$this->data = $data;
 	}
-
-	public function load() {
-		$dataPath = $this->getLoader()->getDataFolder();
-		foreach(glob($dataPath . "factions/*.json") as $file) {
-			$data = json_decode(file_get_contents($file), true);
-			$this->factions[$data["id"]] = new Faction($data["id"], $data);
+	
+	public function getName(): string {
+		return $this->data["name"];
+	}
+	
+	public function getTitle(): string {
+		return $this->data["title"] ?? "";
+	}
+	
+	public function setTitle(string $title) {
+		$this->data["title"] = $title;
+	}
+	
+	public function hasPermission(string $permission): bool {
+		if($this->player->hasPermission("pf." . $permission)) {
+			return true;
 		}
-		foreach(glob($dataPath . "players/*.json") as $file) {
-			$data = json_decode(file_get_contents($file), true);
-		}
+		return false;
 	}
 }

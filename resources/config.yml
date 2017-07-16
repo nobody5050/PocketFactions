@@ -1,55 +1,9 @@
-#  _____           _        _   ______         _   _                 
-# |  __ \         | |      | | |  ____|       | | (_)                
-# | |__) |__   ___| | _____| |_| |__ __ _  ___| |_ _  ___  _ __  ___ 
-# |  ___/ _ \ / __| |/ / _ \ __|  __/ _` |/ __| __| |/ _ \| '_ \/ __|
-# | |  | (_) | (__|   <  __/ |_| | | (_| | (__| |_| | (_) | | | \__ \
-# |_|   \___/ \___|_|\_\___|\__|_|  \__,_|\___|\__|_|\___/|_| |_|___/
-# 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.     
-#
-# PocketFactions v1.0.1 by Luke (TheDiamondYT)
-# All rights reserved.                     
-       
-# Language used by the plugin
-# - en
+# The language used by the plugin
 language: en
-      
-# Data provider that will be used for storing faction data
-# - json
+
+# The data provider used by the plugin
+# : json
 provider: json
 
-# The length of /f help
-helpPageLength: 5
-
-# The length of the title headers
-headerLength: 7
-
-# Faction preferences
-faction:
-  # Save faction to file when created
-  saveOnCreate: true
-  
-  tag:
-    # The maximum length for faction tags
-    max-length: 10
-    # The minimum length for faction tags
-    min-length: 3
-  
-  pvp:
-    # Are members of the same faction allowed to hurt one another?
-    same-faction: true
-    
-  chat-format:
-    faction: 
-      enable: true
-      format: "§a%s: §f%s"
-      
-    ally:
-      enable: true
-      format: "§d%s %s: §f%s"
-  
-  
-
+# Only to be shown in console messages
+prefix: '§d[§bPocketFactions§d]'

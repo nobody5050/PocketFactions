@@ -12,33 +12,25 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.     
  *
- * PocketFactions v1.0.1 by Luke (TheDiamondYT)
- * All rights reserved.                         
+ * PocketFactions by Luke (TheDiamondYT)
+ * All rights reserved.
  */
+namespace TheDiamondYT\PocketFactions\commands;
 
-namespace TheDiamondYT\PocketFactions\command;
-
+use TheDiamondYT\PocketFactions\Loader;
 use TheDiamondYT\PocketFactions\entity\IMember;
-use TheDiamondYT\PocketFactions\PF;
 
-class CommandLeave extends FCommand {
+class CommandCreate extends FactionCommand {
 
-	public function __construct(PF $plugin) {
-		parent::__construct($plugin, "leave", $plugin->translate("commands.leave.description"));
+	public function __construct(Loader $loader) {
+		parent::__construct($loader, "create");
 	}
+	
+	public function perform(IMember $sender, array $args) {
 
-	public function getRequirements(): array {
-		return [
-			"player",
-			"faction"
-		];
 	}
-
-	public function perform(IMember $fme, array $args) {
-		/*if(!$fme->getFaction()->isPermanent() && $fme->isLeader()) {
-			$this->msg($sender, $this->plugin->translate("player.give-leader"));
-			return;
-		}*/
-		$fme->leaveFaction();
+	
+	public function getArguments(): string {
+		return "<faction name>";
 	}
 }

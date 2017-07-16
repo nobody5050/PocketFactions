@@ -18,25 +18,28 @@
 namespace TheDiamondYT\PocketFactions\provider;
 
 use TheDiamondYT\PocketFactions\Loader;
-use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\entity\FactionMember;
 
-class JSONProvider extends BaseProvider {
-
-	public function __construct(Loader $loader) {
-		$this->loader = $loader;
-		@mkdir($loader->getDataFolder() . "players/");
-		@mkdir($loader->getDataFolder() . "factions/");
+abstract class BaseProvider {
+	/** @var Loader */
+	protected $loader;
+	
+	/** @var FactionMember[] */
+	protected $players = [];
+	
+	/** @var Faction[] */
+	protected $factions = [];
+	
+	public abstract function load();
+	
+	public function getPlayers(): array {
+		return $this->players;
 	}
-
-	public function load() {
-		$dataPath = $this->getLoader()->getDataFolder();
-		foreach(glob($dataPath . "factions/*.json") as $file) {
-			$data = json_decode(file_get_contents($file), true);
-			$this->factions[$data["id"]] = new Faction($data["id"], $data);
-		}
-		foreach(glob($dataPath . "players/*.json") as $file) {
-			$data = json_decode(file_get_contents($file), true);
-		}
+	
+	public function getFactions(): array {
+		return $this->factions;
+	}
+	
+	public function getLoader(): Loader {
+		return $this->loader;
 	}
 }

@@ -1,4 +1,3 @@
-<?php
 /*
  *  _____           _        _   ______         _   _                 
  * |  __ \         | |      | | |  ____|       | | (_)                
@@ -15,15 +14,5 @@
  * PocketFactions by Luke (TheDiamondYT)
  * All rights reserved.
  */
-namespace TheDiamondYT\PocketFactions\entity;
-
-use pocketmine\Player;
-
-use TheDiamondYT\PocketFactions\relation\RelationParticipator;
-
-interface IMember extends RelationParticipator {
-	public function getName(): string;
-	public function getTitle(): string;
-	public function setTitle(string $title);
-	public function hasPermission(string $permission): bool;
-}
+ 
+ [spoiler=spoiler][spoiler=are you sure?][spoiler=no][spoiler=i said no!][spoiler=i wont give in][spoiler=im serious...][spoiler=ok maybe i will][spoiler=NOT! Ha!][spoiler=i got you there][spoiler=ok seriously][spoiler=donald trump is bad][spoiler=ok i give in][spoiler=here it is]reported him[/spoiler]
