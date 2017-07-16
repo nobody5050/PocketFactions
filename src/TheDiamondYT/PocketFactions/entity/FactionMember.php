@@ -23,16 +23,27 @@ class FactionMember implements IMember {
 	/** @var array */
 	private $data;
 	
-	/** @var IPlayer */
+	/** @var Player */
 	private $player;
 	
-	public function __construct(IPlayer $player, array $data) {
-		$this->player = $player;
+	public function __construct(array $data) {
 		$this->data = $data;
+	}
+	
+	public function setPlayer(Player $player) {
+		$this->player = $player;
 	}
 	
 	public function getName(): string {
 		return $this->data["name"];
+	}
+	
+	public function isOnline(): bool {
+		return $this->data["online"] ?? false;
+	}
+	
+	public function setOnline(bool $online) {
+		$this->data["online"] = $online;
 	}
 	
 	public function getTitle(): string {

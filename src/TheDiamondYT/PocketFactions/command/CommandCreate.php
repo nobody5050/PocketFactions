@@ -15,37 +15,22 @@
  * PocketFactions by Luke (TheDiamondYT)
  * All rights reserved.
  */
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use TheDiamondYT\PocketFactions\Loader;
+use TheDiamondYT\PocketFactions\entity\IMember;
 
-abstract class FactionCommand {
-	/** @var string */
-	private $name;
-	
-	/** @var Loader */
-	private $loader;
-	
-	public function __construct(Loader $loader, string $name) {
-		$this->loader = $loader;
-		$this->name = $name;
-	} 
-	
-	public function getName(): string {
-		return $this->name;
+class CommandCreate extends FactionCommand {
+
+	public function __construct(Loader $loader) {
+		parent::__construct($loader, "create");
 	}
 	
-	// TODO: better solution
-	public abstract function getArguments(): string;
-	
-	public function getUsage(): string {
-		return $this->getLoader()->translate("templates.command-usage", [
-			$this->getName(),
-			$this->getArguments()
-		]);
+	public function perform(IMember $sender, array $args) {
+
 	}
 	
-	protected function getLoader(): Loader {
-		return $this->loader;
+	public function getArguments(): string {
+		return "<faction name>";
 	}
 }

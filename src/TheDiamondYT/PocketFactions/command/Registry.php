@@ -15,7 +15,7 @@
  * PocketFactions by Luke (TheDiamondYT)
  * All rights reserved.
  */
-namespace TheDiamondYT\PocketFactions\commands;
+namespace TheDiamondYT\PocketFactions\command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -47,7 +47,7 @@ class Registry extends Command implements PluginIdentifiableCommand {
 				$sender->sendMessage($this->getLoader()->translate("commands.not-found", [$command]));
 				return true;
 			}
-			$command->perform($this->getLoader()->getFactionMember($sender->getName()), $args);
+			$command->perform($this->getLoader()->getPlayer($sender->getName()), $args);
 		} else {
 			
 		}

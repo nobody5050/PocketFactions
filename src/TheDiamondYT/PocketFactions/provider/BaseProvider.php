@@ -17,6 +17,8 @@
  */
 namespace TheDiamondYT\PocketFactions\provider;
 
+use pocketmine\Player;
+
 use TheDiamondYT\PocketFactions\Loader;
 
 abstract class BaseProvider {
@@ -37,6 +39,33 @@ abstract class BaseProvider {
 	
 	public function getFactions(): array {
 		return $this->factions;
+	}
+	
+	public function getPlayer($param) {
+		$name = $param instanceof Player ? $param->getName() : $param;
+		foreach($this->players as $player) {
+			if($player->getName() === $name) {
+				return $player;
+			}
+		}
+		return null;
+	}
+	
+	public function getFaction(string $tag) {
+		foreach($this->factions as $faction) {
+			if($faction->getTag() === $tag) {
+				return $faction;
+			}
+		}
+		return null;
+	}
+	
+	public function playerExists($param): bool {
+		return $this->getPlayer($param) !== null;
+	}
+	
+	public function factionExists(string $tag): bool {
+		return $this->getFaction($tag) !== null;
 	}
 	
 	public function getLoader(): Loader {

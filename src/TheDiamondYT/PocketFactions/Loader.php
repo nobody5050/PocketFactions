@@ -21,8 +21,9 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as TF;
 
-use TheDiamondYT\PocketFactions\commands\Registry as CommandRegistry;
+use TheDiamondYT\PocketFactions\command\Registry as CommandRegistry;
 use TheDiamondYT\PocketFactions\provider\JSONProvider;
+use TheDiamondYT\PocketFactions\listener\PlayerListener;
  
 class Loader extends PluginBase {
 	/** @var Loader */
@@ -54,6 +55,8 @@ class Loader extends PluginBase {
 		
 		$this->commandRegistry = new CommandRegistry($this);
 		$this->getServer()->getCommandMap()->register(CommandRegistry::class, $this->commandRegistry);
+		$this->getServer()->getPluginManager()->registerEvents(new PlayerListener($this), $this);
+		
 		$this->log($this->translate("console.data-loaded", [
 			round(microtime(true) - START_TIME, 2), 
 			round(microtime(true) * 1000) - round(START_TIME * 1000)
@@ -66,7 +69,11 @@ class Loader extends PluginBase {
 	}
 	
 	private function setProvider() {
-		$this->provider = new JSONProvider($this);
+		switch($this->getConfig()->get("provider", "json")) {
+			case "json":
+				$this->provider = new JSONProvider($this);
+				break;
+		}
 		$this->provider->load();
 	}
 	
@@ -74,8 +81,32 @@ class Loader extends PluginBase {
 		return $this->provider;
 	}
 	
-	public function getFactionMember(string $name) {
+	/**
+	 * @param Player|string $param
+	 */
+	public function getPlayer($param) {
+		return $this->getProvider()->getPlayer($param);
+	}
 	
+	/**
+	 * @param string $tag
+	 */
+	public function getFaction(string $tag) {
+		return $this->getProvider()->getFaction($tag);
+	}
+	
+	/**
+	 * @param Player|string $param
+	 */
+	public function playerExists($param): bool {
+		return $this->getProvider()->playerExists($param);
+	}
+	
+	/**
+	 * @param string $tag
+	 */
+	public function factionExists(string $tag): bool {
+		return $this->getProvider()->factionExists($tag);
 	}
 
 	public function translate(string $text, array $params = []): string {

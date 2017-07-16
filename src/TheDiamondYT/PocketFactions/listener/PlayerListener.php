@@ -30,11 +30,14 @@ class PlayerListener implements Listener {
 		$this->loader = $loader;
 	}
 	
-	public function onJoin(PlayerJoinEvent $ev) {d
+	public function onJoin(PlayerJoinEvent $ev) {
 		$player = $ev->getPlayer();
-		if(!$this->getLoader()->playerExists($player)) {
-			$this->getLoader()->getProvider()->addPlayer($player);
+		if($this->getLoader()->playerExists($player)) {
+			$this->getLoader()->getPlayer($player)->setOnline(true);
+		} else {
+			$this->getLoader()->getProvider()->addNewPlayer($player);
 		}
+		$this->getLoader()->getPlayer($player)->setPlayer($player);
 	}
 	
 	public function getLoader(): Loader {

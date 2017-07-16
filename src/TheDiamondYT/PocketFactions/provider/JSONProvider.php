@@ -17,6 +17,8 @@
  */
 namespace TheDiamondYT\PocketFactions\provider;
 
+use pocketmine\Player;
+
 use TheDiamondYT\PocketFactions\Loader;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FactionMember;
@@ -37,6 +39,19 @@ class JSONProvider extends BaseProvider {
 		}
 		foreach(glob($dataPath . "players/*.json") as $file) {
 			$data = json_decode(file_get_contents($file), true);
+			$this->players[$data["id"]] = new FactionMember($data);
 		}
+	}
+	
+	public function addNewPlayer(Player $player) {
+		$file = $this->getLoader()->getDataFolder() . "players/" . $player->getUniqueId() . ".json";
+		file_put_contents($file, json_encode([
+			"id" => $player->getUniqueId(),
+			"name" => $player->getName(),
+			"faction" => [
+				"id" => "wilderness",
+				"role" => 0 // TODO
+			]
+		]));
 	}
 }
