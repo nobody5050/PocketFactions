@@ -22,6 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
 
 use TheDiamondYT\PocketFactions\Loader;
+use TheDiamondYT\PocketFactions\entity\FactionConsole;
 
 class Registry extends Command implements PluginIdentifiableCommand {
 	/** @var FactionCommand[] */
@@ -36,6 +37,7 @@ class Registry extends Command implements PluginIdentifiableCommand {
 		$this->loader = $loader;
 		
 		$this->registerCommand(new CommandCreate($loader));
+		$this->registerCommand(new CommandHelp($loader));
 	}
 	
 	public function execute(CommandSender $sender, $label, array $args) {
@@ -47,7 +49,8 @@ class Registry extends Command implements PluginIdentifiableCommand {
 				$sender->sendMessage($this->getLoader()->translate("commands.not-found", [$command]));
 				return true;
 			}
-			$command->perform($this->getLoader()->getPlayer($sender->getName()), $args);
+			$player = $sender instanceof Player ? $this->getLoader()->getPlayer($sender->getName()) : new FactionConsole($sender);
+			$command->perform($player, $args);
 		} else {
 			
 		}

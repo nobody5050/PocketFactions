@@ -22,6 +22,7 @@ use TheDiamondYT\PocketFactions\Loader;
 abstract class FactionCommand {
 	/** @var string */
 	private $name;
+	private $description;
 	
 	/** @var Loader */
 	private $loader;
@@ -43,6 +44,10 @@ abstract class FactionCommand {
 			$this->getName(),
 			$this->getArguments()
 		]);
+	}
+	
+	public function getDescription(): string {
+		return $this->getLoader()->translate("commands." . $this->name . ".description") ?? $this->description ?? "no description available";
 	}
 	
 	protected function getLoader(): Loader {

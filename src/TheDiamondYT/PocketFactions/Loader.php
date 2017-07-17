@@ -81,6 +81,10 @@ class Loader extends PluginBase {
 		return $this->provider;
 	}
 	
+	public function getCommandRegistry(): CommandRegistry {
+		return $this->commandRegistry;
+	}
+	
 	/**
 	 * @param Player|string $param
 	 */
@@ -109,7 +113,7 @@ class Loader extends PluginBase {
 		return $this->getProvider()->factionExists($tag);
 	}
 
-	public function translate(string $text, array $params = []): string {
+	public function translate(string $text, array $params = []) {
 		if(!empty($params)) {
 			return vsprintf($this->language->getNested($text), $params);
 		}

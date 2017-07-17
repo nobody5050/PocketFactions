@@ -17,48 +17,42 @@
  */
 namespace TheDiamondYT\PocketFactions\entity;
 
-use pocketmine\Player;
+use pocketmine\command\ConsoleCommandSender;
 
-class Faction {
-	/** @var array */
-	private $data;
+// Used to allow executing commands from the console
+class FactionConsole implements IMember {
+	/** @var ConsoleCommandSender */
+	private $sender;
 	
-	/** @var string */
-	private $id;
-	
-	/** @var IMember */
-	private $leader;
-
-	public function __construct(string $id, array $data) {
-		$this->id = $id;
-		$this->data = $data;
+	public function __construct(ConsoleCommandSender $sender) {
+		$this->sender = $sender;
 	}
 	
-	public static function randomId(): string {
-		return UUID::fromRandom()->toString();
+	public function getName(): string {
+		return "Console";
 	}
 	
-	public function getId(): string {
-		return $this->id;
+	public function isOnline(): bool {
+		return true;
 	}
 	
-	public function getTag(): string {
-		return $this->data["tag"];
+	public function setOnline(bool $online) {
+		// no
 	}
 	
-	public function setTag(string $tag) {
-		$this->data["tag"] = $tag;
+	public function getTitle(): string {
+		return "";
 	}
 	
-	public function getDescription(): string {
-		return $this->data["description"];
+	public function setTitle(string $title) {
+		// no
 	}
 	
-	public function setDescription(string $value) {
-		$this->data["description"] = $value;
+	public function hasPermission(string $permission): bool {
+		return true;
 	}
 	
-	public function save() {
-		//Loader::getInstance()->getProvider()->saveAll();
+	public function sendMessage(string $text) {
+		$this->sender->sendMessage($text);
 	}
 }

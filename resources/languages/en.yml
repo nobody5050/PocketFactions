@@ -10,15 +10,30 @@ console:
 templates:
     # 1: command name
     # 2: command args
-    command-usage: '§b%s/f %s §3%s'
+    command-usage: '§b/f %s §3%s'
+    
+    # 1: command usage (see above)
+    # 2: command description
+    help-page: '%s §d: §e%s'
+    
+    # 1: header title
+    header: '§6______.[ %s §6].______'
 
 commands:
     # 1: command name
     not-found: '§bStrange argument §3"§e%s§3"§b. §6Did you type it wrong?'
 
     create:
-      # 1: faction name
-      success: '%s §ecreated a new faction %s.'
-      # 1: /f desc usage
-      after: '§eYou should now %s.'
+        description: 'Create a new faction.'
+        # 1: player name
+        # 2: faction name
+        success: '%s §ecreated a new faction %s.'
+        # 1: /f desc usage
+        after: '§eYou should now %s.'
+        
+    help:
+        description: 'List all Faction commands.'
+        # 1: current page
+        # 2: max pages
+        header-text: 'Faction Help (%s/%s)'
 ...

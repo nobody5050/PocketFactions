@@ -17,7 +17,7 @@
  */
 namespace TheDiamondYT\PocketFactions\entity;
 
-use pocketmine\IPlayer;
+use pocketmine\Player;
 
 class FactionMember implements IMember {
 	/** @var array */
@@ -59,5 +59,9 @@ class FactionMember implements IMember {
 			return true;
 		}
 		return false;
+	}
+	
+	public function sendMessage(string $text) {
+		$this->player->sendMessage($text);
 	}
 }

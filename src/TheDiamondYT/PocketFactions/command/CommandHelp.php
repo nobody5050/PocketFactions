@@ -18,28 +18,36 @@
 namespace TheDiamondYT\PocketFactions\command;
 
 use TheDiamondYT\PocketFactions\Loader;
-use TheDiamondYT\PocketFactions\entity\Faction;
-use TheDiamondYT\PocketFactions\entity\FactionMember;
 use TheDiamondYT\PocketFactions\entity\IMember;
 
-class CommandCreate extends FactionCommand {
+class CommandHelp extends FactionCommand {
 
 	public function __construct(Loader $loader) {
-		parent::__construct($loader, "create");
+		parent::__construct($loader, "help");
 	}
 	
 	public function perform(IMember $sender, array $args) {
-		if(!$sender instanceof FactionMember) {
-			return;
+		$page = ($args[0] ?? 1);
+		if($page < 1) {
+			$page = 1;
 		}
-		$faction = new Faction(Faction::randomId(), [
-			"tag" => $args[0],
-			"leader" => $sender->getName()
-		]);
-		//var_dump($faction->toString());
+		$commands = [];
+		foreach($this->getLoader()->getCommandRegistry()->getCommands() as $command) {
+			$commands[] = $command;
+		}
+		ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
+		$commands = array_chunk($commands, 5);
+		$page = (int) min(count($commands), $page);
+		
+		foreach($commands[$page - 1] as $command) {
+			$sender->sendMessage($this->getLoader()->translate("templates.help-page", [
+				$command->getUsage(),
+				$command->getDescription()
+			]));
+		}
 	}
 	
 	public function getArguments(): string {
-		return "<faction>";
+		return "[page]";
 	}
 }
