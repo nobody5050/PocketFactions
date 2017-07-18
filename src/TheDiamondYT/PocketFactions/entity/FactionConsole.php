@@ -19,6 +19,9 @@ namespace TheDiamondYT\PocketFactions\entity;
 
 use pocketmine\command\ConsoleCommandSender;
 
+use TheDiamondYT\PocketFactions\relation\Relation;
+use TheDiamondYT\PocketFactions\relation\RelationParticipator;
+
 // Used to allow executing commands from the console
 class FactionConsole implements IMember {
 	/** @var ConsoleCommandSender */
@@ -46,6 +49,14 @@ class FactionConsole implements IMember {
 	
 	public function setTitle(string $title) {
 		// no
+	}
+	
+	public function describeTo(RelationParticipator $object) {
+		return Relation::describeTo($this, $object);
+	}
+	
+	public function getColorTo(RelationParticipator $object) {
+		return Relation::getColorTo($this, $object);
 	}
 	
 	public function hasPermission(string $permission): bool {

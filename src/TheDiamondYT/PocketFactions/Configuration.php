@@ -1,3 +1,4 @@
+<?php
 /*
  *  _____           _        _   ______         _   _                 
  * |  __ \         | |      | | |  ____|       | | (_)                
@@ -14,3 +15,11 @@
  * PocketFactions by Luke (TheDiamondYT)
  * All rights reserved.
  */
+namespace TheDiamondYT\PocketFactions;
+
+class Configuration {
+
+	public static function get(string $key) {
+		return Loader::getInstance()->getConfig()->getNested($key);
+	}
+}

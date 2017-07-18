@@ -17,6 +17,7 @@
  */
 namespace TheDiamondYT\PocketFactions\command;
 
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\Loader;
 use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FactionMember;
@@ -30,13 +31,27 @@ class CommandCreate extends FactionCommand {
 	
 	public function perform(IMember $sender, array $args) {
 		if(!$sender instanceof FactionMember) {
-			return;
+			//return;
 		}
 		$faction = new Faction(Faction::randomId(), [
 			"tag" => $args[0],
 			"leader" => $sender->getName()
 		]);
-		//var_dump($faction->toString());
+		$faction->create();
+		
+		if(Configuration::get("faction.broadcast-create")) {
+			foreach($this->getLoader()->getPlayers() as $player) {
+				$player->sendMessage($this->getLoader()->translate("commands.create.success", [
+					$sender->describeTo($player),
+					$sender->getColorTo($player) . $faction->getTag()
+				]));
+			}
+		} else {
+			$sender->sendMessage($this->getLoader()->translate("commands.create.success", [
+				$sender->getColorTo($sender) . "You",
+				$sender->getColorTo($faction) . $faction->getTag()
+			]));
+		}
 	}
 	
 	public function getArguments(): string {

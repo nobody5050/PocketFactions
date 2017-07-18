@@ -18,6 +18,9 @@
 namespace TheDiamondYT\PocketFactions\entity;
 
 use pocketmine\Player;
+use pocketmine\utils\UUID;
+
+use TheDiamondYT\PocketFactions\Loader;
 
 class Faction {
 	/** @var array */
@@ -56,6 +59,10 @@ class Faction {
 	
 	public function setDescription(string $value) {
 		$this->data["description"] = $value;
+	}
+	
+	public function create() {
+		Loader::getInstance()->getProvider()->addNewFaction($this, $this->data);
 	}
 	
 	public function save() {

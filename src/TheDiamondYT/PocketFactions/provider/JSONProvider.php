@@ -45,7 +45,7 @@ class JSONProvider extends BaseProvider {
 	
 	public function addNewPlayer(Player $player) {
 		$file = $this->getLoader()->getDataFolder() . "players/" . $player->getUniqueId() . ".json";
-		file_put_contents($file, json_encode([
+		file_put_contents($file, json_encode($data = [
 			"id" => $player->getUniqueId(),
 			"name" => $player->getName(),
 			"faction" => [
@@ -53,5 +53,14 @@ class JSONProvider extends BaseProvider {
 				"role" => 0 // TODO
 			]
 		]));
+		$this->players[$player->getUniqueId()] = new FactionMember($data);
+	}
+	
+	public function addNewFaction(Faction $faction, array $data) {
+		$file = $this->getLoader()->getDataFolder() . "factions/" . $faction->getId() . ".json";
+		file_put_contents($file, json_encode(array_merge([
+			"id" => $faction->getId()
+		], $data)));
+		$this->factions[$faction->getId()] = $faction;
 	}
 }

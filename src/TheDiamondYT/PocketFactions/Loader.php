@@ -100,6 +100,13 @@ class Loader extends PluginBase {
 	}
 	
 	/**
+	 * @return FactionMember[]
+	 */
+	public function getPlayers(): array {
+		return $this->getProvider()->getPlayers();
+	}
+	
+	/**
 	 * @param Player|string $param
 	 */
 	public function playerExists($param): bool {

@@ -7,3 +7,17 @@ provider: json
 
 # Only to be shown in console messages
 prefix: '§d[§bPocketFactions§d]'
+
+faction:
+    default-factions:
+        wilderness:
+            # The ID of the Wilderness Faction. This is the name of the file that will
+            # be saved.
+            id: 'wilderness'
+            
+            # The colour of the Wilderness Faction name, when seen in /f show.
+            # Use Minecraft color codes without the leading §.
+            color: 'a'
+
+    # Broadcast Faction creation to the entire server.         
+    broadcast-create: true

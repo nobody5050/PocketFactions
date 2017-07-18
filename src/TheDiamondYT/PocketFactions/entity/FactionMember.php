@@ -19,6 +19,9 @@ namespace TheDiamondYT\PocketFactions\entity;
 
 use pocketmine\Player;
 
+use TheDiamondYT\PocketFactions\relation\Relation;
+use TheDiamondYT\PocketFactions\relation\RelationParticipator;
+
 class FactionMember implements IMember {
 	/** @var array */
 	private $data;
@@ -52,6 +55,14 @@ class FactionMember implements IMember {
 	
 	public function setTitle(string $title) {
 		$this->data["title"] = $title;
+	}
+	
+	public function describeTo(RelationParticipator $object) {
+		return Relation::describeTo($this, $object);
+	}
+	
+	public function getColorTo(RelationParticipator $object) {
+		return Relation::getColorTo($this, $object);
 	}
 	
 	public function hasPermission(string $permission): bool {

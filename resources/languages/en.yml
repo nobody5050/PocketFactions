@@ -7,6 +7,7 @@ console:
     # 2: milliseconds
     data-loaded: '§eLoaded language and faction data, took §6%ss §d(§6%sms§d)§e!'
 
+# TODO: move to config
 templates:
     # 1: command name
     # 2: command args
@@ -25,14 +26,17 @@ commands:
 
     create:
         description: 'Create a new faction.'
+
         # 1: player name
         # 2: faction name
         success: '%s §ecreated a new faction %s.'
+        
         # 1: /f desc usage
         after: '§eYou should now %s.'
         
     help:
         description: 'List all Faction commands.'
+        
         # 1: current page
         # 2: max pages
         header-text: 'Faction Help (%s/%s)'
