@@ -46,7 +46,7 @@ class Relation {
 		$myFaction = self::getFaction($me);
 		$thatFaction = self::getFaction($that);
 		if($thatFaction->getId() === "wilderness") {
-			return Configuration::get("faction.default-factions.wilderness.color");
+			return TF::ESCAPE . Configuration::get("faction.default-factions.wilderness.color");
 		}
 		return TF::WHITE;
 	}
