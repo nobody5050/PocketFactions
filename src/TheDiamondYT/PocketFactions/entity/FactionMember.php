@@ -26,6 +26,9 @@ class FactionMember implements IMember {
 	/** @var array */
 	private $data;
 	
+	/** @var Faction[] */
+	private $factions = [];
+	
 	/** @var Player */
 	private $player;
 	
@@ -49,12 +52,20 @@ class FactionMember implements IMember {
 		$this->data["online"] = $online;
 	}
 	
-	public function getTitle(): string {
-		return $this->data["title"] ?? "";
+	public function getTitle(string $faction): string {
+		return $this->data["factions"][$faction]["title"] ?? "";
 	}
 	
-	public function setTitle(string $title) {
-		$this->data["title"] = $title;
+	public function setTitle(string $faction, $string $title) {
+		$this->data["factions"][$faction]["title"] = $title;
+	}
+	
+	public function getFactions(): array {
+		return $this->factions;
+	}
+	
+	public function getFaction(string $faction) {
+		return $this->factions[$faction] ?? null!
 	}
 	
 	public function describeTo(RelationParticipator $object) {

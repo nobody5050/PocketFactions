@@ -48,9 +48,11 @@ class JSONProvider extends BaseProvider {
 		file_put_contents($file, json_encode($data = [
 			"id" => $player->getUniqueId(),
 			"name" => $player->getName(),
-			"faction" => [
-				"id" => "wilderness",
-				"role" => 0 // TODO
+			"factions" => [
+				"wilderness" => [
+					"name" => "Wilderness",
+					"role" => 0 // TODO
+				]
 			]
 		]));
 		$this->players[$player->getUniqueId()] = new FactionMember($data);

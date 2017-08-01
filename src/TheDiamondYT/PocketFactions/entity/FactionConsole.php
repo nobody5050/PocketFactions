@@ -43,11 +43,11 @@ class FactionConsole implements IMember {
 		// no
 	}
 	
-	public function getTitle(): string {
+	public function getTitle(string $faction): string {
 		return "";
 	}
 	
-	public function setTitle(string $title) {
+	public function setTitle(string $faction, string $title) {
 		// no
 	}
 	
