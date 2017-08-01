@@ -52,8 +52,9 @@ class Registry extends Command implements PluginIdentifiableCommand {
 			$player = $sender instanceof Player ? $this->getLoader()->getPlayer($sender->getName()) : new FactionConsole($sender);
 			$command->perform($player, $args);
 		} else {
-			
+			$this->getCommand("help")->perform($player, $args);
 		}
+		return true;
 	}
 	
 	public function registerCommand(FactionCommand $command) {

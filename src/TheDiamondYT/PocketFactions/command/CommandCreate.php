@@ -38,7 +38,7 @@ class CommandCreate extends FactionCommand {
 			"leader" => $sender->getName()
 		]);
 		$faction->create();
-		
+			
 		if(Configuration::get("faction.broadcast-create")) {
 			foreach($this->getLoader()->getPlayers() as $player) {
 				$player->sendMessage($this->getLoader()->translate("commands.create.success", [

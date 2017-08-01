@@ -7,19 +7,6 @@ console:
     # 2: milliseconds
     data-loaded: '§eLoaded language and faction data, took §6%ss §d(§6%sms§d)§e!'
 
-# TODO: move to config
-templates:
-    # 1: command name
-    # 2: command args
-    command-usage: '§b/f %s §3%s'
-    
-    # 1: command usage (see above)
-    # 2: command description
-    help-page: '%s §d: §e%s'
-    
-    # 1: header title
-    header: '§6______.[ %s §6].______'
-
 commands:
     # 1: command name
     not-found: '§bStrange argument §3"§e%s§3"§b. §6Did you type it wrong?'

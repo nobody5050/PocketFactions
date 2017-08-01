@@ -1,23 +1,35 @@
-# The language used by the plugin
+# The language used by the plugin.
 language: en
 
-# The data provider used by the plugin
+# The data provider used by the plugin.
 # : json
 provider: json
 
-# Only to be shown in console messages
+# Only to be shown in console messages.
 prefix: '§d[§bPocketFactions§d]'
 
 faction:
     default-factions:
         wilderness:
-            # The ID of the Wilderness Faction. This is the name of the file that will
-            # be saved.
+            # The ID of the Wilderness Faction. In the Wilderness, anyone can build, claim, and fight.
+            # This is the name of the file that will be saved.
             id: 'wilderness'
             
             # The colour of the Wilderness Faction name, when seen in /f show.
-            # Use Minecraft color codes without the leading §.
+            # Use Minecraft colour codes without the leading §.
             color: 'a'
 
     # Broadcast Faction creation to the entire server.         
     broadcast-create: true
+
+templates:
+    # 1: command name
+    # 2: command args
+    command-usage: '§b/f %s §3%s'
+    
+    # 1: command usage (see above)
+    # 2: command description
+    help-page: '%s §d: §e%s'
+    
+    # 1: header title
+    header: '§6______.[ %s §6].______'

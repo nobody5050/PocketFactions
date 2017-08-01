@@ -17,6 +17,7 @@
  */
 namespace TheDiamondYT\PocketFactions\command;
 
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\Loader;
 
 abstract class FactionCommand {
@@ -40,7 +41,7 @@ abstract class FactionCommand {
 	public abstract function getArguments(): string;
 	
 	public function getUsage(): string {
-		return $this->getLoader()->translate("templates.command-usage", [
+		return Configuration::get("templates.command-usage", [
 			$this->getName(),
 			$this->getArguments()
 		]);

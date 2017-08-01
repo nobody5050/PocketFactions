@@ -24,6 +24,7 @@ use pocketmine\utils\TextFormat as TF;
 use TheDiamondYT\PocketFactions\command\Registry as CommandRegistry;
 use TheDiamondYT\PocketFactions\provider\JSONProvider;
 use TheDiamondYT\PocketFactions\listener\PlayerListener;
+use TheDiamondYT\PocketFactions\util\RoleUtil;
  
 class Loader extends PluginBase {
 	/** @var Loader */
@@ -45,13 +46,16 @@ class Loader extends PluginBase {
 	}
 	
 	public function onEnable() {
-		define("START_TIME", microtime(true));
-		
+		if(!defined("START_TIME")) {
+			define("START_TIME", microtime(true));
+		}
 		$this->saveDefaultConfig();
 		$this->setLanguage();
 		$this->setProvider();
 		
 		$this->prefix = $this->getConfig()->get("prefix");
+		
+		RoleUtil::init();
 		
 		$this->commandRegistry = new CommandRegistry($this);
 		$this->getServer()->getCommandMap()->register(CommandRegistry::class, $this->commandRegistry);

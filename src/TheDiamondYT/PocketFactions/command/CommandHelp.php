@@ -17,6 +17,7 @@
  */
 namespace TheDiamondYT\PocketFactions\command;
 
+use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\Loader;
 use TheDiamondYT\PocketFactions\entity\IMember;
 
@@ -40,7 +41,7 @@ class CommandHelp extends FactionCommand {
 		$page = (int) min(count($commands), $page);
 		
 		foreach($commands[$page - 1] as $command) {
-			$sender->sendMessage($this->getLoader()->translate("templates.help-page", [
+			$sender->sendMessage(Configuration::get("templates.help-page", [
 				$command->getUsage(),
 				$command->getDescription()
 			]));

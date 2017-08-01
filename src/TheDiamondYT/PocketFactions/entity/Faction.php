@@ -61,8 +61,12 @@ class Faction {
 		$this->data["description"] = $value;
 	}
 	
+	public function addMember(FactionMember $member) {
+		$this->data["members"] = $member;
+	}
+	
 	public function create() {
-		Loader::getInstance()->getProvider()->addNewFaction($this, $this->data);
+		Loader::getInstance()->getProvider()->addNewsFaction($this, $this->data);
 	}
 	
 	public function save() {
