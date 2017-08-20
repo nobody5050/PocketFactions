@@ -35,6 +35,10 @@ class FactionConsole implements IMember {
 		return "Console";
 	}
 	
+	public function getDisplayName(): string {
+		return $this->getName();
+	}
+	
 	public function isOnline(): bool {
 		return true;
 	}
@@ -43,11 +47,11 @@ class FactionConsole implements IMember {
 		// no
 	}
 	
-	public function getTitle(string $faction): string {
+	public function getTitle(): string {
 		return "";
 	}
 	
-	public function setTitle(string $faction, string $title) {
+	public function setTitle(string $title) {
 		// no
 	}
 	

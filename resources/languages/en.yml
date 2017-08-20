@@ -10,6 +10,7 @@ console:
 commands:
     # 1: command name
     not-found: '§bStrange argument §3"§e%s§3"§b. §6Did you type it wrong?'
+    not-in-faction: '§eYou are not in a Faction.'
 
     create:
         description: 'Create a new faction.'
@@ -27,4 +28,25 @@ commands:
         # 1: current page
         # 2: max pages
         header-text: 'Faction Help (%s/%s)'
+        
+    desc:
+        description: 'Set your faction description.'
+        
+        # 1: sender name
+        # 2: new description
+        success: '%s §echanged your faction description to: §f%s'
+             
+    motd:
+        description: 'Set your faction motd'
+        success: '%s §echanged your faction motd to: §f%s'
+          
+    title:
+        description: 'Set your player title'
+        success: '%s §echanged a title: %s'
+        
+    version:
+        description: 'Display plugin version'
+        header-text: '§2Plugin Information'
+        name: '§dName: §b%s'
+        version: '§dVersion: §b%s'
 ...

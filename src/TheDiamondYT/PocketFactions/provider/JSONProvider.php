@@ -48,14 +48,13 @@ class JSONProvider extends BaseProvider {
 		file_put_contents($file, json_encode($data = [
 			"id" => $player->getUniqueId(),
 			"name" => $player->getName(),
-			"factions" => [
-				"wilderness" => [
-					"name" => "Wilderness",
-					"role" => 0 // TODO
-				]
+			"faction" => [
+				"id" => "wilderness",
+				"role" => 0 // TODO
 			]
 		]));
-		$this->players[$player->getUniqueId()] = new FactionMember($data);
+		$this->players[$player->getUniqueId()] = ($member = new FactionMember($data));
+		return $member;
 	}
 	
 	public function addNewFaction(Faction $faction, array $data) {

@@ -19,7 +19,10 @@ namespace TheDiamondYT\PocketFactions;
 
 class Configuration {
 
-	public static function get(string $key) {
-		return Loader::getInstance()->getConfig()->getNested($key);
+	public static function get(string $key, array $params = []) {
+		if(empty($params)) {
+			return Loader::getInstance()->getConfig()->getNested($key);
+		}
+		return vsprintf(Loader::getInstance()->getConfig()->getNested($key), $params);
 	}
 }

@@ -23,38 +23,32 @@ use TheDiamondYT\PocketFactions\entity\Faction;
 use TheDiamondYT\PocketFactions\entity\FactionMember;
 use TheDiamondYT\PocketFactions\entity\IMember;
 
-class CommandCreate extends FactionCommand {
+class DescriptionCommand extends FactionCommand {
 
 	public function __construct(Loader $loader) {
-		parent::__construct($loader, "create");
+		parent::__construct($loader, "desc");
 	}
 	
 	public function perform(IMember $sender, array $args) {
 		if(!$sender instanceof FactionMember) {
-			//return;
+			//return true;
 		}
-		$faction = new Faction(Faction::randomId(), [
-			"tag" => $args[0],
-			"leader" => $sender->getName()
-		]);
-		$faction->create();
-			
-		if(Configuration::get("faction.broadcast-create")) {
-			foreach($this->getLoader()->getPlayers() as $player) {
-				$player->sendMessage($this->getLoader()->translate("commands.create.success", [
-					$sender->describeTo($player),
-					$sender->getColorTo($player) . $faction->getTag()
-				]));
-			}
-		} else {
-			$sender->sendMessage($this->getLoader()->translate("commands.create.success", [
-				$sender->getColorTo($sender) . "You",
-				$sender->getColorTo($faction) . $faction->getTag()
+		if(!$sender->hasFaction()) {
+			$sender->sendMessage($this->getLoader()->translate("commands.not-in-faction"));
+			return true;
+		}
+		$faction = $sender->getFaction();
+		$faction->setDescription(($text = implode("", $args)));
+		foreach($faction->getMembers() as $member) {
+			$member->sendMessage($this->getLoader()->translate("commands.desc.success", [
+				$sender->getName(),
+				$text
 			]));
 		}
+		return true;
 	}
 	
 	public function getArguments(): string {
-		return "<faction>";
+		return "<text>";
 	}
 }

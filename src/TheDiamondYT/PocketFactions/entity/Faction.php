@@ -54,11 +54,19 @@ class Faction {
 	}
 	
 	public function getDescription(): string {
-		return $this->data["description"];
+		return $this->data["description"] ?? "";
 	}
 	
 	public function setDescription(string $value) {
 		$this->data["description"] = $value;
+	}
+	
+	public function getMotd(): string {
+		return $this->data["motd"] ?? "";
+	}
+	
+	public function setMotd(string $value) {
+		$this->data["motd"] = $value;
 	}
 	
 	public function addMember(FactionMember $member) {
@@ -66,7 +74,7 @@ class Faction {
 	}
 	
 	public function create() {
-		Loader::getInstance()->getProvider()->addNewsFaction($this, $this->data);
+		Loader::getInstance()->getProvider()->addNewFaction($this, $this->data);
 	}
 	
 	public function save() {

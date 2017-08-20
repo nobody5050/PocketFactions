@@ -21,38 +21,28 @@ use pocketmine\utils\TextFormat as TF;
 
 use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\Loader;
+use TheDiamondYT\PocketFactions\entity\IMember;
 
-abstract class FactionCommand {
-	/** @var string */
-	private $name;
-	private $description;
-	
-	/** @var Loader */
-	private $loader;
-	
-	public function __construct(Loader $loader, string $name) {
-		$this->loader = $loader;
-		$this->name = $name;
-	} 
-	
-	public function getName(): string {
-		return $this->name;
+class VersionCommand extends FactionCommand {
+
+	public function __construct(Loader $loader) {
+		parent::__construct($loader, "version");
 	}
 	
-	public abstract function getArguments(): string;
-	
-	public function getUsage(): string {
-		return Configuration::get("templates.command-usage", [
-			$this->getName(),
-			$this->getArguments()
-		]);
+	public function perform(IMember $sender, array $args) {
+		$sender->sendMessage(Configuration::get("templates.header", [
+			$this->getLoader()->translate("commands.version.header-text")
+		]));
+		$sender->sendMessage($this->getLoader()->translate("commands.version.name", ["PocketFactions"]));
+		$sender->sendMessage($this->getLoader()->translate("commands.version.version", [
+			$this->getLoader()->getDescription()->getVersion()
+		]));
+		$sender->sendMessage("");
+		$sender->sendMessage(TF::GOLD . "By TheDiamondYT");
+		return true;
 	}
 	
-	public function getDescription(): string {
-		return $this->getLoader()->translate("commands." . $this->name . ".description") ?? $this->description ?? TF::ITALIC . "no description available";
-	}
-	
-	protected function getLoader(): Loader {
-		return $this->loader;
+	public function getArguments(): string {
+		return "";
 	}
 }

@@ -19,6 +19,7 @@ namespace TheDiamondYT\PocketFactions\entity;
 
 use pocketmine\Player;
 
+use TheDiamondYT\PocketFactions\Loader;
 use TheDiamondYT\PocketFactions\relation\Relation;
 use TheDiamondYT\PocketFactions\relation\RelationParticipator;
 
@@ -26,8 +27,8 @@ class FactionMember implements IMember {
 	/** @var array */
 	private $data;
 	
-	/** @var Faction[] */
-	private $factions = [];
+	/** @var Faction */
+	private $faction;
 	
 	/** @var Player */
 	private $player;
@@ -44,6 +45,10 @@ class FactionMember implements IMember {
 		return $this->data["name"];
 	}
 	
+	public function getDisplayName(): string {
+		return $this->getTitle() . " " . $this->getName();
+	}
+	
 	public function isOnline(): bool {
 		return $this->data["online"] ?? false;
 	}
@@ -52,20 +57,20 @@ class FactionMember implements IMember {
 		$this->data["online"] = $online;
 	}
 	
-	public function getTitle(string $faction): string {
-		return $this->data["factions"][$faction]["title"] ?? "";
+	public function getTitle(): string {
+		return $this->data["faction"]["title"] ?? "";
 	}
 	
-	public function setTitle(string $faction, $string $title) {
-		$this->data["factions"][$faction]["title"] = $title;
+	public function setTitle(string $title) {
+		$this->data["faction"]["title"] = $title;
 	}
 	
-	public function getFactions(): array {
-		return $this->factions;
+	public function getFaction(): Faction {
+		return $this->faction ?? Loader::getInstance()->getFaction("Wilderness");
 	}
 	
-	public function getFaction(string $faction) {
-		return $this->factions[$faction] ?? null!
+	public function hasFaction(): bool {
+		return $this->faction ?? false;
 	}
 	
 	public function describeTo(RelationParticipator $object) {

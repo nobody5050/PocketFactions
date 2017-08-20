@@ -36,11 +36,16 @@ class Registry extends Command implements PluginIdentifiableCommand {
 		$this->setAliases(["fac", "f"]);
 		$this->loader = $loader;
 		
-		$this->registerCommand(new CommandCreate($loader));
-		$this->registerCommand(new CommandHelp($loader));
+		$this->registerCommand(new CreateCommand($loader));
+		$this->registerCommand(new DescriptionCommand($loader));
+		$this->registerCommand(new HelpCommand($loader));
+		$this->registerCommand(new MotdCommand($loader));
+		$this->registerCommand(new TitleCommand($loader));
+		$this->registerCommand(new VersionCommand($loader));
 	}
 	
 	public function execute(CommandSender $sender, $label, array $args) {
+		$player = $sender instanceof Player ? $this->getLoader()->getPlayer($sender->getName()) : new FactionConsole($sender);
 		if(count($args) > 0) {
 			$command = strtolower(array_shift($args));
 			if(isset($this->commands[$command])) {
@@ -49,7 +54,6 @@ class Registry extends Command implements PluginIdentifiableCommand {
 				$sender->sendMessage($this->getLoader()->translate("commands.not-found", [$command]));
 				return true;
 			}
-			$player = $sender instanceof Player ? $this->getLoader()->getPlayer($sender->getName()) : new FactionConsole($sender);
 			$command->perform($player, $args);
 		} else {
 			$this->getCommand("help")->perform($player, $args);
@@ -66,6 +70,15 @@ class Registry extends Command implements PluginIdentifiableCommand {
 	
 	public function getCommands(): array {
 		return $this->commands;
+	}
+	
+	public function getCommand(string $name) {
+		foreach($this->commands as $command) {
+			if($command->getName() === $name) {
+				return $command;
+			}
+		}
+		return null;
 	}
 	
 	protected function getLoader(): Loader {

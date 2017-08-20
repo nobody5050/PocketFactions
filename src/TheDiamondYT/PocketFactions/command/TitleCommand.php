@@ -19,36 +19,38 @@ namespace TheDiamondYT\PocketFactions\command;
 
 use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\Loader;
+use TheDiamondYT\PocketFactions\entity\Faction;
+use TheDiamondYT\PocketFactions\entity\FactionMember;
 use TheDiamondYT\PocketFactions\entity\IMember;
 
-class CommandHelp extends FactionCommand {
+class TitleCommand extends FactionCommand {
 
 	public function __construct(Loader $loader) {
-		parent::__construct($loader, "help");
+		parent::__construct($loader, "title");
 	}
 	
 	public function perform(IMember $sender, array $args) {
-		$page = ($args[0] ?? 1);
-		if($page < 1) {
-			$page = 1;
+		if(!$sender instanceof FactionMember) {
+			//return true;
 		}
-		$commands = [];
-		foreach($this->getLoader()->getCommandRegistry()->getCommands() as $command) {
-			$commands[] = $command;
+		if(count($args) < 0) {
+			return true;
 		}
-		ksort($commands, SORT_NATURAL | SORT_FLAG_CASE);
-		$commands = array_chunk($commands, 5);
-		$page = (int) min(count($commands), $page);
-		
-		foreach($commands[$page - 1] as $command) {
-			$sender->sendMessage(Configuration::get("templates.help-page", [
-				$command->getUsage(),
-				$command->getDescription()
+		if(!$sender->hasFaction()) {
+			$sender->sendMessage($this->getLoader()->translate("commands.not-in-faction"));
+			return true;
+		}
+		$sender->setTitle($args[0]);
+		foreach($faction->getMembers() as $member) {
+			$member->sendMessage($this->getLoader()->translate("commands.title.success", [
+				$sender->describeTo($member),
+				$args[0]
 			]));
 		}
+		return true;
 	}
 	
 	public function getArguments(): string {
-		return "[page]";
+		return "<text>";
 	}
 }

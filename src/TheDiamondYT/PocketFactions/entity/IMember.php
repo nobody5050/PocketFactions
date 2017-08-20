@@ -23,8 +23,9 @@ use TheDiamondYT\PocketFactions\relation\RelationParticipator;
 
 interface IMember extends RelationParticipator {
 	public function getName(): string;
-	public function getTitle(string $faction): string;
-	public function setTitle(string $faction, string $title);
+	public function getDisplayName(): string;
+	public function getTitle(): string;
+	public function setTitle(string $title);
 	public function describeTo(RelationParticipator $object);
 	public function getColorTo(RelationParticipator $object);
 	public function hasPermission(string $permission): bool;

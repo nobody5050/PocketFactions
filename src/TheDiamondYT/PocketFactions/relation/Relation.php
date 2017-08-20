@@ -37,6 +37,8 @@ class Relation {
 		} elseif($that instanceof FactionMember) {
 			if($me === $that) {
 				$text = "you";
+			} else {
+				$text = $me->getDisplayName();
 			}
 		}
 		return self::getColorTo($me, $that) . $text;

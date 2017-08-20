@@ -17,42 +17,38 @@
  */
 namespace TheDiamondYT\PocketFactions\command;
 
-use pocketmine\utils\TextFormat as TF;
-
 use TheDiamondYT\PocketFactions\Configuration;
 use TheDiamondYT\PocketFactions\Loader;
+use TheDiamondYT\PocketFactions\entity\Faction;
+use TheDiamondYT\PocketFactions\entity\FactionMember;
+use TheDiamondYT\PocketFactions\entity\IMember;
 
-abstract class FactionCommand {
-	/** @var string */
-	private $name;
-	private $description;
-	
-	/** @var Loader */
-	private $loader;
-	
-	public function __construct(Loader $loader, string $name) {
-		$this->loader = $loader;
-		$this->name = $name;
-	} 
-	
-	public function getName(): string {
-		return $this->name;
+class MotdCommand extends FactionCommand {
+
+	public function __construct(Loader $loader) {
+		parent::__construct($loader, "motd");
 	}
 	
-	public abstract function getArguments(): string;
-	
-	public function getUsage(): string {
-		return Configuration::get("templates.command-usage", [
-			$this->getName(),
-			$this->getArguments()
-		]);
+	public function perform(IMember $sender, array $args) {
+		if(!$sender instanceof FactionMember) {
+			//return true;
+		}
+		if(!$sender->hasFaction()) {
+			$sender->sendMessage($this->getLoader()->translate("commands.not-in-faction"));
+			return true;
+		}
+		$faction = $sender->getFaction();
+		$faction->setMotd(($text = implode("", $args)));
+		foreach($faction->getMembers() as $member) {
+			$member->sendMessage($this->getLoader()->translate("commands.motd.success", [
+				$sender->getName(),
+				$text
+			]));
+		}
+		return true;
 	}
 	
-	public function getDescription(): string {
-		return $this->getLoader()->translate("commands." . $this->name . ".description") ?? $this->description ?? TF::ITALIC . "no description available";
-	}
-	
-	protected function getLoader(): Loader {
-		return $this->loader;
+	public function getArguments(): string {
+		return "<text>";
 	}
 }
